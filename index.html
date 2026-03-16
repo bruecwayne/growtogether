@@ -1,0 +1,2440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GrowTogether — Land. Farmers. Your Harvest.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --forest: #1a3a2a;
+  --forest-deep: #0f2419;
+  --moss: #3d6b4f;
+  --sage: #7a9e7e;
+  --sage-light: #a8c5ab;
+  --wheat: #d4a84b;
+  --wheat-light: #e8c97d;
+  --wheat-glow: #f0d68a;
+  --terracotta: #c2703e;
+  --terracotta-light: #d4956a;
+  --cream: #f5f0e8;
+  --cream-dark: #e8dfd2;
+  --cream-warm: #faf6ee;
+  --soil: #3e2c1c;
+  --soil-light: #5c4033;
+  --text-dark: #1a1a18;
+  --text-body: #3d3b36;
+  --text-muted: #7a776e;
+  --white: #ffffff;
+  --shadow-sm: 0 2px 8px rgba(26,58,42,0.06);
+  --shadow-md: 0 8px 30px rgba(26,58,42,0.08);
+  --shadow-lg: 0 20px 60px rgba(26,58,42,0.12);
+  --shadow-hover: 0 12px 40px rgba(26,58,42,0.14);
+  --radius: 12px;
+  --radius-lg: 20px;
+  --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Source Sans 3', -apple-system, sans-serif;
+  color: var(--text-body);
+  background: var(--cream);
+  line-height: 1.65;
+  font-size: 16px;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Grain texture overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 200px;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'DM Serif Display', Georgia, serif;
+  color: var(--text-dark);
+  line-height: 1.15;
+  font-weight: 400;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+a { text-decoration: none; color: inherit; }
+
+/* ========== ANIMATION CLASSES ========== */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* ========== NAVIGATION ========== */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 20px 0;
+  transition: all 0.4s ease;
+}
+.nav.scrolled {
+  background: rgba(245, 240, 232, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 14px 0;
+  box-shadow: 0 1px 0 rgba(26,58,42,0.08);
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.5rem;
+  color: var(--forest);
+}
+.nav-logo svg { width: 32px; height: 32px; }
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-body);
+  letter-spacing: 0.02em;
+  transition: color var(--transition);
+  position: relative;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: var(--wheat);
+  transition: width var(--transition);
+}
+.nav-links a:hover { color: var(--forest); }
+.nav-links a:hover::after { width: 100%; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border-radius: 100px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.btn-primary {
+  background: var(--forest);
+  color: var(--cream);
+}
+.btn-primary:hover {
+  background: var(--forest-deep);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(26,58,42,0.25);
+}
+.btn-secondary {
+  background: transparent;
+  color: var(--forest);
+  border: 1.5px solid var(--forest);
+}
+.btn-secondary:hover {
+  background: var(--forest);
+  color: var(--cream);
+}
+.btn-wheat {
+  background: var(--wheat);
+  color: var(--forest-deep);
+}
+.btn-wheat:hover {
+  background: var(--wheat-light);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(212,168,75,0.3);
+}
+.btn-sm { padding: 9px 20px; font-size: 0.85rem; }
+.btn-lg { padding: 16px 36px; font-size: 1rem; }
+
+/* ========== HERO ========== */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(165deg, var(--cream-warm) 0%, var(--cream) 40%, var(--cream-dark) 100%);
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -20%;
+  right: -10%;
+  width: 700px;
+  height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212,168,75,0.12) 0%, transparent 70%);
+  animation: float 8s ease-in-out infinite;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -10%;
+  left: -5%;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(61,107,79,0.08) 0%, transparent 70%);
+  animation: float 10s ease-in-out infinite reverse;
+}
+@keyframes float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(30px, -20px) scale(1.05); }
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 140px 0 100px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.hero-text { max-width: 580px; }
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  background: rgba(26,58,42,0.06);
+  border-radius: 100px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--moss);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+.hero-badge .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--wheat);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.5); }
+}
+.hero h1 {
+  font-size: clamp(3rem, 5.5vw, 4.5rem);
+  margin-bottom: 24px;
+  letter-spacing: -0.02em;
+}
+.hero h1 em {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-style: italic;
+  color: var(--moss);
+}
+.hero-desc {
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin-bottom: 40px;
+  max-width: 480px;
+}
+.hero-ctas {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 56px;
+}
+.hero-stats {
+  display: flex;
+  gap: 48px;
+}
+.hero-stat h4 {
+  font-size: 2rem;
+  color: var(--forest);
+  margin-bottom: 2px;
+}
+.hero-stat span {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Hero Visual */
+.hero-visual {
+  position: relative;
+  height: 520px;
+}
+.hero-card-main {
+  position: absolute;
+  top: 20px;
+  right: 0;
+  width: 380px;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-lg);
+  transform: rotate(2deg);
+  transition: transform 0.5s ease;
+}
+.hero-card-main:hover { transform: rotate(0deg) scale(1.02); }
+.hero-card-img {
+  width: 100%;
+  height: 200px;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, var(--sage-light), var(--moss));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+}
+.hero-card-img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(26,58,42,0.1), transparent);
+}
+.hero-card-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--sage);
+  margin-bottom: 6px;
+}
+.hero-card-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.35rem;
+  margin-bottom: 8px;
+}
+.hero-card-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+.hero-card-meta span { display: flex; align-items: center; gap: 4px; }
+
+.hero-card-float {
+  position: absolute;
+  background: var(--white);
+  border-radius: 16px;
+  padding: 16px 20px;
+  box-shadow: var(--shadow-md);
+  animation: floatCard 6s ease-in-out infinite;
+}
+.hero-card-float.farmer {
+  top: 0;
+  left: 0;
+  transform: rotate(-3deg);
+}
+.hero-card-float.progress {
+  bottom: 40px;
+  right: -20px;
+  animation-delay: -3s;
+  transform: rotate(1deg);
+}
+@keyframes floatCard {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(-10px) rotate(-1deg); }
+}
+.float-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--sage);
+  margin-bottom: 8px;
+}
+.float-farmer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.float-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--terracotta-light), var(--terracotta));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.1rem;
+}
+.float-farmer-info h5 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 0.95rem;
+}
+.float-farmer-info span {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+.progress-bar-mini {
+  width: 140px;
+  height: 6px;
+  background: var(--cream-dark);
+  border-radius: 10px;
+  margin-top: 8px;
+  overflow: hidden;
+}
+.progress-bar-mini .fill {
+  height: 100%;
+  width: 72%;
+  background: linear-gradient(90deg, var(--moss), var(--sage-light));
+  border-radius: 10px;
+  animation: progressGrow 2s ease-out;
+}
+@keyframes progressGrow {
+  from { width: 0; }
+}
+.progress-text {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--forest);
+  margin-top: 4px;
+}
+
+/* ========== SECTION STYLES ========== */
+.section {
+  padding: 120px 0;
+}
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--sage);
+  margin-bottom: 16px;
+}
+.section-label::before {
+  content: '';
+  width: 24px; height: 1.5px;
+  background: var(--wheat);
+}
+.section-title {
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+}
+.section-title em {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-style: italic;
+  color: var(--moss);
+}
+.section-desc {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  max-width: 520px;
+  line-height: 1.7;
+}
+.section-header {
+  margin-bottom: 64px;
+}
+.section-header-center {
+  text-align: center;
+}
+.section-header-center .section-desc {
+  margin: 0 auto;
+}
+
+/* ========== HOW IT WORKS ========== */
+.how-it-works {
+  background: var(--forest-deep);
+  color: var(--cream);
+  position: relative;
+  overflow: hidden;
+}
+.how-it-works::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--wheat), transparent);
+}
+.how-it-works .section-label { color: var(--wheat-light); }
+.how-it-works .section-title { color: var(--cream); }
+.how-it-works .section-title em { color: var(--wheat-light); }
+.how-it-works .section-desc { color: rgba(245,240,232,0.6); }
+
+.how-tabs {
+  display: flex;
+  gap: 4px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 100px;
+  padding: 4px;
+  width: fit-content;
+  margin-bottom: 56px;
+}
+.how-tab {
+  padding: 12px 28px;
+  border-radius: 100px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgba(245,240,232,0.5);
+  cursor: pointer;
+  transition: all var(--transition);
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+.how-tab.active {
+  background: var(--wheat);
+  color: var(--forest-deep);
+}
+.how-tab:hover:not(.active) { color: var(--cream); }
+
+.how-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+.how-step {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--radius-lg);
+  padding: 40px 32px;
+  position: relative;
+  transition: all var(--transition);
+}
+.how-step:hover {
+  background: rgba(255,255,255,0.07);
+  transform: translateY(-4px);
+  border-color: rgba(212,168,75,0.2);
+}
+.how-step-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 3.5rem;
+  color: rgba(212,168,75,0.15);
+  line-height: 1;
+  margin-bottom: 20px;
+}
+.how-step-icon {
+  width: 52px; height: 52px;
+  border-radius: 14px;
+  background: rgba(212,168,75,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  margin-bottom: 20px;
+}
+.how-step h3 {
+  color: var(--cream);
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+}
+.how-step p {
+  color: rgba(245,240,232,0.55);
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+.how-connector {
+  position: absolute;
+  top: 50%;
+  right: -18px;
+  color: var(--wheat);
+  opacity: 0.3;
+  font-size: 1.2rem;
+}
+
+/* ========== PRODUCTS ========== */
+.products { background: var(--cream-warm); }
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+.product-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition);
+  cursor: pointer;
+}
+.product-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-6px);
+}
+.product-img {
+  height: 200px;
+  position: relative;
+  overflow: hidden;
+}
+.product-img .img-bg {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.5rem;
+  transition: transform 0.6s ease;
+}
+.product-card:hover .img-bg { transform: scale(1.08); }
+.product-tag {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  padding: 5px 12px;
+  border-radius: 100px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.tag-organic { background: rgba(61,107,79,0.9); color: white; }
+.tag-popular { background: rgba(212,168,75,0.9); color: var(--forest-deep); }
+.tag-new { background: rgba(194,112,62,0.9); color: white; }
+
+.product-body { padding: 20px 24px 24px; }
+.product-name {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.2rem;
+  margin-bottom: 4px;
+}
+.product-variety {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+.product-details {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 18px;
+}
+.product-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.product-detail label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+.product-detail span {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+.product-cta {
+  width: 100%;
+  padding: 11px;
+  border-radius: 10px;
+  background: var(--cream);
+  border: 1.5px solid var(--cream-dark);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--forest);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.product-cta:hover {
+  background: var(--forest);
+  border-color: var(--forest);
+  color: var(--cream);
+}
+
+/* ========== FARMERS ========== */
+.farmers-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+.farmers-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+.farmer-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 28px 24px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+.farmer-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--moss), var(--sage-light));
+  transform: scaleX(0);
+  transition: transform var(--transition);
+}
+.farmer-card:hover::before { transform: scaleX(1); }
+.farmer-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-4px);
+}
+.farmer-avatar {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  margin: 0 auto 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  position: relative;
+}
+.farmer-avatar::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 2px solid var(--cream-dark);
+}
+.farmer-name {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.15rem;
+  margin-bottom: 2px;
+}
+.farmer-specialty {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+}
+.farmer-meta {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+.farmer-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.farmer-meta-item label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+.farmer-meta-item span {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--forest);
+}
+.farmer-crops {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.farmer-crop-tag {
+  padding: 4px 10px;
+  border-radius: 100px;
+  background: var(--cream);
+  font-size: 0.75rem;
+  color: var(--text-body);
+  font-weight: 500;
+}
+
+/* ========== OUR LAND ========== */
+.land-section {
+  background: var(--cream-warm);
+}
+.land-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.land-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition);
+}
+.land-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-4px);
+}
+.land-visual {
+  height: 220px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.land-visual .topo-pattern {
+  position: absolute;
+  inset: 0;
+  opacity: 0.15;
+  background-image: repeating-conic-gradient(
+    transparent 0deg 5deg,
+    rgba(255,255,255,0.1) 5deg 10deg
+  );
+}
+.land-visual .location-pin {
+  font-size: 2.5rem;
+  z-index: 2;
+  animation: bounce 2s ease-in-out infinite;
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.land-status {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  padding: 5px 14px;
+  border-radius: 100px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  z-index: 2;
+}
+.status-available { background: rgba(61,107,79,0.9); color: white; }
+.status-limited { background: rgba(212,168,75,0.9); color: var(--forest-deep); }
+.status-full { background: rgba(122,119,110,0.3); color: var(--text-body); }
+.land-body { padding: 24px; }
+.land-name {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.25rem;
+  margin-bottom: 4px;
+}
+.land-location {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+.land-specs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.land-spec {
+  padding: 10px 12px;
+  background: var(--cream);
+  border-radius: 10px;
+}
+.land-spec label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 2px;
+}
+.land-spec span {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+/* ========== DASHBOARD ========== */
+.dashboard-section {
+  background: var(--forest-deep);
+  color: var(--cream);
+  position: relative;
+  overflow: hidden;
+}
+.dashboard-section::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212,168,75,0.06), transparent);
+}
+.dashboard-section .section-label { color: var(--wheat-light); }
+.dashboard-section .section-title { color: var(--cream); }
+.dashboard-section .section-title em { color: var(--wheat-light); }
+.dashboard-section .section-desc { color: rgba(245,240,232,0.6); }
+
+.dashboard-mock {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.dash-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px;
+  padding: 24px;
+}
+.dash-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.dash-card-title {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: rgba(245,240,232,0.5);
+}
+.dash-card-badge {
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+.badge-active { background: rgba(61,107,79,0.3); color: var(--sage-light); }
+.badge-warning { background: rgba(212,168,75,0.2); color: var(--wheat-light); }
+
+/* Crop progress card */
+.crop-progress-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.crop-progress-item:last-child { border-bottom: none; }
+.crop-icon-sm {
+  width: 42px; height: 42px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+.crop-progress-info { flex: 1; }
+.crop-progress-info h5 {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 0.92rem;
+  color: var(--cream);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.crop-progress-bar {
+  width: 100%;
+  height: 5px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.crop-progress-bar .bar {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 1.5s ease;
+}
+.bar-green { background: linear-gradient(90deg, var(--moss), var(--sage-light)); }
+.bar-wheat { background: linear-gradient(90deg, var(--wheat), var(--wheat-light)); }
+.bar-terra { background: linear-gradient(90deg, var(--terracotta), var(--terracotta-light)); }
+.crop-percent {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--sage-light);
+  flex-shrink: 0;
+}
+
+/* Harvest timeline */
+.timeline-item {
+  display: flex;
+  gap: 16px;
+  padding: 12px 0;
+  position: relative;
+}
+.timeline-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 36px;
+  left: 16px;
+  bottom: -2px;
+  width: 1px;
+  background: rgba(255,255,255,0.08);
+}
+.timeline-dot {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+.timeline-info h5 {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--cream);
+  margin-bottom: 2px;
+}
+.timeline-info span {
+  font-size: 0.78rem;
+  color: rgba(245,240,232,0.45);
+}
+
+/* Spending card */
+.spend-total {
+  font-family: 'DM Serif Display', serif;
+  font-size: 2.4rem;
+  color: var(--cream);
+  margin-bottom: 4px;
+}
+.spend-label {
+  font-size: 0.82rem;
+  color: rgba(245,240,232,0.45);
+  margin-bottom: 20px;
+}
+.spend-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.spend-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.spend-bar-label {
+  font-size: 0.8rem;
+  color: rgba(245,240,232,0.6);
+  width: 80px;
+  flex-shrink: 0;
+}
+.spend-bar-track {
+  flex: 1;
+  height: 8px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.spend-bar-track .fill {
+  height: 100%;
+  border-radius: 10px;
+}
+
+/* Farmer update card */
+.farmer-update {
+  display: flex;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.farmer-update:last-child { border-bottom: none; }
+.update-avatar {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+.update-content h5 {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--cream);
+  margin-bottom: 3px;
+}
+.update-content p {
+  font-size: 0.82rem;
+  color: rgba(245,240,232,0.45);
+  line-height: 1.5;
+}
+.update-time {
+  font-size: 0.72rem;
+  color: rgba(245,240,232,0.3);
+  margin-top: 4px;
+}
+
+/* ========== TESTIMONIALS ========== */
+.testimonials {
+  background: var(--cream-warm);
+}
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.testimonial-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition);
+  position: relative;
+}
+.testimonial-card:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-4px);
+}
+.testimonial-card::before {
+  content: '\201C';
+  font-family: 'DM Serif Display', serif;
+  font-size: 4rem;
+  line-height: 1;
+  color: var(--wheat-light);
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  opacity: 0.5;
+}
+.testimonial-type {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 16px;
+}
+.type-customer { background: rgba(61,107,79,0.1); color: var(--moss); }
+.type-farmer { background: rgba(212,168,75,0.15); color: var(--terracotta); }
+.testimonial-text {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-body);
+  margin-bottom: 24px;
+  font-style: italic;
+}
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.testimonial-avatar {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+.testimonial-author-info h5 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 0.95rem;
+}
+.testimonial-author-info span {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* ========== CTA SECTION ========== */
+.cta-section {
+  background: linear-gradient(135deg, var(--forest-deep) 0%, var(--forest) 100%);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.cta-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(212,168,75,0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.cta-content {
+  position: relative;
+  z-index: 2;
+}
+.cta-section h2 {
+  color: var(--cream);
+  font-size: clamp(2.2rem, 4vw, 3.2rem);
+  margin-bottom: 16px;
+}
+.cta-section h2 em {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-style: italic;
+  color: var(--wheat-light);
+}
+.cta-section p {
+  color: rgba(245,240,232,0.6);
+  font-size: 1.1rem;
+  margin-bottom: 40px;
+  max-width: 500px;
+  margin-inline: auto;
+}
+.cta-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+/* ========== FOOTER ========== */
+.footer {
+  background: var(--forest-deep);
+  color: rgba(245,240,232,0.6);
+  padding: 80px 0 40px;
+}
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 48px;
+  margin-bottom: 60px;
+}
+.footer-brand {
+  max-width: 300px;
+}
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.4rem;
+  color: var(--cream);
+  margin-bottom: 16px;
+}
+.footer-logo svg { width: 28px; height: 28px; }
+.footer-desc {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+.newsletter-form {
+  display: flex;
+  gap: 8px;
+}
+.newsletter-input {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04);
+  color: var(--cream);
+  font-family: inherit;
+  font-size: 0.88rem;
+  outline: none;
+  transition: border-color var(--transition);
+}
+.newsletter-input::placeholder { color: rgba(245,240,232,0.3); }
+.newsletter-input:focus { border-color: var(--wheat); }
+.newsletter-btn {
+  padding: 12px 20px;
+  border-radius: 10px;
+  background: var(--wheat);
+  color: var(--forest-deep);
+  border: none;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+.newsletter-btn:hover { background: var(--wheat-light); }
+
+.footer-col h4 {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--cream);
+  margin-bottom: 20px;
+  font-family: 'Source Sans 3', sans-serif;
+}
+.footer-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.footer-links a {
+  font-size: 0.88rem;
+  transition: color var(--transition);
+}
+.footer-links a:hover { color: var(--wheat-light); }
+
+.footer-bottom {
+  padding-top: 32px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.82rem;
+}
+.footer-social {
+  display: flex;
+  gap: 16px;
+}
+.footer-social a {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition);
+  font-size: 0.9rem;
+}
+.footer-social a:hover {
+  background: var(--wheat);
+  color: var(--forest-deep);
+}
+
+/* ========== LEASE SECTION ========== */
+.lease-section {
+  background: var(--cream-warm);
+  position: relative;
+}
+.lease-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+  margin-top: 56px;
+}
+.lease-benefits {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.lease-benefit {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 20px 24px;
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition);
+}
+.lease-benefit:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+}
+.lease-benefit-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--forest), var(--moss));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--wheat);
+  font-size: 1.2rem;
+}
+.lease-benefit h4 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.05rem;
+  color: var(--text-dark);
+  margin-bottom: 4px;
+}
+.lease-benefit p {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+.lease-stats {
+  display: flex;
+  gap: 32px;
+  margin-top: 12px;
+  padding: 24px 28px;
+  background: linear-gradient(135deg, var(--forest), var(--forest-deep));
+  border-radius: var(--radius);
+  color: var(--cream);
+}
+.lease-stat-item {
+  text-align: center;
+}
+.lease-stat-value {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.6rem;
+  color: var(--wheat);
+  display: block;
+}
+.lease-stat-label {
+  font-size: 0.78rem;
+  color: var(--sage-light);
+  margin-top: 4px;
+  display: block;
+}
+.lease-form-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 36px;
+  box-shadow: var(--shadow-md);
+}
+.lease-form-card h3 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.3rem;
+  color: var(--text-dark);
+  margin-bottom: 6px;
+}
+.lease-form-card .form-subtitle {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+.lease-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.lease-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.lease-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.lease-field label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-body);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.lease-field input,
+.lease-field select,
+.lease-field textarea {
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1.5px solid var(--cream-dark);
+  background: var(--cream-warm);
+  color: var(--text-dark);
+  font-family: inherit;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.lease-field input:focus,
+.lease-field select:focus,
+.lease-field textarea:focus {
+  border-color: var(--moss);
+  box-shadow: 0 0 0 3px rgba(61,107,79,0.1);
+}
+.lease-field input::placeholder,
+.lease-field textarea::placeholder {
+  color: var(--text-muted);
+}
+.lease-field textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+.lease-field select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%237a776e' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+.lease-submit {
+  margin-top: 8px;
+  padding: 14px 32px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--wheat), var(--wheat-light));
+  color: var(--forest-deep);
+  border: none;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition);
+  letter-spacing: 0.01em;
+}
+.lease-submit:hover {
+  background: linear-gradient(135deg, var(--wheat-light), var(--wheat-glow));
+  box-shadow: 0 4px 20px rgba(212,168,75,0.3);
+  transform: translateY(-1px);
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 1024px) {
+  .hero-content { grid-template-columns: 1fr; gap: 40px; }
+  .hero-visual { display: none; }
+  .farmers-grid { grid-template-columns: repeat(2, 1fr); }
+  .land-grid { grid-template-columns: 1fr; }
+  .lease-grid { grid-template-columns: 1fr; }
+  .dashboard-mock { grid-template-columns: 1fr; }
+  .footer-top { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  .container { padding: 0 24px; }
+  .section { padding: 80px 0; }
+  .nav-links { display: none; }
+  .how-steps { grid-template-columns: 1fr; }
+  .products-grid { grid-template-columns: 1fr; }
+  .farmers-grid { grid-template-columns: 1fr; }
+  .testimonials-grid { grid-template-columns: 1fr; }
+  .lease-form-row { grid-template-columns: 1fr; }
+  .lease-stats { flex-direction: column; gap: 16px; }
+  .hero-stats { gap: 32px; }
+  .cta-buttons { flex-direction: column; align-items: center; }
+  .footer-top { grid-template-columns: 1fr; }
+  .footer-bottom { flex-direction: column; gap: 16px; }
+  .farmers-header { flex-direction: column; gap: 24px; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="nav" id="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">
+        <svg viewBox="0 0 32 32" fill="none">
+          <circle cx="16" cy="16" r="15" fill="#1a3a2a"/>
+          <path d="M16 7c0 0-6 4-6 11s6 7 6 7 6 0 6-7-6-11-6-11z" fill="#d4a84b" opacity="0.9"/>
+          <path d="M16 7v18" stroke="#f5f0e8" stroke-width="1.5"/>
+          <path d="M16 13c-2-1-4 0-5 2" stroke="#f5f0e8" stroke-width="1.2" fill="none"/>
+          <path d="M16 17c2-1 4 0 5 2" stroke="#f5f0e8" stroke-width="1.2" fill="none"/>
+        </svg>
+        GrowTogether
+      </a>
+      <ul class="nav-links">
+        <li><a href="#how">How It Works</a></li>
+        <li><a href="#products">Products</a></li>
+        <li><a href="#farmers">Farmers</a></li>
+        <li><a href="#land">Our Land</a></li>
+        <li><a href="#lease">Lease Land</a></li>
+        <li><a href="#testimonials">Stories</a></li>
+        <li><a href="#" class="btn btn-primary btn-sm">Get Started</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-text">
+        <div class="hero-badge reveal">
+          <span class="dot"></span>
+          Now accepting spring crops
+        </div>
+        <h1 class="reveal reveal-delay-1">We have the land.<br>You choose <em>what grows.</em></h1>
+        <p class="hero-desc reveal reveal-delay-2">Pick a crop, and we'll match you with a skilled farmer to grow it on our certified organic land. From seed to harvest, track every step of your custom-grown produce.</p>
+        <div class="hero-ctas reveal reveal-delay-3">
+          <a href="#products" class="btn btn-primary btn-lg">Start Growing</a>
+          <a href="#how" class="btn btn-secondary btn-lg">How It Works</a>
+        </div>
+        <div class="hero-stats reveal reveal-delay-4">
+          <div class="hero-stat">
+            <h4>850+</h4>
+            <span>Acres Available</span>
+          </div>
+          <div class="hero-stat">
+            <h4>180</h4>
+            <span>Expert Farmers</span>
+          </div>
+          <div class="hero-stat">
+            <h4>96%</h4>
+            <span>Harvest Success</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual reveal">
+        <div class="hero-card-float farmer">
+          <div class="float-label">Your Farmer</div>
+          <div class="float-farmer">
+            <div class="float-avatar">&#x1F468;&#x200D;&#x1F33E;</div>
+            <div class="float-farmer-info">
+              <h5>Venkat Rao</h5>
+              <span>Organic Specialist &bull; 12 yrs</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-card-main">
+          <div class="hero-card-img" style="background: linear-gradient(135deg, #7a9e7e 0%, #3d6b4f 50%, #1a3a2a 100%);">
+            &#x1F33E;
+          </div>
+          <div class="hero-card-label">Growing Now</div>
+          <div class="hero-card-title">Hybrid Tomatoes</div>
+          <div class="hero-card-meta">
+            <span>&#x1F331; Week 8 of 14</span>
+            <span>&#x1F4CD; Siddipet, Telangana</span>
+          </div>
+        </div>
+        <div class="hero-card-float progress" style="animation-name: floatCard2;">
+          <div class="float-label">Growth Progress</div>
+          <div class="progress-bar-mini"><div class="fill"></div></div>
+          <div class="progress-text">72% Complete</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works -->
+<section class="section how-it-works" id="how">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="section-label">The Process</div>
+      <h2 class="section-title">Farm-fresh, <em>simplified.</em></h2>
+      <p class="section-desc">Whether you want to grow your own produce or earn as a farmer, we make it effortless.</p>
+    </div>
+    <div class="how-tabs reveal">
+      <button class="how-tab active" data-tab="customer">For Customers</button>
+      <button class="how-tab" data-tab="farmer">For Farmers</button>
+    </div>
+    <div class="how-steps" id="how-steps">
+      <!-- Customer steps (default) -->
+      <div class="how-step reveal reveal-delay-1">
+        <div class="how-step-num">01</div>
+        <div class="how-step-icon">&#x1F33F;</div>
+        <h3>Pick Your Product</h3>
+        <p>Browse our catalog of crops — from heirloom tomatoes to organic lavender. Choose what you want grown and how much.</p>
+        <span class="how-connector">&#x2192;</span>
+      </div>
+      <div class="how-step reveal reveal-delay-2">
+        <div class="how-step-num">02</div>
+        <div class="how-step-icon">&#x1F468;&#x200D;&#x1F33E;</div>
+        <h3>We Match a Farmer</h3>
+        <p>Our algorithm pairs you with an expert farmer who specializes in your chosen crop. They grow it on our certified land.</p>
+        <span class="how-connector">&#x2192;</span>
+      </div>
+      <div class="how-step reveal reveal-delay-3">
+        <div class="how-step-num">03</div>
+        <div class="how-step-icon">&#x1F4F1;</div>
+        <h3>Track &amp; Harvest</h3>
+        <p>Watch your crop grow with real-time updates, photos, and data. When it's ready, we deliver your fresh harvest to your door.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Products -->
+<section class="section products" id="products">
+  <div class="container">
+    <div class="section-header section-header-center reveal">
+      <div class="section-label">What to Grow</div>
+      <h2 class="section-title">Browse <em>products</em></h2>
+      <p class="section-desc">Select from dozens of crops suited to the current season. Each one carefully matched to our best-performing land.</p>
+    </div>
+    <div class="products-grid">
+
+      <div class="product-card reveal">
+        <div class="product-img">
+          <div class="img-bg" style="background: linear-gradient(135deg, #e8575a 0%, #c9302c 100%);">&#x1F345;</div>
+          <span class="product-tag tag-popular">Popular</span>
+        </div>
+        <div class="product-body">
+          <div class="product-name">Hybrid Tomatoes</div>
+          <div class="product-variety">Arka Rakshak &bull; US-618 &bull; Lakshmi</div>
+          <div class="product-details">
+            <div class="product-detail"><label>Grow Time</label><span>14 weeks</span></div>
+            <div class="product-detail"><label>Per Acre</label><span>&#8377;72,000</span></div>
+            <div class="product-detail"><label>Yield</label><span>~20 tons</span></div>
+          </div>
+          <button class="product-cta">Start Growing &rarr;</button>
+        </div>
+      </div>
+
+      <div class="product-card reveal reveal-delay-1">
+        <div class="product-img">
+          <div class="img-bg" style="background: linear-gradient(135deg, #e8c97d 0%, #c2943a 100%);">&#x1F33E;</div>
+          <span class="product-tag tag-popular">Popular</span>
+        </div>
+        <div class="product-body">
+          <div class="product-name">Turmeric</div>
+          <div class="product-variety">Salem &bull; Erode &bull; Nizamabad Local</div>
+          <div class="product-details">
+            <div class="product-detail"><label>Grow Time</label><span>32 weeks</span></div>
+            <div class="product-detail"><label>Per Acre</label><span>&#8377;55,000</span></div>
+            <div class="product-detail"><label>Yield</label><span>~8 tons</span></div>
+          </div>
+          <button class="product-cta">Start Growing &rarr;</button>
+        </div>
+      </div>
+
+      <div class="product-card reveal reveal-delay-2">
+        <div class="product-img">
+          <div class="img-bg" style="background: linear-gradient(135deg, #ff6b6b 0%, #c0392b 100%);">&#x1F336;&#xFE0F;</div>
+          <span class="product-tag tag-popular">Popular</span>
+        </div>
+        <div class="product-body">
+          <div class="product-name">Red Chillies</div>
+          <div class="product-variety">Teja &bull; Byadgi &bull; Guntur Sannam</div>
+          <div class="product-details">
+            <div class="product-detail"><label>Grow Time</label><span>20 weeks</span></div>
+            <div class="product-detail"><label>Per Acre</label><span>&#8377;62,000</span></div>
+            <div class="product-detail"><label>Yield</label><span>~1 ton dry</span></div>
+          </div>
+          <button class="product-cta">Start Growing &rarr;</button>
+        </div>
+      </div>
+
+      <div class="product-card reveal reveal-delay-3">
+        <div class="product-img">
+          <div class="img-bg" style="background: linear-gradient(135deg, #7ac17a 0%, #3d8b3d 100%);">&#x1F96C;</div>
+          <span class="product-tag tag-organic">Organic</span>
+        </div>
+        <div class="product-body">
+          <div class="product-name">Leafy Greens</div>
+          <div class="product-variety">Palak &bull; Methi &bull; Coriander &bull; Amaranthus</div>
+          <div class="product-details">
+            <div class="product-detail"><label>Grow Time</label><span>6 weeks</span></div>
+            <div class="product-detail"><label>Per Acre</label><span>&#8377;28,000</span></div>
+            <div class="product-detail"><label>Yield</label><span>~6 tons</span></div>
+          </div>
+          <button class="product-cta">Start Growing &rarr;</button>
+        </div>
+      </div>
+
+      <div class="product-card reveal">
+        <div class="product-img">
+          <div class="img-bg" style="background: linear-gradient(135deg, #90EE90 0%, #2E8B57 100%);">&#x1F33E;</div>
+          <span class="product-tag tag-popular">Popular</span>
+        </div>
+        <div class="product-body">
+          <div class="product-name">Paddy (Rice)</div>
+          <div class="product-variety">BPT-5204 &bull; Telangana Sona &bull; RNR-15048</div>
+          <div class="product-details">
+            <div class="product-detail"><label>Grow Time</label><span>18 weeks</span></div>
+            <div class="product-detail"><label>Per Acre</label><span>&#8377;45,000</span></div>
+            <div class="product-detail"><label>Yield</label><span>~2.5 tons</span></div>
+          </div>
+          <button class="product-cta">Start Growing &rarr;</button>
+        </div>
+      </div>
+
+      <div class="product-card reveal reveal-delay-1">
+        <div class="product-img">
+          <div class="img-bg" style="background: linear-gradient(135deg, #f4a460 0%, #d2691e 100%);">&#x1F955;</div>
+          <span class="product-tag tag-organic">Organic</span>
+        </div>
+        <div class="product-body">
+          <div class="product-name">Vegetables</div>
+          <div class="product-variety">Brinjal &bull; Okra &bull; Ridge Gourd &bull; Bitter Gourd</div>
+          <div class="product-details">
+            <div class="product-detail"><label>Grow Time</label><span>12 weeks</span></div>
+            <div class="product-detail"><label>Per Acre</label><span>&#8377;35,000</span></div>
+            <div class="product-detail"><label>Yield</label><span>~8 tons</span></div>
+          </div>
+          <button class="product-cta">Start Growing &rarr;</button>
+        </div>
+      </div>
+
+      <div class="product-card reveal reveal-delay-2">
+        <div class="product-img">
+          <div class="img-bg" style="background: linear-gradient(135deg, #FFD700 0%, #DAA520 100%);">&#x1F33B;</div>
+          <span class="product-tag tag-new">New</span>
+        </div>
+        <div class="product-body">
+          <div class="product-name">Sunflower</div>
+          <div class="product-variety">KBSH-44 &bull; DRSH-1 &bull; Morden</div>
+          <div class="product-details">
+            <div class="product-detail"><label>Grow Time</label><span>13 weeks</span></div>
+            <div class="product-detail"><label>Per Acre</label><span>&#8377;22,000</span></div>
+            <div class="product-detail"><label>Yield</label><span>~0.7 tons</span></div>
+          </div>
+          <button class="product-cta">Start Growing &rarr;</button>
+        </div>
+      </div>
+
+      <div class="product-card reveal reveal-delay-3">
+        <div class="product-img">
+          <div class="img-bg" style="background: linear-gradient(135deg, #f5f5dc 0%, #daa520 100%);">&#x1F33E;</div>
+          <span class="product-tag tag-organic">Organic</span>
+        </div>
+        <div class="product-body">
+          <div class="product-name">Maize (Corn)</div>
+          <div class="product-variety">DHM-117 &bull; NK-6240 &bull; Pioneer 3396</div>
+          <div class="product-details">
+            <div class="product-detail"><label>Grow Time</label><span>14 weeks</span></div>
+            <div class="product-detail"><label>Per Acre</label><span>&#8377;30,000</span></div>
+            <div class="product-detail"><label>Yield</label><span>~3 tons</span></div>
+          </div>
+          <button class="product-cta">Start Growing &rarr;</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Featured Farmers -->
+<section class="section" id="farmers">
+  <div class="container">
+    <div class="section-header farmers-header reveal">
+      <div>
+        <div class="section-label">Our Experts</div>
+        <h2 class="section-title">Meet the <em>farmers</em></h2>
+        <p class="section-desc">Skilled growers with years of organic farming experience, hand-picked for your crops.</p>
+      </div>
+      <a href="#" class="btn btn-wheat">Become a Farmer &rarr;</a>
+    </div>
+    <div class="farmers-grid">
+
+      <div class="farmer-card reveal">
+        <div class="farmer-avatar" style="background: linear-gradient(135deg, #d4956a, #c2703e);">&#x1F468;&#x200D;&#x1F33E;</div>
+        <div class="farmer-name">Venkat Rao</div>
+        <div class="farmer-specialty">Organic Vegetable Specialist</div>
+        <div class="farmer-meta">
+          <div class="farmer-meta-item"><label>Exp.</label><span>12 yrs</span></div>
+          <div class="farmer-meta-item"><label>Rating</label><span>4.9 &#x2605;</span></div>
+          <div class="farmer-meta-item"><label>Harvests</label><span>340+</span></div>
+        </div>
+        <div class="farmer-crops">
+          <span class="farmer-crop-tag">&#x1F345; Tomatoes</span>
+          <span class="farmer-crop-tag">&#x1F336;&#xFE0F; Chillies</span>
+          <span class="farmer-crop-tag">&#x1F955; Vegetables</span>
+        </div>
+      </div>
+
+      <div class="farmer-card reveal reveal-delay-1">
+        <div class="farmer-avatar" style="background: linear-gradient(135deg, #a8c5ab, #7a9e7e);">&#x1F469;&#x200D;&#x1F33E;</div>
+        <div class="farmer-name">Ramesh Reddy</div>
+        <div class="farmer-specialty">Paddy &amp; Grain Expert</div>
+        <div class="farmer-meta">
+          <div class="farmer-meta-item"><label>Exp.</label><span>8 yrs</span></div>
+          <div class="farmer-meta-item"><label>Rating</label><span>4.8 &#x2605;</span></div>
+          <div class="farmer-meta-item"><label>Harvests</label><span>210+</span></div>
+        </div>
+        <div class="farmer-crops">
+          <span class="farmer-crop-tag">&#x1F33E; Paddy</span>
+          <span class="farmer-crop-tag">&#x1F33D; Maize</span>
+          <span class="farmer-crop-tag">&#x1F33E; Turmeric</span>
+        </div>
+      </div>
+
+      <div class="farmer-card reveal reveal-delay-2">
+        <div class="farmer-avatar" style="background: linear-gradient(135deg, #e8c97d, #d4a84b);">&#x1F9D1;&#x200D;&#x1F33E;</div>
+        <div class="farmer-name">Lakshmi Devi</div>
+        <div class="farmer-specialty">Spice &amp; Oilseed Grower</div>
+        <div class="farmer-meta">
+          <div class="farmer-meta-item"><label>Exp.</label><span>15 yrs</span></div>
+          <div class="farmer-meta-item"><label>Rating</label><span>5.0 &#x2605;</span></div>
+          <div class="farmer-meta-item"><label>Harvests</label><span>420+</span></div>
+        </div>
+        <div class="farmer-crops">
+          <span class="farmer-crop-tag">&#x1F33B; Sunflower</span>
+          <span class="farmer-crop-tag">&#x1F33E; Turmeric</span>
+          <span class="farmer-crop-tag">&#x1F336;&#xFE0F; Chillies</span>
+        </div>
+      </div>
+
+      <div class="farmer-card reveal reveal-delay-3">
+        <div class="farmer-avatar" style="background: linear-gradient(135deg, #b19cd9, #7b5ea7);">&#x1F469;&#x200D;&#x1F33E;</div>
+        <div class="farmer-name">Suresh Goud</div>
+        <div class="farmer-specialty">Vegetable &amp; Leafy Green Expert</div>
+        <div class="farmer-meta">
+          <div class="farmer-meta-item"><label>Exp.</label><span>10 yrs</span></div>
+          <div class="farmer-meta-item"><label>Rating</label><span>4.9 &#x2605;</span></div>
+          <div class="farmer-meta-item"><label>Harvests</label><span>280+</span></div>
+        </div>
+        <div class="farmer-crops">
+          <span class="farmer-crop-tag">&#x1F955; Brinjal</span>
+          <span class="farmer-crop-tag">&#x1F96C; Palak</span>
+          <span class="farmer-crop-tag">&#x1F33F; Coriander</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Our Land -->
+<section class="section land-section" id="land">
+  <div class="container">
+    <div class="section-header section-header-center reveal">
+      <div class="section-label">Where We Grow</div>
+      <h2 class="section-title">Our <em>land</em></h2>
+      <p class="section-desc">Premium agricultural plots across Siddipet district, with rich soil and reliable irrigation from the Kaleshwaram project.</p>
+    </div>
+    <div class="land-grid">
+
+      <div class="land-card reveal">
+        <div class="land-visual" style="background: linear-gradient(135deg, #7a9e7e, #3d6b4f);">
+          <div class="topo-pattern"></div>
+          <span class="location-pin">&#x1F4CD;</span>
+          <span class="land-status status-available">Available</span>
+        </div>
+        <div class="land-body">
+          <div class="land-name">Siddipet Central Farm</div>
+          <div class="land-location">Siddipet Mandal, Telangana</div>
+          <div class="land-specs">
+            <div class="land-spec"><label>Soil</label><span>Black Cotton</span></div>
+            <div class="land-spec"><label>Acreage</label><span>220 acres</span></div>
+            <div class="land-spec"><label>Water</label><span>Canal (KLIP)</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="land-card reveal reveal-delay-1">
+        <div class="land-visual" style="background: linear-gradient(135deg, #d4a84b, #c2703e);">
+          <div class="topo-pattern"></div>
+          <span class="location-pin">&#x1F4CD;</span>
+          <span class="land-status status-limited">Limited</span>
+        </div>
+        <div class="land-body">
+          <div class="land-name">Dubbak Highlands</div>
+          <div class="land-location">Dubbak Mandal, Siddipet District</div>
+          <div class="land-specs">
+            <div class="land-spec"><label>Soil</label><span>Red Loamy</span></div>
+            <div class="land-spec"><label>Acreage</label><span>180 acres</span></div>
+            <div class="land-spec"><label>Water</label><span>Borewell</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="land-card reveal reveal-delay-2">
+        <div class="land-visual" style="background: linear-gradient(135deg, #5c8a4d, #2d5a1e);">
+          <div class="topo-pattern"></div>
+          <span class="location-pin">&#x1F4CD;</span>
+          <span class="land-status status-available">Available</span>
+        </div>
+        <div class="land-body">
+          <div class="land-name">Gajwel Green Belt</div>
+          <div class="land-location">Gajwel Mandal, Siddipet District</div>
+          <div class="land-specs">
+            <div class="land-spec"><label>Soil</label><span>Alluvial</span></div>
+            <div class="land-spec"><label>Acreage</label><span>280 acres</span></div>
+            <div class="land-spec"><label>Water</label><span>Tank Irrigated</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="land-card reveal reveal-delay-3">
+        <div class="land-visual" style="background: linear-gradient(135deg, #8B7355, #5c4033);">
+          <div class="topo-pattern"></div>
+          <span class="location-pin">&#x1F4CD;</span>
+          <span class="land-status status-full">Fully Booked</span>
+        </div>
+        <div class="land-body">
+          <div class="land-name">Husnabad Fields</div>
+          <div class="land-location">Husnabad Mandal, Siddipet District</div>
+          <div class="land-specs">
+            <div class="land-spec"><label>Soil</label><span>Black Cotton</span></div>
+            <div class="land-spec"><label>Acreage</label><span>170 acres</span></div>
+            <div class="land-spec"><label>Water</label><span>Canal Fed</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Lease Your Land -->
+<section class="section lease-section" id="lease">
+  <div class="container">
+    <div class="section-header section-header-center reveal">
+      <div class="section-label">For Landowners</div>
+      <h2 class="section-title">Lease your <em>land to us.</em></h2>
+      <p class="section-desc">Turn idle land into steady income. We handle the farming, you earn returns — no effort required.</p>
+    </div>
+
+    <div class="lease-grid">
+      <!-- Benefits -->
+      <div class="lease-benefits reveal">
+        <div class="lease-benefit">
+          <div class="lease-benefit-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+          </div>
+          <div>
+            <h4>Guaranteed Lease Income</h4>
+            <p>Earn ₹35,000–₹55,000 per acre annually with fixed lease payments, regardless of crop market fluctuations.</p>
+          </div>
+        </div>
+        <div class="lease-benefit">
+          <div class="lease-benefit-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div>
+            <h4>Crop Insurance Coverage</h4>
+            <p>Your land is fully covered under PMFBY and state crop insurance schemes at zero cost to you.</p>
+          </div>
+        </div>
+        <div class="lease-benefit">
+          <div class="lease-benefit-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+          </div>
+          <div>
+            <h4>Professional Land Maintenance</h4>
+            <p>Our expert farmers maintain soil health with crop rotation, organic manure, and modern irrigation techniques.</p>
+          </div>
+        </div>
+        <div class="lease-benefit">
+          <div class="lease-benefit-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <div>
+            <h4>Flexible Lease Terms</h4>
+            <p>Choose from 1 to 5 year lease periods with transparent terms. Renew or exit with 3 months notice.</p>
+          </div>
+        </div>
+
+        <div class="lease-stats">
+          <div class="lease-stat-item">
+            <span class="lease-stat-value">₹45K+</span>
+            <span class="lease-stat-label">Avg. Income / Acre / Year</span>
+          </div>
+          <div class="lease-stat-item">
+            <span class="lease-stat-value">320+</span>
+            <span class="lease-stat-label">Landowners Partnered</span>
+          </div>
+          <div class="lease-stat-item">
+            <span class="lease-stat-value">98%</span>
+            <span class="lease-stat-label">Renewal Rate</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Inquiry Form -->
+      <div class="lease-form-card reveal reveal-delay-1">
+        <h3>Submit Your Land Details</h3>
+        <p class="form-subtitle">Our team will visit and assess your land within 7 working days.</p>
+        <form class="lease-form" onsubmit="event.preventDefault(); this.querySelector('.lease-submit').textContent='Inquiry Submitted ✓'; this.querySelector('.lease-submit').style.background='var(--moss)'; this.querySelector('.lease-submit').style.color='var(--cream)';">
+          <div class="lease-form-row">
+            <div class="lease-field">
+              <label>Full Name</label>
+              <input type="text" placeholder="e.g. Ramesh Reddy" required>
+            </div>
+            <div class="lease-field">
+              <label>Phone Number</label>
+              <input type="tel" placeholder="e.g. 9876543210" required>
+            </div>
+          </div>
+          <div class="lease-form-row">
+            <div class="lease-field">
+              <label>Village / Mandal</label>
+              <input type="text" placeholder="e.g. Dubbak, Siddipet" required>
+            </div>
+            <div class="lease-field">
+              <label>Total Acreage</label>
+              <input type="number" placeholder="e.g. 15" min="1" required>
+            </div>
+          </div>
+          <div class="lease-form-row">
+            <div class="lease-field">
+              <label>Soil Type</label>
+              <select required>
+                <option value="" disabled selected>Select soil type</option>
+                <option>Black Cotton</option>
+                <option>Red Loamy</option>
+                <option>Alluvial</option>
+                <option>Sandy Loam</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="lease-field">
+              <label>Irrigation Source</label>
+              <select required>
+                <option value="" disabled selected>Select source</option>
+                <option>Canal (KLIP)</option>
+                <option>Borewell</option>
+                <option>Tank Irrigated</option>
+                <option>Rainfed</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="lease-field">
+            <label>Additional Details</label>
+            <textarea placeholder="Any details about your land — current usage, road access, nearby landmarks, etc."></textarea>
+          </div>
+          <button type="submit" class="lease-submit">Submit Inquiry →</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Dashboard Preview -->
+<section class="section dashboard-section" id="dashboard">
+  <div class="container">
+    <div class="section-header section-header-center reveal">
+      <div class="section-label">Your Dashboard</div>
+      <h2 class="section-title">Track <em>every leaf.</em></h2>
+      <p class="section-desc">Real-time insights into your crops, your farmer, and your investment — all in one place.</p>
+    </div>
+    <div class="dashboard-mock reveal">
+
+      <!-- Crop Progress -->
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <span class="dash-card-title">Crop Progress</span>
+          <span class="dash-card-badge badge-active">3 Active</span>
+        </div>
+        <div class="crop-progress-item">
+          <div class="crop-icon-sm">&#x1F345;</div>
+          <div class="crop-progress-info">
+            <h5>Hybrid Tomatoes</h5>
+            <div class="crop-progress-bar"><div class="bar bar-green" style="width:72%"></div></div>
+          </div>
+          <span class="crop-percent">72%</span>
+        </div>
+        <div class="crop-progress-item">
+          <div class="crop-icon-sm">&#x1F336;&#xFE0F;</div>
+          <div class="crop-progress-info">
+            <h5>Red Chillies</h5>
+            <div class="crop-progress-bar"><div class="bar bar-wheat" style="width:45%"></div></div>
+          </div>
+          <span class="crop-percent" style="color:var(--wheat-light);">45%</span>
+        </div>
+        <div class="crop-progress-item">
+          <div class="crop-icon-sm">&#x1F33E;</div>
+          <div class="crop-progress-info">
+            <h5>Turmeric</h5>
+            <div class="crop-progress-bar"><div class="bar bar-terra" style="width:20%"></div></div>
+          </div>
+          <span class="crop-percent" style="color:var(--terracotta-light);">20%</span>
+        </div>
+      </div>
+
+      <!-- Harvest Timeline -->
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <span class="dash-card-title">Harvest Timeline</span>
+          <span class="dash-card-badge badge-warning">Upcoming</span>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot" style="background:rgba(61,107,79,0.2);">&#x1F345;</div>
+          <div class="timeline-info">
+            <h5>Tomato Harvest</h5>
+            <span>April 28, 2026 &bull; Siddipet Central</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot" style="background:rgba(212,168,75,0.15);">&#x1F33F;</div>
+          <div class="timeline-info">
+            <h5>Chilli First Pick</h5>
+            <span>May 15, 2026 &bull; Dubbak Highlands</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot" style="background:rgba(177,156,217,0.15);">&#x1F33B;</div>
+          <div class="timeline-info">
+            <h5>Turmeric Harvest</h5>
+            <span>June 20, 2026 &bull; Gajwel Green Belt</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot" style="background:rgba(122,193,122,0.15);">&#x1F4E6;</div>
+          <div class="timeline-info">
+            <h5>Full Delivery</h5>
+            <span>July 1, 2026 &bull; All crops shipped</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Spending -->
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <span class="dash-card-title">Spending Overview</span>
+        </div>
+        <div class="spend-total">&#8377;1,89,000</div>
+        <div class="spend-label">Total invested this season</div>
+        <div class="spend-bars">
+          <div class="spend-bar-row">
+            <span class="spend-bar-label">Tomatoes</span>
+            <div class="spend-bar-track"><div class="fill" style="width:55%;background:var(--moss);"></div></div>
+          </div>
+          <div class="spend-bar-row">
+            <span class="spend-bar-label">Chillies</span>
+            <div class="spend-bar-track"><div class="fill" style="width:30%;background:var(--wheat);"></div></div>
+          </div>
+          <div class="spend-bar-row">
+            <span class="spend-bar-label">Turmeric</span>
+            <div class="spend-bar-track"><div class="fill" style="width:15%;background:var(--terracotta);"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Farmer Updates -->
+      <div class="dash-card">
+        <div class="dash-card-header">
+          <span class="dash-card-title">Farmer Updates</span>
+        </div>
+        <div class="farmer-update">
+          <div class="update-avatar" style="background:rgba(194,112,62,0.15);">&#x1F468;&#x200D;&#x1F33E;</div>
+          <div class="update-content">
+            <h5>Venkat Rao</h5>
+            <p>Tomatoes are showing great color. Expecting early harvest if weather holds.</p>
+            <div class="update-time">2 hours ago</div>
+          </div>
+        </div>
+        <div class="farmer-update">
+          <div class="update-avatar" style="background:rgba(168,197,171,0.15);">&#x1F469;&#x200D;&#x1F33E;</div>
+          <div class="update-content">
+            <h5>Ramesh Reddy</h5>
+            <p>Chilli plants flowering well. Expecting strong first pick if rains hold off this week.</p>
+            <div class="update-time">Yesterday</div>
+          </div>
+        </div>
+        <div class="farmer-update">
+          <div class="update-avatar" style="background:rgba(232,201,125,0.15);">&#x1F9D1;&#x200D;&#x1F33E;</div>
+          <div class="update-content">
+            <h5>Lakshmi Devi</h5>
+            <p>Turmeric rhizomes planted and sprouting. Canal water supply is steady this season.</p>
+            <div class="update-time">3 days ago</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Testimonials -->
+<section class="section testimonials" id="testimonials">
+  <div class="container">
+    <div class="section-header section-header-center reveal">
+      <div class="section-label">Stories</div>
+      <h2 class="section-title">Rooted in <em>trust.</em></h2>
+      <p class="section-desc">Hear from the customers and farmers who make GrowTogether a thriving community.</p>
+    </div>
+    <div class="testimonials-grid">
+
+      <div class="testimonial-card reveal">
+        <span class="testimonial-type type-customer">Customer</span>
+        <p class="testimonial-text">Living in Hyderabad, I never imagined I could grow my own vegetables. GrowTogether gave me a 2-acre tomato plot in Siddipet and a farmer who sends me weekly photo updates. The freshness is unbeatable.</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar" style="background:linear-gradient(135deg, #a8c5ab, #7a9e7e);">&#x1F469;</div>
+          <div class="testimonial-author-info">
+            <h5>Ananya Reddy</h5>
+            <span>Home Chef, Hyderabad</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card reveal reveal-delay-1">
+        <span class="testimonial-type type-farmer">Farmer</span>
+        <p class="testimonial-text">After years of selling at the local mandi, GrowTogether changed the game. I get matched with customers who value quality, I grow on well-irrigated land, and I earn 40% more than my previous arrangement.</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar" style="background:linear-gradient(135deg, #d4956a, #c2703e);">&#x1F468;</div>
+          <div class="testimonial-author-info">
+            <h5>Narasimha Goud</h5>
+            <span>Farmer, Dubbak, 9 years</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card reveal reveal-delay-2">
+        <span class="testimonial-type type-customer">Customer</span>
+        <p class="testimonial-text">We ordered turmeric for our Ayurvedic products business. The dashboard tracking was incredible — we knew exactly when to expect our harvest. The quality exceeded wholesale market supplies by far.</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar" style="background:linear-gradient(135deg, #b19cd9, #7b5ea7);">&#x1F469;</div>
+          <div class="testimonial-author-info">
+            <h5>Priya Sharma</h5>
+            <span>Founder, Veda Naturals</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="section cta-section">
+  <div class="container">
+    <div class="cta-content reveal">
+      <h2>Ready to grow <em>something?</em></h2>
+      <p>Join thousands of customers and farmers building a more connected food system, one harvest at a time.</p>
+      <div class="cta-buttons">
+        <a href="#" class="btn btn-wheat btn-lg">Start Growing Today</a>
+        <a href="#" class="btn btn-lg" style="border: 1.5px solid rgba(245,240,232,0.3); color: var(--cream);">Apply as a Farmer</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <svg viewBox="0 0 32 32" fill="none">
+            <circle cx="16" cy="16" r="15" fill="#d4a84b" opacity="0.2"/>
+            <path d="M16 7c0 0-6 4-6 11s6 7 6 7 6 0 6-7-6-11-6-11z" fill="#d4a84b" opacity="0.9"/>
+            <path d="M16 7v18" stroke="#f5f0e8" stroke-width="1.5"/>
+            <path d="M16 13c-2-1-4 0-5 2" stroke="#f5f0e8" stroke-width="1.2" fill="none"/>
+            <path d="M16 17c2-1 4 0 5 2" stroke="#f5f0e8" stroke-width="1.2" fill="none"/>
+          </svg>
+          GrowTogether
+        </div>
+        <p class="footer-desc">Connecting land, farmers, and people who want to grow something real. From seed to harvest, we make farming accessible to everyone.</p>
+        <form class="newsletter-form" onsubmit="event.preventDefault();">
+          <input type="email" class="newsletter-input" placeholder="Your email address">
+          <button type="submit" class="newsletter-btn">Subscribe</button>
+        </form>
+      </div>
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <ul class="footer-links">
+          <li><a href="#">Browse Products</a></li>
+          <li><a href="#">Our Land</a></li>
+          <li><a href="#">Pricing</a></li>
+          <li><a href="#">Dashboard</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Farmers</h4>
+        <ul class="footer-links">
+          <li><a href="#">Apply Now</a></li>
+          <li><a href="#">Farmer Portal</a></li>
+          <li><a href="#">Resources</a></li>
+          <li><a href="#">Community</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul class="footer-links">
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 GrowTogether. All rights reserved.</span>
+      <div class="footer-social">
+        <a href="#" aria-label="Twitter">&#x1D54F;</a>
+        <a href="#" aria-label="Instagram">&#x1F4F7;</a>
+        <a href="#" aria-label="LinkedIn">in</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Scroll reveal animation
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Navbar scroll effect
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// How It Works tabs
+const tabs = document.querySelectorAll('.how-tab');
+const stepsContainer = document.getElementById('how-steps');
+
+const customerSteps = [
+  { num: '01', icon: '&#x1F33F;', title: 'Pick Your Product', desc: 'Browse our catalog of crops \u2014 from heirloom tomatoes to organic lavender. Choose what you want grown and how much.' },
+  { num: '02', icon: '&#x1F468;&#x200D;&#x1F33E;', title: 'We Match a Farmer', desc: 'Our algorithm pairs you with an expert farmer who specializes in your chosen crop. They grow it on our certified land.' },
+  { num: '03', icon: '&#x1F4F1;', title: 'Track & Harvest', desc: 'Watch your crop grow with real-time updates, photos, and data. When it\u2019s ready, we deliver your fresh harvest to your door.' }
+];
+
+const farmerSteps = [
+  { num: '01', icon: '&#x1F4DD;', title: 'Apply & Get Verified', desc: 'Submit your farming experience and specialties. We verify credentials and match you with the right opportunities.' },
+  { num: '02', icon: '&#x1F331;', title: 'Get Matched to Crops', desc: 'Receive crop assignments matched to your expertise. Access our premium land, tools, and seed stock \u2014 everything you need to grow.' },
+  { num: '03', icon: '&#x1F4B0;', title: 'Grow & Earn', desc: 'Cultivate crops, share updates with customers, and earn competitive pay plus bonuses for exceptional harvests.' }
+];
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    tabs.forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    const steps = tab.dataset.tab === 'farmer' ? farmerSteps : customerSteps;
+    stepsContainer.innerHTML = steps.map((step, i) => `
+      <div class="how-step reveal visible" style="animation: fadeSlide 0.5s ${i * 0.1}s both;">
+        <div class="how-step-num">${step.num}</div>
+        <div class="how-step-icon">${step.icon}</div>
+        <h3>${step.title}</h3>
+        <p>${step.desc}</p>
+        ${i < 2 ? '<span class="how-connector">&#x2192;</span>' : ''}
+      </div>
+    `).join('');
+  });
+});
+
+// Smooth scroll for nav links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    const href = this.getAttribute('href');
+    if (href === '#') return;
+    e.preventDefault();
+    const target = document.querySelector(href);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+</script>
+
+<style>
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes floatCard2 {
+  0%, 100% { transform: translateY(0) rotate(1deg); }
+  50% { transform: translateY(-10px) rotate(2deg); }
+}
+</style>
+
+</body>
+</html>
