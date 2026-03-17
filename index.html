@@ -1675,7 +1675,7 @@ a { text-decoration: none; color: inherit; }
       <div class="hero-text">
         <div class="hero-badge reveal">
           <span class="dot"></span>
-          Now accepting spring crops
+          <span id="hero-badge-text">Now accepting spring crops</span>
         </div>
         <h1 class="reveal reveal-delay-1">We have the land.<br>You choose <em>what grows.</em></h1>
         <p class="hero-desc reveal reveal-delay-2">Pick a crop, and we'll match you with a skilled farmer to grow it on our certified organic land. From seed to harvest, track every step of your custom-grown produce.</p>
@@ -2567,6 +2567,13 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   });
+
+  // Load hero badge text from admin settings
+  const savedBadge = localStorage.getItem('gt_hero_badge');
+  if (savedBadge) {
+    const el = document.getElementById('hero-badge-text');
+    if (el) el.textContent = savedBadge;
+  }
 });
 </script>
 

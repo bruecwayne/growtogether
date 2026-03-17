@@ -344,6 +344,70 @@ a { text-decoration: none; color: inherit; }
   margin-top: 6px;
 }
 
+/* ========== SITE SETTINGS ========== */
+.site-settings-bar {
+  padding: 0 40px 20px;
+}
+.site-settings-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 18px 24px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.site-settings-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.site-settings-label svg { width: 14px; height: 14px; }
+.site-settings-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+.site-settings-input {
+  flex: 1;
+  max-width: 420px;
+  border: 1.5px solid var(--cream-dark);
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 0.9rem;
+  color: var(--text-dark);
+  background: var(--cream);
+  outline: none;
+  transition: border-color var(--transition);
+}
+.site-settings-input:focus { border-color: var(--moss); }
+.site-settings-save {
+  background: var(--forest);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition);
+  white-space: nowrap;
+}
+.site-settings-save:hover { background: var(--moss); }
+.site-settings-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
 /* ========== FILTERS & SEARCH ========== */
 .filters-bar {
   padding: 0 40px 20px;
@@ -1058,6 +1122,21 @@ a { text-decoration: none; color: inherit; }
       </div>
     </div>
 
+    <!-- Site Settings -->
+    <div class="site-settings-bar">
+      <div class="site-settings-card">
+        <div class="site-settings-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg>
+          Hero Badge Text
+        </div>
+        <div class="site-settings-row">
+          <input type="text" id="hero-badge-input" class="site-settings-input" placeholder="Now accepting spring crops" maxlength="80">
+          <button class="site-settings-save" onclick="saveHeroBadge()">Save</button>
+        </div>
+        <div class="site-settings-hint">Shown on the homepage banner</div>
+      </div>
+    </div>
+
     <!-- Filters -->
     <div class="filters-bar">
       <div class="search-box">
@@ -1649,8 +1728,30 @@ function exportPDF() {
   doc.save('growtogether-enquiries-' + new Date().toISOString().split('T')[0] + '.pdf');
 }
 
+// ========== SITE SETTINGS ==========
+function loadHeroBadge() {
+  const saved = localStorage.getItem('gt_hero_badge');
+  const input = document.getElementById('hero-badge-input');
+  if (input && saved) input.value = saved;
+}
+
+function saveHeroBadge() {
+  const input = document.getElementById('hero-badge-input');
+  const text = input.value.trim();
+  if (!text) return;
+  localStorage.setItem('gt_hero_badge', text);
+  const btn = document.querySelector('.site-settings-save');
+  btn.textContent = 'Saved!';
+  btn.style.background = 'var(--status-approved)';
+  setTimeout(() => {
+    btn.textContent = 'Save';
+    btn.style.background = '';
+  }, 2000);
+}
+
 // ========== INIT ==========
 checkAuth();
+loadHeroBadge();
 </script>
 
 </body>
