@@ -2006,76 +2006,7 @@ a { text-decoration: none; color: inherit; }
       <h2 class="section-title">Our <em>land</em></h2>
       <p class="section-desc">Premium agricultural plots across Siddipet district, with rich soil and reliable irrigation from the Kaleshwaram project.</p>
     </div>
-    <div class="land-grid">
-
-      <div class="land-card reveal">
-        <div class="land-visual" style="background: linear-gradient(135deg, rgba(122,158,126,0.4), rgba(61,107,79,0.5)), url('https://images.pexels.com/photos/440731/pexels-photo-440731.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop'); background-size: cover; background-position: center;">
-          <div class="topo-pattern"></div>
-          <span class="location-pin">&#x1F4CD;</span>
-          <span class="land-status status-available">Available</span>
-        </div>
-        <div class="land-body">
-          <div class="land-name">Siddipet Central Farm</div>
-          <div class="land-location">Siddipet Mandal, Telangana</div>
-          <div class="land-specs">
-            <div class="land-spec"><label>Soil</label><span>Black Cotton</span></div>
-            <div class="land-spec"><label>Acreage</label><span>220 acres</span></div>
-            <div class="land-spec"><label>Water</label><span>Canal (KLIP)</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="land-card reveal reveal-delay-1">
-        <div class="land-visual" style="background: linear-gradient(135deg, rgba(212,168,75,0.4), rgba(194,112,62,0.5)), url('https://images.pexels.com/photos/28412626/pexels-photo-28412626.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop'); background-size: cover; background-position: center;">
-          <div class="topo-pattern"></div>
-          <span class="location-pin">&#x1F4CD;</span>
-          <span class="land-status status-limited">Limited</span>
-        </div>
-        <div class="land-body">
-          <div class="land-name">Dubbak Highlands</div>
-          <div class="land-location">Dubbak Mandal, Siddipet District</div>
-          <div class="land-specs">
-            <div class="land-spec"><label>Soil</label><span>Red Loamy</span></div>
-            <div class="land-spec"><label>Acreage</label><span>180 acres</span></div>
-            <div class="land-spec"><label>Water</label><span>Borewell</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="land-card reveal reveal-delay-2">
-        <div class="land-visual" style="background: linear-gradient(135deg, rgba(92,138,77,0.4), rgba(45,90,30,0.5)), url('https://images.pexels.com/photos/6129964/pexels-photo-6129964.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop'); background-size: cover; background-position: center;">
-          <div class="topo-pattern"></div>
-          <span class="location-pin">&#x1F4CD;</span>
-          <span class="land-status status-available">Available</span>
-        </div>
-        <div class="land-body">
-          <div class="land-name">Gajwel Green Belt</div>
-          <div class="land-location">Gajwel Mandal, Siddipet District</div>
-          <div class="land-specs">
-            <div class="land-spec"><label>Soil</label><span>Alluvial</span></div>
-            <div class="land-spec"><label>Acreage</label><span>280 acres</span></div>
-            <div class="land-spec"><label>Water</label><span>Tank Irrigated</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="land-card reveal reveal-delay-3">
-        <div class="land-visual" style="background: linear-gradient(135deg, rgba(139,115,85,0.4), rgba(92,64,51,0.5)), url('https://images.pexels.com/photos/3030265/pexels-photo-3030265.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop'); background-size: cover; background-position: center;">
-          <div class="topo-pattern"></div>
-          <span class="location-pin">&#x1F4CD;</span>
-          <span class="land-status status-full">Fully Booked</span>
-        </div>
-        <div class="land-body">
-          <div class="land-name">Husnabad Fields</div>
-          <div class="land-location">Husnabad Mandal, Siddipet District</div>
-          <div class="land-specs">
-            <div class="land-spec"><label>Soil</label><span>Black Cotton</span></div>
-            <div class="land-spec"><label>Acreage</label><span>170 acres</span></div>
-            <div class="land-spec"><label>Water</label><span>Canal Fed</span></div>
-          </div>
-        </div>
-      </div>
-
+    <div class="land-grid" id="land-grid">
     </div>
   </div>
 </section>
@@ -2555,6 +2486,52 @@ document.querySelectorAll('.product-cta').forEach(btn => {
     window.location.href = 'grow.html?crop=' + encodeURIComponent(cropName);
   });
 });
+
+  // Render land cards from admin settings
+  const LAND_GRADIENTS_IDX = {
+    green: 'rgba(122,158,126,0.4), rgba(61,107,79,0.5)',
+    gold: 'rgba(212,168,75,0.4), rgba(194,112,62,0.5)',
+    forest: 'rgba(92,138,77,0.4), rgba(45,90,30,0.5)',
+    earth: 'rgba(139,115,85,0.4), rgba(92,64,51,0.5)',
+    blue: 'rgba(91,143,212,0.4), rgba(44,86,151,0.5)'
+  };
+  const DEFAULT_LANDS_IDX = [
+    { id: 'land-1', name: 'Siddipet Central Farm', location: 'Siddipet Mandal, Telangana', soil: 'Black Cotton', acreage: '220 acres', water: 'Canal (KLIP)', status: 'available', imageUrl: 'https://images.pexels.com/photos/440731/pexels-photo-440731.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop', gradient: 'green', visible: true },
+    { id: 'land-2', name: 'Dubbak Highlands', location: 'Dubbak Mandal, Siddipet District', soil: 'Red Loamy', acreage: '180 acres', water: 'Borewell', status: 'limited', imageUrl: 'https://images.pexels.com/photos/28412626/pexels-photo-28412626.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop', gradient: 'gold', visible: true },
+    { id: 'land-3', name: 'Gajwel Green Belt', location: 'Gajwel Mandal, Siddipet District', soil: 'Alluvial', acreage: '280 acres', water: 'Tank Irrigated', status: 'available', imageUrl: 'https://images.pexels.com/photos/6129964/pexels-photo-6129964.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop', gradient: 'forest', visible: true },
+    { id: 'land-4', name: 'Husnabad Fields', location: 'Husnabad Mandal, Siddipet District', soil: 'Black Cotton', acreage: '170 acres', water: 'Canal Fed', status: 'full', imageUrl: 'https://images.pexels.com/photos/3030265/pexels-photo-3030265.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop', gradient: 'earth', visible: true }
+  ];
+  (function renderLandCards() {
+    const grid = document.getElementById('land-grid');
+    if (!grid) return;
+    let lands = JSON.parse(localStorage.getItem('gt_lands') || 'null');
+    if (!lands) {
+      lands = DEFAULT_LANDS_IDX;
+      localStorage.setItem('gt_lands', JSON.stringify(lands));
+    }
+    const delays = ['', 'reveal-delay-1', 'reveal-delay-2', 'reveal-delay-3'];
+    const visible = lands.filter(l => l.visible !== false);
+    const statusLabel = { available: 'Available', limited: 'Limited', full: 'Fully Booked' };
+    const statusClass = { available: 'status-available', limited: 'status-limited', full: 'status-full' };
+    grid.innerHTML = visible.map((land, i) => `
+      <div class="land-card reveal ${delays[i % 4]}">
+        <div class="land-visual" style="background: linear-gradient(135deg, ${LAND_GRADIENTS_IDX[land.gradient] || LAND_GRADIENTS_IDX.green}), url('${land.imageUrl}'); background-size: cover; background-position: center;">
+          <div class="topo-pattern"></div>
+          <span class="location-pin">&#x1F4CD;</span>
+          <span class="land-status ${statusClass[land.status] || 'status-available'}">${statusLabel[land.status] || 'Available'}</span>
+        </div>
+        <div class="land-body">
+          <div class="land-name">${land.name}</div>
+          <div class="land-location">${land.location}</div>
+          <div class="land-specs">
+            <div class="land-spec"><label>Soil</label><span>${land.soil}</span></div>
+            <div class="land-spec"><label>Acreage</label><span>${land.acreage}</span></div>
+            <div class="land-spec"><label>Water</label><span>${land.water}</span></div>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  })();
 
 // Smooth scroll for nav links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {

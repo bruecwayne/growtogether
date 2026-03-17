@@ -143,13 +143,20 @@ a { text-decoration: none; color: inherit; }
 /* ========== LAYOUT ========== */
 .admin-layout {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 240px 1fr;
   min-height: 100vh;
 }
 
 /* ========== SIDEBAR ========== */
 .sidebar {
-  display: none;
+  display: flex;
+  flex-direction: column;
+  background: var(--forest-deep);
+  padding: 32px 20px 24px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
 }
 .sidebar-logo {
   display: flex;
@@ -234,10 +241,19 @@ a { text-decoration: none; color: inherit; }
 }
 .sidebar-footer a:hover { color: var(--cream); }
 .sidebar-footer a svg { width: 18px; height: 18px; }
+.sidebar-section-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(245,240,232,0.25);
+  padding: 0 16px;
+  margin-bottom: 4px;
+  margin-top: 8px;
+}
 
 /* ========== MAIN CONTENT ========== */
 .main-content {
-  grid-column: 1;
   background: var(--cream);
   min-height: 100vh;
   margin-left: 0;
@@ -961,6 +977,234 @@ a { text-decoration: none; color: inherit; }
 .pwd-message.error { color: var(--status-rejected); }
 .pwd-message.success { color: var(--status-approved); }
 
+/* ========== SETTINGS PANEL ========== */
+.settings-content {
+  padding: 28px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.settings-section {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+.settings-section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 24px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--cream-dark);
+}
+.settings-section-title svg { width: 15px; height: 15px; flex-shrink: 0; }
+.settings-section-title .section-title-action {
+  margin-left: auto;
+  background: var(--forest);
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  padding: 6px 14px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-transform: none;
+  letter-spacing: 0;
+  transition: background var(--transition);
+}
+.settings-section-title .section-title-action:hover { background: var(--moss); }
+.settings-section-body {
+  padding: 20px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.settings-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.settings-input {
+  flex: 1;
+  max-width: 420px;
+  border: 1.5px solid var(--cream-dark);
+  border-radius: 8px;
+  padding: 9px 14px;
+  font-size: 0.9rem;
+  color: var(--text-dark);
+  background: var(--cream);
+  outline: none;
+  font-family: inherit;
+  transition: border-color var(--transition);
+}
+.settings-input:focus { border-color: var(--moss); }
+.settings-save-btn {
+  background: var(--forest);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 22px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background var(--transition);
+  white-space: nowrap;
+}
+.settings-save-btn:hover { background: var(--moss); }
+.settings-hint {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+/* ========== LAND MANAGEMENT ========== */
+.land-admin-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.land-admin-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--cream-dark);
+  transition: background var(--transition);
+}
+.land-admin-item:last-child { border-bottom: none; }
+.land-admin-item:hover { background: var(--cream); }
+.land-admin-thumb {
+  width: 56px;
+  height: 40px;
+  border-radius: 6px;
+  background-size: cover;
+  background-position: center;
+  flex-shrink: 0;
+}
+.land-admin-info { flex: 1; min-width: 0; }
+.land-admin-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-dark);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.land-admin-location {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.land-admin-status {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 3px 10px;
+  border-radius: 100px;
+}
+.land-admin-status.status-available { background: rgba(74,158,110,0.12); color: var(--status-approved); }
+.land-admin-status.status-limited { background: rgba(232,168,62,0.12); color: var(--status-pending); }
+.land-admin-status.status-full { background: rgba(192,87,74,0.12); color: var(--status-rejected); }
+.land-admin-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.land-toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+.land-toggle-label input[type="checkbox"] { accent-color: var(--forest); width: 15px; height: 15px; }
+.land-action-btn {
+  background: none;
+  border: 1.5px solid var(--cream-dark);
+  border-radius: 7px;
+  padding: 5px 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all var(--transition);
+  color: var(--text-muted);
+}
+.land-action-btn:hover { border-color: var(--moss); color: var(--forest); }
+.land-action-btn.delete:hover { border-color: var(--status-rejected); color: var(--status-rejected); }
+
+/* ========== LAND FORM ========== */
+.land-form-wrap {
+  padding: 20px 24px;
+  border-top: 1px solid var(--cream-dark);
+  background: var(--cream-warm);
+}
+.land-form-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 16px;
+}
+.land-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.land-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.land-form-field label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+.land-form-field input,
+.land-form-field select {
+  border: 1.5px solid var(--cream-dark);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.88rem;
+  color: var(--text-dark);
+  background: var(--white);
+  font-family: inherit;
+  outline: none;
+  transition: border-color var(--transition);
+}
+.land-form-field input:focus,
+.land-form-field select:focus { border-color: var(--moss); }
+.land-form-field.full-width { grid-column: 1 / -1; }
+.land-form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+.land-form-cancel {
+  background: none;
+  border: 1.5px solid var(--cream-dark);
+  border-radius: 8px;
+  padding: 9px 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  color: var(--text-muted);
+  transition: all var(--transition);
+}
+.land-form-cancel:hover { border-color: var(--text-muted); color: var(--text-dark); }
+
 /* ========== RESPONSIVE ========== */
 @media (max-width: 1024px) {
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1023,6 +1267,7 @@ a { text-decoration: none; color: inherit; }
     <div class="sidebar-badge">Admin Panel</div>
 
     <nav class="sidebar-nav">
+      <div class="sidebar-section-label">Enquiries</div>
       <div class="sidebar-link active" data-filter="all">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
         All Enquiries
@@ -1051,6 +1296,13 @@ a { text-decoration: none; color: inherit; }
         Approved
         <span class="badge-count" id="count-approved">0</span>
       </div>
+
+      <div class="sidebar-divider"></div>
+
+      <div class="sidebar-link" data-panel="settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        Site Settings
+      </div>
     </nav>
 
     <div class="sidebar-footer">
@@ -1071,6 +1323,8 @@ a { text-decoration: none; color: inherit; }
 
   <!-- Main Content -->
   <main class="main-content">
+  <!-- ENQUIRIES PANEL -->
+  <div id="enquiries-panel">
     <div class="content-header">
       <h1>Enquiry <em>Dashboard</em></h1>
       <div class="header-actions">
@@ -1087,14 +1341,6 @@ a { text-decoration: none; color: inherit; }
         <button class="btn-export" onclick="exportCSV()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Export CSV
-        </button>
-        <button class="btn-export" onclick="openChangePassword(event)" style="background:var(--soil-light);">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-          Password
-        </button>
-        <button class="btn-export" onclick="handleLogout(event)" style="background:transparent;color:var(--text-muted);border:1.5px solid var(--cream-dark);">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16,17 21,12 16,7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-          Logout
         </button>
       </div>
     </div>
@@ -1143,45 +1389,6 @@ a { text-decoration: none; color: inherit; }
       </div>
     </div>
 
-    <!-- Site Settings -->
-    <div class="site-settings-bar">
-      <div class="site-settings-card">
-        <div class="site-settings-label">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg>
-          Hero Badge Text
-        </div>
-        <div class="site-settings-row">
-          <input type="text" id="hero-badge-input" class="site-settings-input" placeholder="Now accepting spring crops" maxlength="80">
-          <button class="site-settings-save" onclick="saveHeroBadge()">Save</button>
-        </div>
-        <div class="site-settings-hint">Shown on the homepage banner</div>
-      </div>
-    </div>
-
-    <!-- Product Visibility -->
-    <div class="site-settings-bar" style="padding-top:0;">
-      <div class="site-settings-card" style="flex-direction:column;align-items:flex-start;gap:14px;">
-        <div class="site-settings-label">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-          Browse Products Visibility
-        </div>
-        <div class="products-toggle-grid">
-          <label class="product-toggle"><input type="checkbox" data-product-id="tomatoes" checked> Hybrid Tomatoes</label>
-          <label class="product-toggle"><input type="checkbox" data-product-id="turmeric" checked> Turmeric</label>
-          <label class="product-toggle"><input type="checkbox" data-product-id="chillies" checked> Red Chillies</label>
-          <label class="product-toggle"><input type="checkbox" data-product-id="greens" checked> Leafy Greens</label>
-          <label class="product-toggle"><input type="checkbox" data-product-id="paddy" checked> Paddy (Rice)</label>
-          <label class="product-toggle"><input type="checkbox" data-product-id="vegetables" checked> Vegetables</label>
-          <label class="product-toggle"><input type="checkbox" data-product-id="sunflower" checked> Sunflower</label>
-          <label class="product-toggle"><input type="checkbox" data-product-id="maize" checked> Maize (Corn)</label>
-        </div>
-        <div style="display:flex;align-items:center;gap:12px;">
-          <button class="site-settings-save" onclick="saveProductVisibility()">Save Changes</button>
-          <span class="site-settings-hint">Unchecked products are hidden on the homepage</span>
-        </div>
-      </div>
-    </div>
-
     <!-- Filters -->
     <div class="filters-bar">
       <div class="search-box">
@@ -1221,6 +1428,125 @@ a { text-decoration: none; color: inherit; }
         <p>When customers submit growing orders or landowners submit lease enquiries, they'll appear here.</p>
       </div>
     </div>
+  </div>
+
+  <!-- SETTINGS PANEL -->
+  <div id="settings-panel" style="display:none;">
+    <div class="content-header">
+      <h1>Site <em>Settings</em></h1>
+      <div class="header-actions">
+        <div class="theme-toggle">
+          <button class="theme-btn" data-theme="light" title="Light"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></button>
+          <button class="theme-btn" data-theme="dark" title="Dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></button>
+          <button class="theme-btn" data-theme="auto" title="Auto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></button>
+        </div>
+      </div>
+    </div>
+    <div class="settings-content">
+
+      <!-- Hero Badge -->
+      <div class="settings-section">
+        <div class="settings-section-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg>
+          Hero Badge Text
+        </div>
+        <div class="settings-section-body">
+          <div class="settings-row">
+            <input type="text" id="hero-badge-input" class="settings-input" placeholder="Now accepting spring crops" maxlength="80">
+            <button class="settings-save-btn" onclick="saveHeroBadge()">Save</button>
+          </div>
+          <div class="settings-hint">Shown on the homepage banner</div>
+        </div>
+      </div>
+
+      <!-- Products Visibility -->
+      <div class="settings-section">
+        <div class="settings-section-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          Browse Products Visibility
+        </div>
+        <div class="settings-section-body">
+          <div class="products-toggle-grid">
+            <label class="product-toggle"><input type="checkbox" data-product-id="tomatoes" checked> Hybrid Tomatoes</label>
+            <label class="product-toggle"><input type="checkbox" data-product-id="turmeric" checked> Turmeric</label>
+            <label class="product-toggle"><input type="checkbox" data-product-id="chillies" checked> Red Chillies</label>
+            <label class="product-toggle"><input type="checkbox" data-product-id="greens" checked> Leafy Greens</label>
+            <label class="product-toggle"><input type="checkbox" data-product-id="paddy" checked> Paddy (Rice)</label>
+            <label class="product-toggle"><input type="checkbox" data-product-id="vegetables" checked> Vegetables</label>
+            <label class="product-toggle"><input type="checkbox" data-product-id="sunflower" checked> Sunflower</label>
+            <label class="product-toggle"><input type="checkbox" data-product-id="maize" checked> Maize (Corn)</label>
+          </div>
+          <div>
+            <button class="settings-save-btn" onclick="saveProductVisibility()">Save Changes</button>
+          </div>
+          <div class="settings-hint">Unchecked products are hidden on the homepage</div>
+        </div>
+      </div>
+
+      <!-- Land Management -->
+      <div class="settings-section">
+        <div class="settings-section-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+          Our Land
+          <button class="section-title-action" onclick="openLandForm()">+ Add Land</button>
+        </div>
+        <div id="land-admin-list" class="land-admin-list"></div>
+        <div id="land-form-wrap" class="land-form-wrap" style="display:none;">
+          <div class="land-form-title" id="land-form-title">Add New Land</div>
+          <input type="hidden" id="land-edit-id">
+          <div class="land-form-grid">
+            <div class="land-form-field">
+              <label>Name</label>
+              <input type="text" id="lf-name" placeholder="e.g. Siddipet Central Farm">
+            </div>
+            <div class="land-form-field">
+              <label>Location</label>
+              <input type="text" id="lf-location" placeholder="e.g. Siddipet Mandal, Telangana">
+            </div>
+            <div class="land-form-field">
+              <label>Soil Type</label>
+              <input type="text" id="lf-soil" placeholder="e.g. Black Cotton">
+            </div>
+            <div class="land-form-field">
+              <label>Acreage</label>
+              <input type="text" id="lf-acreage" placeholder="e.g. 220 acres">
+            </div>
+            <div class="land-form-field">
+              <label>Water Source</label>
+              <input type="text" id="lf-water" placeholder="e.g. Canal (KLIP)">
+            </div>
+            <div class="land-form-field">
+              <label>Status</label>
+              <select id="lf-status">
+                <option value="available">Available</option>
+                <option value="limited">Limited</option>
+                <option value="full">Fully Booked</option>
+              </select>
+            </div>
+            <div class="land-form-field">
+              <label>Color Theme</label>
+              <select id="lf-gradient">
+                <option value="green">Green</option>
+                <option value="gold">Gold / Terracotta</option>
+                <option value="forest">Deep Forest</option>
+                <option value="earth">Earthy Brown</option>
+                <option value="blue">Blue</option>
+              </select>
+            </div>
+            <div class="land-form-field full-width">
+              <label>Image URL</label>
+              <input type="text" id="lf-image" placeholder="https://images.pexels.com/...">
+            </div>
+          </div>
+          <div class="land-form-actions">
+            <button class="settings-save-btn" onclick="saveLandForm()">Save Land</button>
+            <button class="land-form-cancel" onclick="closeLandForm()">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
   </main>
 </div>
 
@@ -1545,10 +1871,22 @@ document.querySelectorAll('.sidebar-link[data-filter]').forEach(link => {
   link.addEventListener('click', () => {
     document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
     link.classList.add('active');
+    showPanel('enquiries');
     currentFilter = link.dataset.filter;
     render();
   });
 });
+
+document.querySelector('.sidebar-link[data-panel="settings"]').addEventListener('click', function() {
+  document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+  this.classList.add('active');
+  showPanel('settings');
+});
+
+function showPanel(name) {
+  document.getElementById('enquiries-panel').style.display = name === 'enquiries' ? '' : 'none';
+  document.getElementById('settings-panel').style.display = name === 'settings' ? '' : 'none';
+}
 
 // ========== FILTER BUTTONS ==========
 document.querySelectorAll('.filter-btn[data-status]').forEach(btn => {
@@ -1793,6 +2131,145 @@ function saveProductVisibility() {
   setTimeout(() => { btn.textContent = 'Save Changes'; btn.style.background = ''; }, 2000);
 }
 
+// ========== LAND MANAGEMENT ==========
+const LAND_GRADIENTS = {
+  green: 'rgba(122,158,126,0.4), rgba(61,107,79,0.5)',
+  gold: 'rgba(212,168,75,0.4), rgba(194,112,62,0.5)',
+  forest: 'rgba(92,138,77,0.4), rgba(45,90,30,0.5)',
+  earth: 'rgba(139,115,85,0.4), rgba(92,64,51,0.5)',
+  blue: 'rgba(91,143,212,0.4), rgba(44,86,151,0.5)'
+};
+
+const DEFAULT_LANDS = [
+  { id: 'land-1', name: 'Siddipet Central Farm', location: 'Siddipet Mandal, Telangana', soil: 'Black Cotton', acreage: '220 acres', water: 'Canal (KLIP)', status: 'available', imageUrl: 'https://images.pexels.com/photos/440731/pexels-photo-440731.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop', gradient: 'green', visible: true },
+  { id: 'land-2', name: 'Dubbak Highlands', location: 'Dubbak Mandal, Siddipet District', soil: 'Red Loamy', acreage: '180 acres', water: 'Borewell', status: 'limited', imageUrl: 'https://images.pexels.com/photos/28412626/pexels-photo-28412626.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop', gradient: 'gold', visible: true },
+  { id: 'land-3', name: 'Gajwel Green Belt', location: 'Gajwel Mandal, Siddipet District', soil: 'Alluvial', acreage: '280 acres', water: 'Tank Irrigated', status: 'available', imageUrl: 'https://images.pexels.com/photos/6129964/pexels-photo-6129964.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop', gradient: 'forest', visible: true },
+  { id: 'land-4', name: 'Husnabad Fields', location: 'Husnabad Mandal, Siddipet District', soil: 'Black Cotton', acreage: '170 acres', water: 'Canal Fed', status: 'full', imageUrl: 'https://images.pexels.com/photos/3030265/pexels-photo-3030265.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop', gradient: 'earth', visible: true }
+];
+
+function getLands() {
+  const saved = localStorage.getItem('gt_lands');
+  if (!saved) {
+    localStorage.setItem('gt_lands', JSON.stringify(DEFAULT_LANDS));
+    return DEFAULT_LANDS;
+  }
+  return JSON.parse(saved);
+}
+
+function saveLands(lands) {
+  localStorage.setItem('gt_lands', JSON.stringify(lands));
+}
+
+function renderLandAdmin() {
+  const lands = getLands();
+  const list = document.getElementById('land-admin-list');
+  if (!lands.length) {
+    list.innerHTML = '<div style="padding:20px 24px;color:var(--text-muted);font-size:0.88rem;">No lands added yet.</div>';
+    return;
+  }
+  const statusLabel = { available: 'Available', limited: 'Limited', full: 'Fully Booked' };
+  list.innerHTML = lands.map(land => `
+    <div class="land-admin-item">
+      <div class="land-admin-thumb" style="background: linear-gradient(135deg, ${LAND_GRADIENTS[land.gradient] || LAND_GRADIENTS.green}), url('${land.imageUrl}'); background-size: cover; background-position: center;"></div>
+      <div class="land-admin-info">
+        <div class="land-admin-name">${land.name}</div>
+        <div class="land-admin-location">${land.location}</div>
+      </div>
+      <span class="land-admin-status status-${land.status}">${statusLabel[land.status] || land.status}</span>
+      <div class="land-admin-actions">
+        <label class="land-toggle-label">
+          <input type="checkbox" ${land.visible !== false ? 'checked' : ''} onchange="toggleLandVisible('${land.id}', this.checked)">
+          Show
+        </label>
+        <button class="land-action-btn" onclick="openLandForm('${land.id}')">Edit</button>
+        <button class="land-action-btn delete" onclick="deleteLand('${land.id}')">Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function toggleLandVisible(id, visible) {
+  const lands = getLands();
+  const land = lands.find(l => l.id === id);
+  if (land) { land.visible = visible; saveLands(lands); }
+}
+
+function deleteLand(id) {
+  if (!confirm('Delete this land entry?')) return;
+  const lands = getLands().filter(l => l.id !== id);
+  saveLands(lands);
+  renderLandAdmin();
+}
+
+function openLandForm(id) {
+  const wrap = document.getElementById('land-form-wrap');
+  wrap.style.display = '';
+  if (id) {
+    const land = getLands().find(l => l.id === id);
+    if (!land) return;
+    document.getElementById('land-form-title').textContent = 'Edit Land';
+    document.getElementById('land-edit-id').value = id;
+    document.getElementById('lf-name').value = land.name;
+    document.getElementById('lf-location').value = land.location;
+    document.getElementById('lf-soil').value = land.soil;
+    document.getElementById('lf-acreage').value = land.acreage;
+    document.getElementById('lf-water').value = land.water;
+    document.getElementById('lf-status').value = land.status;
+    document.getElementById('lf-gradient').value = land.gradient || 'green';
+    document.getElementById('lf-image').value = land.imageUrl;
+  } else {
+    document.getElementById('land-form-title').textContent = 'Add New Land';
+    document.getElementById('land-edit-id').value = '';
+    document.getElementById('lf-name').value = '';
+    document.getElementById('lf-location').value = '';
+    document.getElementById('lf-soil').value = '';
+    document.getElementById('lf-acreage').value = '';
+    document.getElementById('lf-water').value = '';
+    document.getElementById('lf-status').value = 'available';
+    document.getElementById('lf-gradient').value = 'green';
+    document.getElementById('lf-image').value = '';
+  }
+  wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function closeLandForm() {
+  document.getElementById('land-form-wrap').style.display = 'none';
+}
+
+function saveLandForm() {
+  const name = document.getElementById('lf-name').value.trim();
+  const location = document.getElementById('lf-location').value.trim();
+  if (!name || !location) { alert('Name and Location are required.'); return; }
+  const lands = getLands();
+  const editId = document.getElementById('land-edit-id').value;
+  const entry = {
+    id: editId || ('land-' + Date.now()),
+    name,
+    location,
+    soil: document.getElementById('lf-soil').value.trim() || 'Unknown',
+    acreage: document.getElementById('lf-acreage').value.trim() || '--',
+    water: document.getElementById('lf-water').value.trim() || '--',
+    status: document.getElementById('lf-status').value,
+    gradient: document.getElementById('lf-gradient').value,
+    imageUrl: document.getElementById('lf-image').value.trim() || 'https://images.pexels.com/photos/440731/pexels-photo-440731.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop',
+    visible: true
+  };
+  if (editId) {
+    const idx = lands.findIndex(l => l.id === editId);
+    if (idx !== -1) { lands[idx] = { ...lands[idx], ...entry }; }
+  } else {
+    lands.push(entry);
+  }
+  saveLands(lands);
+  renderLandAdmin();
+  closeLandForm();
+}
+
+function initLands() {
+  getLands(); // seeds defaults if empty
+  renderLandAdmin();
+}
+
 function loadHeroBadge() {
   const saved = localStorage.getItem('gt_hero_badge');
   const input = document.getElementById('hero-badge-input');
@@ -1804,19 +2281,17 @@ function saveHeroBadge() {
   const text = input.value.trim();
   if (!text) return;
   localStorage.setItem('gt_hero_badge', text);
-  const btn = document.querySelector('.site-settings-save');
+  const btn = document.querySelector('[onclick="saveHeroBadge()"]');
   btn.textContent = 'Saved!';
   btn.style.background = 'var(--status-approved)';
-  setTimeout(() => {
-    btn.textContent = 'Save';
-    btn.style.background = '';
-  }, 2000);
+  setTimeout(() => { btn.textContent = 'Save'; btn.style.background = ''; }, 2000);
 }
 
 // ========== INIT ==========
 checkAuth();
 loadHeroBadge();
 loadProductVisibility();
+initLands();
 </script>
 
 </body>
