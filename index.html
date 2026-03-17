@@ -2052,31 +2052,31 @@ a { text-decoration: none; color: inherit; }
       <div class="lease-form-card reveal reveal-delay-1">
         <h3>Submit Your Land Details</h3>
         <p class="form-subtitle">Our team will visit and assess your land within 7 working days.</p>
-        <form class="lease-form" onsubmit="event.preventDefault(); this.querySelector('.lease-submit').textContent='Inquiry Submitted ✓'; this.querySelector('.lease-submit').style.background='var(--moss)'; this.querySelector('.lease-submit').style.color='var(--cream)';">
+        <form class="lease-form" id="lease-form" onsubmit="event.preventDefault(); submitLeaseForm(this);">
           <div class="lease-form-row">
             <div class="lease-field">
               <label>Full Name</label>
-              <input type="text" placeholder="e.g. Ramesh Reddy" required>
+              <input type="text" name="name" placeholder="e.g. Ramesh Reddy" required>
             </div>
             <div class="lease-field">
               <label>Phone Number</label>
-              <input type="tel" placeholder="e.g. 9876543210" required>
+              <input type="tel" name="phone" placeholder="e.g. 9876543210" required>
             </div>
           </div>
           <div class="lease-form-row">
             <div class="lease-field">
               <label>Village / Mandal</label>
-              <input type="text" placeholder="e.g. Dubbak, Siddipet" required>
+              <input type="text" name="village" placeholder="e.g. Dubbak, Siddipet" required>
             </div>
             <div class="lease-field">
               <label>Total Acreage</label>
-              <input type="number" placeholder="e.g. 15" min="1" required>
+              <input type="number" name="acreage" placeholder="e.g. 15" min="1" required>
             </div>
           </div>
           <div class="lease-form-row">
             <div class="lease-field">
               <label>Soil Type</label>
-              <select required>
+              <select name="soilType" required>
                 <option value="" disabled selected>Select soil type</option>
                 <option>Black Cotton</option>
                 <option>Red Loamy</option>
@@ -2087,7 +2087,7 @@ a { text-decoration: none; color: inherit; }
             </div>
             <div class="lease-field">
               <label>Irrigation Source</label>
-              <select required>
+              <select name="irrigationSource" required>
                 <option value="" disabled selected>Select source</option>
                 <option>Canal (KLIP)</option>
                 <option>Borewell</option>
@@ -2099,7 +2099,7 @@ a { text-decoration: none; color: inherit; }
           </div>
           <div class="lease-field">
             <label>Additional Details</label>
-            <textarea placeholder="Any details about your land — current usage, road access, nearby landmarks, etc."></textarea>
+            <textarea name="details" placeholder="Any details about your land — current usage, road access, nearby landmarks, etc."></textarea>
           </div>
           <button type="submit" class="lease-submit">Submit Inquiry →</button>
         </form>
@@ -2418,6 +2418,28 @@ tabs.forEach(tab => {
     `).join('');
   });
 });
+
+// Lease form submission — save to localStorage
+function submitLeaseForm(form) {
+  const data = JSON.parse(localStorage.getItem('gt_enquiries') || '[]');
+  data.push({
+    id: Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
+    type: 'lease',
+    timestamp: new Date().toISOString(),
+    status: 'pending',
+    name: form.querySelector('[name="name"]').value,
+    phone: form.querySelector('[name="phone"]').value,
+    village: form.querySelector('[name="village"]').value,
+    acreage: form.querySelector('[name="acreage"]').value,
+    soilType: form.querySelector('[name="soilType"]').value,
+    irrigationSource: form.querySelector('[name="irrigationSource"]').value,
+    details: form.querySelector('[name="details"]').value
+  });
+  localStorage.setItem('gt_enquiries', JSON.stringify(data));
+  form.querySelector('.lease-submit').textContent = 'Inquiry Submitted \u2713';
+  form.querySelector('.lease-submit').style.background = 'var(--moss)';
+  form.querySelector('.lease-submit').style.color = 'var(--cream)';
+}
 
 // Product CTA buttons — redirect to grow.html with crop name
 document.querySelectorAll('.product-cta').forEach(btn => {

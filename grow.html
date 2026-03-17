@@ -618,16 +618,16 @@ a { text-decoration: none; color: inherit; }
           <div class="form-row">
             <div class="form-field">
               <label>Full Name <span class="required">*</span></label>
-              <input type="text" placeholder="e.g. Rajesh Kumar" required>
+              <input type="text" name="name" placeholder="e.g. Rajesh Kumar" required>
             </div>
             <div class="form-field">
               <label>Phone Number <span class="required">*</span></label>
-              <input type="tel" placeholder="e.g. 9876543210" required>
+              <input type="tel" name="phone" placeholder="e.g. 9876543210" required>
             </div>
           </div>
           <div class="form-field">
             <label>Email Address</label>
-            <input type="email" placeholder="e.g. rajesh@example.com">
+            <input type="email" name="email" placeholder="e.g. rajesh@example.com">
           </div>
 
           <div class="form-divider"></div>
@@ -635,7 +635,7 @@ a { text-decoration: none; color: inherit; }
           <div class="form-row">
             <div class="form-field">
               <label>Preferred Land <span class="required">*</span></label>
-              <select required>
+              <select name="preferredLand" required>
                 <option value="" disabled selected>Select location</option>
                 <option>Siddipet Central Farm — 220 acres</option>
                 <option>Dubbak Highlands — 180 acres</option>
@@ -645,17 +645,17 @@ a { text-decoration: none; color: inherit; }
             </div>
             <div class="form-field">
               <label>Number of Acres <span class="required">*</span></label>
-              <input type="number" placeholder="e.g. 5" min="1" max="50" required id="acres-input">
+              <input type="number" name="acres" placeholder="e.g. 5" min="1" max="50" required id="acres-input">
             </div>
           </div>
           <div class="form-row">
             <div class="form-field">
               <label>Preferred Variety</label>
-              <input type="text" placeholder="e.g. Arka Rakshak" id="variety-input">
+              <input type="text" name="preferredVariety" placeholder="e.g. Arka Rakshak" id="variety-input">
             </div>
             <div class="form-field">
               <label>Preferred Season</label>
-              <select>
+              <select name="preferredSeason">
                 <option value="" disabled selected>Select season</option>
                 <option>Kharif (June–Oct)</option>
                 <option>Rabi (Nov–Mar)</option>
@@ -665,7 +665,7 @@ a { text-decoration: none; color: inherit; }
           </div>
           <div class="form-field">
             <label>Additional Notes</label>
-            <textarea placeholder="Any specific requirements — organic preferences, delivery needs, etc."></textarea>
+            <textarea name="notes" placeholder="Any specific requirements — organic preferences, delivery needs, etc."></textarea>
           </div>
 
           <div class="form-pricing" id="pricing-display">
@@ -808,9 +808,29 @@ function updatePrice() {
 }
 acresInput.addEventListener('input', updatePrice);
 
-// Form submission
+// Form submission — save to localStorage
 document.getElementById('grow-form').addEventListener('submit', function(e) {
   e.preventDefault();
+  const form = this;
+  const acres = parseInt(form.querySelector('[name="acres"]').value) || 0;
+  const data = JSON.parse(localStorage.getItem('gt_enquiries') || '[]');
+  data.push({
+    id: Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
+    type: 'grow',
+    timestamp: new Date().toISOString(),
+    status: 'pending',
+    name: form.querySelector('[name="name"]').value,
+    phone: form.querySelector('[name="phone"]').value,
+    email: form.querySelector('[name="email"]').value,
+    crop: cropName,
+    acres: acres,
+    preferredLand: form.querySelector('[name="preferredLand"]').value,
+    preferredVariety: form.querySelector('[name="preferredVariety"]').value,
+    preferredSeason: form.querySelector('[name="preferredSeason"]').value,
+    estimatedInvestment: acres * (cropData.price || 0),
+    notes: form.querySelector('[name="notes"]').value
+  });
+  localStorage.setItem('gt_enquiries', JSON.stringify(data));
   document.getElementById('success-overlay').classList.add('active');
 });
 
