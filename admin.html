@@ -424,26 +424,70 @@ a { text-decoration: none; color: inherit; }
   white-space: nowrap;
 }
 
-.products-toggle-grid {
+.product-edit-list {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px 24px;
+  flex-direction: column;
 }
+.product-edit-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--cream-dark);
+  flex-wrap: wrap;
+}
+.product-edit-row:last-child { border-bottom: none; }
 .product-toggle {
   display: flex;
   align-items: center;
   gap: 7px;
   font-size: 0.88rem;
+  font-weight: 600;
   color: var(--text-dark);
   cursor: pointer;
   user-select: none;
+  min-width: 140px;
+  flex-shrink: 0;
 }
 .product-toggle input[type="checkbox"] {
   accent-color: var(--forest);
   width: 15px;
   height: 15px;
   cursor: pointer;
+  flex-shrink: 0;
 }
+.product-edit-fields {
+  display: flex;
+  gap: 10px;
+  flex: 1;
+  flex-wrap: wrap;
+}
+.product-edit-field {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 110px;
+  flex: 1;
+}
+.product-edit-field label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+.product-edit-field input {
+  border: 1.5px solid var(--cream-dark);
+  border-radius: 7px;
+  padding: 6px 10px;
+  font-size: 0.82rem;
+  color: var(--text-dark);
+  background: var(--cream);
+  font-family: inherit;
+  outline: none;
+  transition: border-color var(--transition);
+}
+.product-edit-field input:focus { border-color: var(--moss); }
 
 /* ========== FILTERS & SEARCH ========== */
 .filters-bar {
@@ -1466,20 +1510,76 @@ a { text-decoration: none; color: inherit; }
           Browse Products Visibility
         </div>
         <div class="settings-section-body">
-          <div class="products-toggle-grid">
-            <label class="product-toggle"><input type="checkbox" data-product-id="tomatoes" checked> Hybrid Tomatoes</label>
-            <label class="product-toggle"><input type="checkbox" data-product-id="turmeric" checked> Turmeric</label>
-            <label class="product-toggle"><input type="checkbox" data-product-id="chillies" checked> Red Chillies</label>
-            <label class="product-toggle"><input type="checkbox" data-product-id="greens" checked> Leafy Greens</label>
-            <label class="product-toggle"><input type="checkbox" data-product-id="paddy" checked> Paddy (Rice)</label>
-            <label class="product-toggle"><input type="checkbox" data-product-id="vegetables" checked> Vegetables</label>
-            <label class="product-toggle"><input type="checkbox" data-product-id="sunflower" checked> Sunflower</label>
-            <label class="product-toggle"><input type="checkbox" data-product-id="maize" checked> Maize (Corn)</label>
+          <div class="product-edit-list">
+            <div class="product-edit-row">
+              <label class="product-toggle"><input type="checkbox" data-product-id="tomatoes" checked> Hybrid Tomatoes</label>
+              <div class="product-edit-fields">
+                <div class="product-edit-field"><label>Grow Time</label><input type="text" data-detail="tomatoes-growTime" placeholder="14 weeks"></div>
+                <div class="product-edit-field"><label>Per Acre</label><input type="text" data-detail="tomatoes-perAcre" placeholder="₹72,000"></div>
+                <div class="product-edit-field"><label>Yield</label><input type="text" data-detail="tomatoes-yield" placeholder="~20 tons"></div>
+              </div>
+            </div>
+            <div class="product-edit-row">
+              <label class="product-toggle"><input type="checkbox" data-product-id="turmeric" checked> Turmeric</label>
+              <div class="product-edit-fields">
+                <div class="product-edit-field"><label>Grow Time</label><input type="text" data-detail="turmeric-growTime" placeholder="32 weeks"></div>
+                <div class="product-edit-field"><label>Per Acre</label><input type="text" data-detail="turmeric-perAcre" placeholder="₹55,000"></div>
+                <div class="product-edit-field"><label>Yield</label><input type="text" data-detail="turmeric-yield" placeholder="~8 tons"></div>
+              </div>
+            </div>
+            <div class="product-edit-row">
+              <label class="product-toggle"><input type="checkbox" data-product-id="chillies" checked> Red Chillies</label>
+              <div class="product-edit-fields">
+                <div class="product-edit-field"><label>Grow Time</label><input type="text" data-detail="chillies-growTime" placeholder="20 weeks"></div>
+                <div class="product-edit-field"><label>Per Acre</label><input type="text" data-detail="chillies-perAcre" placeholder="₹62,000"></div>
+                <div class="product-edit-field"><label>Yield</label><input type="text" data-detail="chillies-yield" placeholder="~1 ton dry"></div>
+              </div>
+            </div>
+            <div class="product-edit-row">
+              <label class="product-toggle"><input type="checkbox" data-product-id="greens" checked> Leafy Greens</label>
+              <div class="product-edit-fields">
+                <div class="product-edit-field"><label>Grow Time</label><input type="text" data-detail="greens-growTime" placeholder="6 weeks"></div>
+                <div class="product-edit-field"><label>Per Acre</label><input type="text" data-detail="greens-perAcre" placeholder="₹28,000"></div>
+                <div class="product-edit-field"><label>Yield</label><input type="text" data-detail="greens-yield" placeholder="~6 tons"></div>
+              </div>
+            </div>
+            <div class="product-edit-row">
+              <label class="product-toggle"><input type="checkbox" data-product-id="paddy" checked> Paddy (Rice)</label>
+              <div class="product-edit-fields">
+                <div class="product-edit-field"><label>Grow Time</label><input type="text" data-detail="paddy-growTime" placeholder="18 weeks"></div>
+                <div class="product-edit-field"><label>Per Acre</label><input type="text" data-detail="paddy-perAcre" placeholder="₹45,000"></div>
+                <div class="product-edit-field"><label>Yield</label><input type="text" data-detail="paddy-yield" placeholder="~2.5 tons"></div>
+              </div>
+            </div>
+            <div class="product-edit-row">
+              <label class="product-toggle"><input type="checkbox" data-product-id="vegetables" checked> Vegetables</label>
+              <div class="product-edit-fields">
+                <div class="product-edit-field"><label>Grow Time</label><input type="text" data-detail="vegetables-growTime" placeholder="12 weeks"></div>
+                <div class="product-edit-field"><label>Per Acre</label><input type="text" data-detail="vegetables-perAcre" placeholder="₹35,000"></div>
+                <div class="product-edit-field"><label>Yield</label><input type="text" data-detail="vegetables-yield" placeholder="~8 tons"></div>
+              </div>
+            </div>
+            <div class="product-edit-row">
+              <label class="product-toggle"><input type="checkbox" data-product-id="sunflower" checked> Sunflower</label>
+              <div class="product-edit-fields">
+                <div class="product-edit-field"><label>Grow Time</label><input type="text" data-detail="sunflower-growTime" placeholder="13 weeks"></div>
+                <div class="product-edit-field"><label>Per Acre</label><input type="text" data-detail="sunflower-perAcre" placeholder="₹22,000"></div>
+                <div class="product-edit-field"><label>Yield</label><input type="text" data-detail="sunflower-yield" placeholder="~0.7 tons"></div>
+              </div>
+            </div>
+            <div class="product-edit-row">
+              <label class="product-toggle"><input type="checkbox" data-product-id="maize" checked> Maize (Corn)</label>
+              <div class="product-edit-fields">
+                <div class="product-edit-field"><label>Grow Time</label><input type="text" data-detail="maize-growTime" placeholder="14 weeks"></div>
+                <div class="product-edit-field"><label>Per Acre</label><input type="text" data-detail="maize-perAcre" placeholder="₹30,000"></div>
+                <div class="product-edit-field"><label>Yield</label><input type="text" data-detail="maize-yield" placeholder="~3 tons"></div>
+              </div>
+            </div>
           </div>
           <div>
             <button class="settings-save-btn" onclick="saveProductVisibility()">Save Changes</button>
           </div>
-          <div class="settings-hint">Unchecked products are hidden on the homepage</div>
+          <div class="settings-hint">Uncheck to hide a product · Edit fields to update homepage details</div>
         </div>
       </div>
 
@@ -2117,6 +2217,11 @@ function loadProductVisibility() {
   document.querySelectorAll('.product-toggle input[data-product-id]').forEach(cb => {
     cb.checked = !hidden.includes(cb.dataset.productId);
   });
+  const details = JSON.parse(localStorage.getItem('gt_product_details') || '{}');
+  document.querySelectorAll('[data-detail]').forEach(input => {
+    const key = input.dataset.detail;
+    if (details[key]) input.value = details[key];
+  });
 }
 
 function saveProductVisibility() {
@@ -2125,6 +2230,11 @@ function saveProductVisibility() {
     if (!cb.checked) hidden.push(cb.dataset.productId);
   });
   localStorage.setItem('gt_hidden_products', JSON.stringify(hidden));
+  const details = {};
+  document.querySelectorAll('[data-detail]').forEach(input => {
+    if (input.value.trim()) details[input.dataset.detail] = input.value.trim();
+  });
+  localStorage.setItem('gt_product_details', JSON.stringify(details));
   const btn = document.querySelector('[onclick="saveProductVisibility()"]');
   btn.textContent = 'Saved!';
   btn.style.background = 'var(--status-approved)';
