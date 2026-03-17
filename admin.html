@@ -926,6 +926,10 @@ a { text-decoration: none; color: inherit; }
       <h1>Enquiry <em>Dashboard</em></h1>
       <div class="header-actions">
         <span class="header-date" id="current-date"></span>
+        <button class="btn-export" onclick="exportPDF()" style="background:var(--terracotta);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          Export PDF
+        </button>
         <button class="btn-export" onclick="exportCSV()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Export CSV
@@ -1071,6 +1075,10 @@ a { text-decoration: none; color: inherit; }
     </div>
   </div>
 </div>
+
+<!-- PDF Export -->
+<script src="https://unpkg.com/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>
+<script src="https://unpkg.com/jspdf-autotable@3.8.4/dist/jspdf.plugin.autotable.min.js"></script>
 
 <!-- Parse SDK / Back4App -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/parse/4.3.0/parse.min.js"></script>
@@ -1459,6 +1467,106 @@ function exportCSV() {
   a.download = 'growtogether-enquiries-' + new Date().toISOString().split('T')[0] + '.csv';
   a.click();
   URL.revokeObjectURL(url);
+}
+
+// ========== EXPORT PDF ==========
+function exportPDF() {
+  const data = cachedEnquiries;
+  if (!data.length) { alert('No data to export.'); return; }
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF('landscape', 'mm', 'a4');
+
+  // Header
+  doc.setFillColor(26, 58, 42);
+  doc.rect(0, 0, 297, 28, 'F');
+  doc.setTextColor(245, 240, 232);
+  doc.setFontSize(18);
+  doc.text('GrowTogether', 14, 14);
+  doc.setFontSize(10);
+  doc.text('Enquiry Report', 14, 21);
+  doc.setFontSize(9);
+  doc.text('Generated: ' + new Date().toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }), 297 - 14, 14, { align: 'right' });
+
+  // Summary stats
+  const total = data.length;
+  const pending = data.filter(e => e.status === 'pending').length;
+  const growing = data.filter(e => e.type === 'grow').length;
+  const lease = data.filter(e => e.type === 'lease').length;
+
+  doc.setTextColor(26, 58, 42);
+  doc.setFontSize(9);
+  doc.setFont(undefined, 'bold');
+  const statsY = 36;
+  doc.text('Total: ' + total, 14, statsY);
+  doc.text('Pending: ' + pending, 60, statsY);
+  doc.text('Growing Orders: ' + growing, 110, statsY);
+  doc.text('Lease Enquiries: ' + lease, 170, statsY);
+  doc.setFont(undefined, 'normal');
+
+  // Table
+  const headers = [['#', 'Name', 'Phone', 'Type', 'Crop / Land', 'Acres', 'Amount', 'Status', 'Date']];
+  const rows = data
+    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+    .map((e, i) => [
+      i + 1,
+      e.name || '--',
+      e.phone || '--',
+      e.type === 'grow' ? 'Growing' : 'Lease',
+      e.type === 'grow' ? (e.crop || '--') : (e.village || '--'),
+      e.acres || e.acreage || '--',
+      e.type === 'grow' && e.estimatedInvestment ? '\u20b9' + Number(e.estimatedInvestment).toLocaleString('en-IN') : '--',
+      (e.status || 'pending').charAt(0).toUpperCase() + (e.status || 'pending').slice(1),
+      new Date(e.timestamp).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+    ]);
+
+  doc.autoTable({
+    head: headers,
+    body: rows,
+    startY: 42,
+    theme: 'grid',
+    headStyles: {
+      fillColor: [26, 58, 42],
+      textColor: [245, 240, 232],
+      fontSize: 8,
+      fontStyle: 'bold',
+      halign: 'left'
+    },
+    bodyStyles: {
+      fontSize: 8,
+      textColor: [61, 59, 54],
+      cellPadding: 3
+    },
+    alternateRowStyles: {
+      fillColor: [250, 246, 238]
+    },
+    columnStyles: {
+      0: { halign: 'center', cellWidth: 10 },
+      6: { halign: 'right' },
+      7: { fontStyle: 'bold' }
+    },
+    didParseCell: function(data) {
+      if (data.section === 'body' && data.column.index === 7) {
+        const status = data.cell.raw.toLowerCase();
+        if (status === 'pending') data.cell.styles.textColor = [232, 168, 62];
+        else if (status === 'approved') data.cell.styles.textColor = [74, 158, 110];
+        else if (status === 'reviewed') data.cell.styles.textColor = [91, 143, 212];
+        else if (status === 'rejected') data.cell.styles.textColor = [192, 87, 74];
+      }
+    },
+    margin: { left: 14, right: 14 }
+  });
+
+  // Footer
+  const pageCount = doc.internal.getNumberOfPages();
+  for (let i = 1; i <= pageCount; i++) {
+    doc.setPage(i);
+    doc.setFontSize(7);
+    doc.setTextColor(122, 119, 110);
+    doc.text('GrowTogether Admin \u2022 Page ' + i + ' of ' + pageCount, 297 / 2, 205, { align: 'center' });
+  }
+
+  doc.save('growtogether-enquiries-' + new Date().toISOString().split('T')[0] + '.pdf');
 }
 
 // ========== INIT ==========
