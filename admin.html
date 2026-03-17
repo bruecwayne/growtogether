@@ -41,6 +41,76 @@
   --status-rejected: #c0574a;
 }
 
+/* ========== DARK THEME ========== */
+[data-theme="dark"] {
+  --forest-deep: #1a1c1e;
+  --cream: #1a1c1e;
+  --cream-dark: #2a2d30;
+  --cream-warm: #222528;
+  --white: #242628;
+  --text-dark: #e8e4de;
+  --text-body: #c5c0b8;
+  --text-muted: #8a8680;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.2);
+  --shadow-md: 0 8px 30px rgba(0,0,0,0.25);
+  --shadow-lg: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+[data-theme="dark"] .login-card,
+[data-theme="dark"] .pwd-modal {
+  background: #2a2d30;
+  border-color: #3a3d40;
+}
+
+[data-theme="dark"] .login-field input,
+[data-theme="dark"] .pwd-field input {
+  background: #1a1c1e;
+  border-color: #3a3d40;
+  color: #e8e4de;
+}
+
+[data-theme="dark"] .enquiry-table th {
+  background: #222528;
+}
+
+[data-theme="dark"] .enquiry-table td {
+  border-color: #2a2d30;
+}
+
+[data-theme="dark"] .modal {
+  background: #2a2d30;
+}
+
+/* ========== THEME TOGGLE ========== */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: var(--cream-dark);
+  border-radius: 8px;
+  padding: 3px;
+}
+.theme-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.theme-btn:hover { color: var(--text-dark); }
+.theme-btn.active {
+  background: var(--white);
+  color: var(--forest);
+  box-shadow: var(--shadow-sm);
+}
+.theme-btn svg { width: 14px; height: 14px; }
+
 html { scroll-behavior: smooth; }
 
 body {
@@ -912,6 +982,11 @@ a { text-decoration: none; color: inherit; }
     <div class="content-header">
       <h1>Enquiry <em>Dashboard</em></h1>
       <div class="header-actions">
+        <div class="theme-toggle">
+          <button class="theme-btn" data-theme="light" title="Light"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></button>
+          <button class="theme-btn" data-theme="dark" title="Dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></button>
+          <button class="theme-btn" data-theme="auto" title="Auto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></button>
+        </div>
         <span class="header-date" id="current-date"></span>
         <button class="btn-export" onclick="exportPDF()" style="background:var(--terracotta);">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
@@ -1070,6 +1145,9 @@ a { text-decoration: none; color: inherit; }
     </div>
   </div>
 </div>
+
+<!-- Theme Switcher -->
+<script src="js/theme.js"></script>
 
 <!-- PDF Export -->
 <script src="https://unpkg.com/jspdf@2.5.2/dist/jspdf.umd.min.js"></script>

@@ -38,6 +38,82 @@
   --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* ========== DARK THEME ========== */
+[data-theme="dark"] {
+  /* Keep brand/accent colors intact */
+  --cream: #1a1c1e;
+  --cream-dark: #2a2d30;
+  --cream-warm: #222528;
+  --white: #242628;
+  --text-dark: #e8e4de;
+  --text-body: #c5c0b8;
+  --text-muted: #8a8680;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.2);
+  --shadow-md: 0 8px 30px rgba(0,0,0,0.25);
+  --shadow-lg: 0 20px 60px rgba(0,0,0,0.3);
+  --shadow-hover: 0 12px 40px rgba(0,0,0,0.35);
+}
+[data-theme="dark"] .nav.scrolled {
+  background: rgba(26,28,30,0.92);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.06);
+}
+[data-theme="dark"] .nav {
+  background: rgba(26,28,30,0.92);
+}
+[data-theme="dark"] .btn-primary {
+  background: var(--wheat);
+  color: #1a1c1e;
+}
+[data-theme="dark"] .btn-primary:hover {
+  background: var(--wheat-light);
+}
+[data-theme="dark"] .btn-outline {
+  border-color: var(--sage);
+  color: var(--text-dark);
+}
+[data-theme="dark"] .hero-badge {
+  background: rgba(168,197,171,0.15);
+}
+[data-theme="dark"] body::after { opacity: 0.015; }
+[data-theme="dark"] .how-it-works .section-desc { color: rgba(245,240,232,0.6); }
+[data-theme="dark"] .product-card, [data-theme="dark"] .crop-card-inner {
+  background: #242628;
+}
+[data-theme="dark"] .footer {
+  background: var(--forest-deep);
+}
+
+/* ========== THEME TOGGLE ========== */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: var(--cream-dark);
+  border-radius: 8px;
+  padding: 3px;
+  margin-left: 8px;
+}
+.theme-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: all var(--transition);
+}
+.theme-btn:hover { color: var(--text-dark); }
+.theme-btn.active {
+  background: var(--white);
+  color: var(--text-dark);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.theme-btn svg { width: 14px; height: 14px; }
+
 html { scroll-behavior: smooth; }
 
 body {
@@ -1566,6 +1642,13 @@ a { text-decoration: none; color: inherit; }
         <li><a href="#lease">Lease Land</a></li>
         <li><a href="#testimonials">Stories</a></li>
         <li><a href="#" class="btn btn-primary btn-sm">Get Started</a></li>
+        <li>
+          <div class="theme-toggle">
+            <button class="theme-btn" data-theme="light" title="Light"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></button>
+            <button class="theme-btn" data-theme="dark" title="Dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></button>
+            <button class="theme-btn" data-theme="auto" title="Auto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></button>
+          </div>
+        </li>
       </ul>
     </div>
   </div>
@@ -2367,6 +2450,9 @@ a { text-decoration: none; color: inherit; }
     </div>
   </div>
 </footer>
+
+<!-- Theme Switcher -->
+<script src="js/theme.js"></script>
 
 <!-- Parse SDK / Back4App -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/parse/4.3.0/parse.min.js"></script>
