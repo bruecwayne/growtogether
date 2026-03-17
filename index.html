@@ -2341,14 +2341,6 @@ async function submitLeaseForm(form) {
   btn.style.color = 'var(--cream)';
 }
 
-// Product CTA buttons — redirect to grow.html with crop name
-document.querySelectorAll('.product-cta').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const card = btn.closest('.product-card');
-    const cropName = card.querySelector('.product-name').textContent;
-    window.location.href = 'grow.html?crop=' + encodeURIComponent(cropName);
-  });
-});
 
   // Render land cards from admin settings
   const LAND_GRADIENTS_IDX = {
@@ -2396,6 +2388,62 @@ document.querySelectorAll('.product-cta').forEach(btn => {
     `).join('');
   })();
 
+// Render product cards from admin settings
+(function renderProductCards() {
+  const grid = document.getElementById('products-grid');
+  if (!grid) return;
+  const defaultProducts = [
+    { id: 'tomatoes',   name: 'Hybrid Tomatoes',  variety: 'Arka Rakshak \u2022 US-618 \u2022 Lakshmi',             tag: 'popular', gradient: 'rgba(232,87,90,0.15), rgba(201,48,44,0.2)',      imageUrl: 'https://images.pexels.com/photos/5561311/pexels-photo-5561311.jpeg?auto=compress&cs=tinysrgb&w=400&h=250&fit=crop', growTime: '14 weeks', perAcre: '\u20b972,000', yield: '~20 tons',    visible: true },
+    { id: 'turmeric',   name: 'Turmeric',          variety: 'Salem \u2022 Erode \u2022 Nizamabad Local',             tag: 'popular', gradient: 'rgba(232,201,125,0.15), rgba(194,148,58,0.2)',   imageUrl: 'https://images.pexels.com/photos/6104651/pexels-photo-6104651.jpeg?auto=compress&cs=tinysrgb&w=400&h=250&fit=crop', growTime: '32 weeks', perAcre: '\u20b955,000', yield: '~8 tons',     visible: true },
+    { id: 'chillies',   name: 'Red Chillies',      variety: 'Teja \u2022 Byadgi \u2022 Guntur Sannam',              tag: 'popular', gradient: 'rgba(255,107,107,0.1), rgba(192,57,43,0.15)',    imageUrl: 'https://images.pexels.com/photos/4084633/pexels-photo-4084633.jpeg?auto=compress&cs=tinysrgb&w=400&h=250&fit=crop', growTime: '20 weeks', perAcre: '\u20b962,000', yield: '~1 ton dry', visible: true },
+    { id: 'greens',     name: 'Leafy Greens',      variety: 'Palak \u2022 Methi \u2022 Coriander \u2022 Amaranthus',tag: 'organic', gradient: 'rgba(122,193,122,0.1), rgba(61,139,61,0.15)',  imageUrl: 'https://images.pexels.com/photos/2095569/pexels-photo-2095569.jpeg?auto=compress&cs=tinysrgb&w=400&h=250&fit=crop', growTime: '6 weeks',  perAcre: '\u20b928,000', yield: '~6 tons',     visible: true },
+    { id: 'paddy',      name: 'Paddy (Rice)',       variety: 'BPT-5204 \u2022 Telangana Sona \u2022 RNR-15048',    tag: 'popular', gradient: 'rgba(144,238,144,0.1), rgba(46,139,87,0.15)',   imageUrl: 'https://images.pexels.com/photos/247599/pexels-photo-247599.jpeg?auto=compress&cs=tinysrgb&w=400&h=250&fit=crop',  growTime: '18 weeks', perAcre: '\u20b945,000', yield: '~2.5 tons',  visible: true },
+    { id: 'vegetables', name: 'Vegetables',         variety: 'Brinjal \u2022 Okra \u2022 Ridge Gourd \u2022 Bitter Gourd', tag: 'organic', gradient: 'rgba(244,164,96,0.1), rgba(210,105,30,0.15)', imageUrl: 'https://images.pexels.com/photos/13103276/pexels-photo-13103276.jpeg?auto=compress&cs=tinysrgb&w=400&h=250&fit=crop', growTime: '12 weeks', perAcre: '\u20b935,000', yield: '~8 tons',     visible: true },
+    { id: 'sunflower',  name: 'Sunflower',          variety: 'KBSH-44 \u2022 DRSH-1 \u2022 Morden',               tag: 'new',     gradient: 'rgba(255,215,0,0.1), rgba(218,165,32,0.15)',     imageUrl: 'https://images.pexels.com/photos/1169084/pexels-photo-1169084.jpeg?auto=compress&cs=tinysrgb&w=400&h=250&fit=crop',  growTime: '13 weeks', perAcre: '\u20b922,000', yield: '~0.7 tons',  visible: true },
+    { id: 'maize',      name: 'Maize (Corn)',       variety: 'DHM-117 \u2022 NK-6240 \u2022 Pioneer 3396',         tag: 'organic', gradient: 'rgba(245,245,220,0.1), rgba(218,165,32,0.15)',  imageUrl: 'https://images.pexels.com/photos/96715/pexels-photo-96715.jpeg?auto=compress&cs=tinysrgb&w=400&h=250&fit=crop',    growTime: '14 weeks', perAcre: '\u20b930,000', yield: '~3 tons',     visible: true }
+  ];
+  let products = JSON.parse(localStorage.getItem('gt_products') || 'null');
+  if (!products) { products = defaultProducts; localStorage.setItem('gt_products', JSON.stringify(products)); }
+  const delays = ['', 'reveal-delay-1', 'reveal-delay-2', 'reveal-delay-3'];
+  const tagClass = { popular: 'tag-popular', organic: 'tag-organic', new: 'tag-new' };
+  const tagLabel = { popular: 'Popular', organic: 'Organic', new: 'New' };
+  grid.innerHTML = products.filter(p => p.visible !== false).map((p, i) => `
+    <div class="product-card reveal ${delays[i % 4]}" data-product-id="${p.id}">
+      <div class="product-img">
+        <div class="img-bg" style="background: linear-gradient(135deg, ${p.gradient}), url('${p.imageUrl}'); background-size: cover; background-position: center;"></div>
+        <span class="product-tag ${tagClass[p.tag] || 'tag-popular'}">${tagLabel[p.tag] || 'Popular'}</span>
+      </div>
+      <div class="product-body">
+        <div class="product-name">${p.name}</div>
+        <div class="product-variety">${p.variety}</div>
+        <div class="product-details">
+          <div class="product-detail"><label>Grow Time</label><span>${p.growTime}</span></div>
+          <div class="product-detail"><label>Per Acre</label><span>${p.perAcre}</span></div>
+          <div class="product-detail"><label>Yield</label><span>${p.yield}</span></div>
+        </div>
+        <button class="product-cta">Start Growing &rarr;</button>
+      </div>
+    </div>
+  `).join('');
+  // Event delegation for CTA buttons (cards are dynamically rendered)
+  grid.addEventListener('click', function(e) {
+    const btn = e.target.closest('.product-cta');
+    if (!btn) return;
+    const card = btn.closest('.product-card');
+    const cropName = card.querySelector('.product-name').textContent;
+    window.location.href = 'grow.html?crop=' + encodeURIComponent(cropName);
+  });
+})();
+
+// Load hero badge text from admin settings
+(function loadHeroBadge() {
+  const savedBadge = localStorage.getItem('gt_hero_badge');
+  if (savedBadge) {
+    const el = document.getElementById('hero-badge-text');
+    if (el) el.textContent = savedBadge;
+  }
+})();
+
 // Smooth scroll for nav links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', function (e) {
@@ -2407,52 +2455,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
       target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   });
-
-  // Render product cards from admin settings
-  (function renderProductCards() {
-    const grid = document.getElementById('products-grid');
-    if (!grid) return;
-    const defaultProducts = [
-      { id: 'tomatoes',   name: 'Hybrid Tomatoes',  variety: 'Arka Rakshak \u2022 US-618 \u2022 Lakshmi',             tag: 'popular', gradient: 'rgba(232,87,90,0.15), rgba(201,48,44,0.2)',      imageUrl: 'https://images.pexels.com/photos/5561311/pexels-photo-5561311.jpeg?auto=compress&cs=tinysrgb&w=400&h=250&fit=crop', growTime: '14 weeks', perAcre: '\u20b972,000', yield: '~20 tons',    visible: true },
-      { id: 'turmeric',   name: 'Turmeric',          variety: 'Salem \u2022 Erode \u2022 Nizamabad Local',             tag: 'popular', gradient: 'rgba(232,201,125,0.15), rgba(194,148,58,0.2)',   imageUrl: 'https://images.pexels.com/photos/6104651/pexels-photo-6104651.jpeg?auto=compress&cs=tinysrgb&w=400&h=250&fit=crop', growTime: '32 weeks', perAcre: '\u20b955,000', yield: '~8 tons',     visible: true },
-      { id: 'chillies',   name: 'Red Chillies',      variety: 'Teja \u2022 Byadgi \u2022 Guntur Sannam',              tag: 'popular', gradient: 'rgba(255,107,107,0.1), rgba(192,57,43,0.15)',    imageUrl: 'https://images.pexels.com/photos/4084633/pexels-photo-4084633.jpeg?auto=compress&cs=tinysrgb&w=400&h=250&fit=crop', growTime: '20 weeks', perAcre: '\u20b962,000', yield: '~1 ton dry', visible: true },
-      { id: 'greens',     name: 'Leafy Greens',      variety: 'Palak \u2022 Methi \u2022 Coriander \u2022 Amaranthus',tag: 'organic', gradient: 'rgba(122,193,122,0.1), rgba(61,139,61,0.15)',  imageUrl: 'https://images.pexels.com/photos/2095569/pexels-photo-2095569.jpeg?auto=compress&cs=tinysrgb&w=400&h=250&fit=crop', growTime: '6 weeks',  perAcre: '\u20b928,000', yield: '~6 tons',     visible: true },
-      { id: 'paddy',      name: 'Paddy (Rice)',       variety: 'BPT-5204 \u2022 Telangana Sona \u2022 RNR-15048',    tag: 'popular', gradient: 'rgba(144,238,144,0.1), rgba(46,139,87,0.15)',   imageUrl: 'https://images.pexels.com/photos/247599/pexels-photo-247599.jpeg?auto=compress&cs=tinysrgb&w=400&h=250&fit=crop',  growTime: '18 weeks', perAcre: '\u20b945,000', yield: '~2.5 tons',  visible: true },
-      { id: 'vegetables', name: 'Vegetables',         variety: 'Brinjal \u2022 Okra \u2022 Ridge Gourd \u2022 Bitter Gourd', tag: 'organic', gradient: 'rgba(244,164,96,0.1), rgba(210,105,30,0.15)', imageUrl: 'https://images.pexels.com/photos/13103276/pexels-photo-13103276.jpeg?auto=compress&cs=tinysrgb&w=400&h=250&fit=crop', growTime: '12 weeks', perAcre: '\u20b935,000', yield: '~8 tons',     visible: true },
-      { id: 'sunflower',  name: 'Sunflower',          variety: 'KBSH-44 \u2022 DRSH-1 \u2022 Morden',               tag: 'new',     gradient: 'rgba(255,215,0,0.1), rgba(218,165,32,0.15)',     imageUrl: 'https://images.pexels.com/photos/1169084/pexels-photo-1169084.jpeg?auto=compress&cs=tinysrgb&w=400&h=250&fit=crop',  growTime: '13 weeks', perAcre: '\u20b922,000', yield: '~0.7 tons',  visible: true },
-      { id: 'maize',      name: 'Maize (Corn)',       variety: 'DHM-117 \u2022 NK-6240 \u2022 Pioneer 3396',         tag: 'organic', gradient: 'rgba(245,245,220,0.1), rgba(218,165,32,0.15)',  imageUrl: 'https://images.pexels.com/photos/96715/pexels-photo-96715.jpeg?auto=compress&cs=tinysrgb&w=400&h=250&fit=crop',    growTime: '14 weeks', perAcre: '\u20b930,000', yield: '~3 tons',     visible: true }
-    ];
-    let products = JSON.parse(localStorage.getItem('gt_products') || 'null');
-    if (!products) { products = defaultProducts; localStorage.setItem('gt_products', JSON.stringify(products)); }
-    const delays = ['', 'reveal-delay-1', 'reveal-delay-2', 'reveal-delay-3'];
-    const tagClass = { popular: 'tag-popular', organic: 'tag-organic', new: 'tag-new' };
-    const tagLabel = { popular: 'Popular', organic: 'Organic', new: 'New' };
-    grid.innerHTML = products.filter(p => p.visible !== false).map((p, i) => `
-      <div class="product-card reveal ${delays[i % 4]}" data-product-id="${p.id}">
-        <div class="product-img">
-          <div class="img-bg" style="background: linear-gradient(135deg, ${p.gradient}), url('${p.imageUrl}'); background-size: cover; background-position: center;"></div>
-          <span class="product-tag ${tagClass[p.tag] || 'tag-popular'}">${tagLabel[p.tag] || 'Popular'}</span>
-        </div>
-        <div class="product-body">
-          <div class="product-name">${p.name}</div>
-          <div class="product-variety">${p.variety}</div>
-          <div class="product-details">
-            <div class="product-detail"><label>Grow Time</label><span>${p.growTime}</span></div>
-            <div class="product-detail"><label>Per Acre</label><span>${p.perAcre}</span></div>
-            <div class="product-detail"><label>Yield</label><span>${p.yield}</span></div>
-          </div>
-          <button class="product-cta">Start Growing &rarr;</button>
-        </div>
-      </div>
-    `).join('');
-  })();
-
-  // Load hero badge text from admin settings
-  const savedBadge = localStorage.getItem('gt_hero_badge');
-  if (savedBadge) {
-    const el = document.getElementById('hero-badge-text');
-    if (el) el.textContent = savedBadge;
-  }
 });
 </script>
 
