@@ -2386,6 +2386,10 @@ async function submitLeaseForm(form) {
         </div>
       </div>
     `).join('');
+    // Observe newly rendered land cards for scroll-reveal animation
+    if (typeof observer !== 'undefined') {
+      grid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    }
   })();
 
 // Render product cards from admin settings
@@ -2433,6 +2437,10 @@ async function submitLeaseForm(form) {
     const cropName = card.querySelector('.product-name').textContent;
     window.location.href = 'grow.html?crop=' + encodeURIComponent(cropName);
   });
+  // Observe newly rendered product cards for scroll-reveal animation
+  if (typeof observer !== 'undefined') {
+    grid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  }
 })();
 
 // Load hero badge text from admin settings
