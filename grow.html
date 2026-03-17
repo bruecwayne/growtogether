@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Start Growing — GrowTogether</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --forest: #1a3a2a;
+  --forest-deep: #0f2419;
+  --moss: #3d6b4f;
+  --sage: #7a9e7e;
+  --sage-light: #a8c5ab;
+  --wheat: #d4a84b;
+  --wheat-light: #e8c97d;
+  --wheat-glow: #f0d68a;
+  --terracotta: #c2703e;
+  --terracotta-light: #d4956a;
+  --cream: #f5f0e8;
+  --cream-dark: #e8dfd2;
+  --cream-warm: #faf6ee;
+  --soil: #3e2c1c;
+  --soil-light: #5c4033;
+  --text-dark: #1a1a18;
+  --text-body: #3d3b36;
+  --text-muted: #7a776e;
+  --white: #ffffff;
+  --shadow-sm: 0 2px 8px rgba(26,58,42,0.06);
+  --shadow-md: 0 8px 30px rgba(26,58,42,0.08);
+  --shadow-lg: 0 20px 60px rgba(26,58,42,0.12);
+  --shadow-hover: 0 12px 40px rgba(26,58,42,0.14);
+  --radius: 12px;
+  --radius-lg: 20px;
+  --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Source Sans 3', -apple-system, sans-serif;
+  color: var(--text-body);
+  background: var(--cream);
+  line-height: 1.65;
+  font-size: 16px;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 200px;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'DM Serif Display', Georgia, serif;
+  color: var(--text-dark);
+  line-height: 1.15;
+  font-weight: 400;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+a { text-decoration: none; color: inherit; }
+
+/* ========== ANIMATIONS ========== */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+
+/* ========== NAVIGATION ========== */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 20px 0;
+  transition: all 0.4s ease;
+  background: rgba(245, 240, 232, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 1px 0 rgba(26,58,42,0.08);
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.5rem;
+  color: var(--forest);
+}
+.nav-logo svg { width: 32px; height: 32px; }
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: color var(--transition);
+}
+.back-link:hover { color: var(--forest); }
+.back-link svg { width: 18px; height: 18px; }
+
+/* ========== PAGE CONTENT ========== */
+.grow-page {
+  padding-top: 120px;
+  padding-bottom: 100px;
+  min-height: 100vh;
+  background: linear-gradient(165deg, var(--cream-warm) 0%, var(--cream) 40%, var(--cream-dark) 100%);
+}
+
+.page-header {
+  margin-bottom: 48px;
+}
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+.breadcrumb a {
+  color: var(--moss);
+  font-weight: 500;
+  transition: color var(--transition);
+}
+.breadcrumb a:hover { color: var(--forest); }
+.breadcrumb .sep { color: var(--cream-dark); }
+
+.page-title {
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  margin-bottom: 8px;
+}
+.page-title em {
+  font-family: 'Instrument Serif', serif;
+  color: var(--moss);
+}
+.page-subtitle {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  max-width: 540px;
+}
+
+/* ========== GRID LAYOUT ========== */
+.grow-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 48px;
+  align-items: start;
+}
+
+/* ========== CROP SUMMARY CARD ========== */
+.crop-summary {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  position: sticky;
+  top: 110px;
+}
+.crop-hero-img {
+  width: 100%;
+  height: 220px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+.crop-hero-img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(15,36,25,0.5) 0%, transparent 60%);
+}
+.crop-hero-name {
+  position: absolute;
+  bottom: 20px;
+  left: 24px;
+  z-index: 2;
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.6rem;
+  color: var(--cream);
+}
+.crop-details-body {
+  padding: 28px;
+}
+.crop-details-body p {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+.crop-specs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--cream-dark);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+.crop-spec {
+  background: var(--cream-warm);
+  padding: 16px;
+  text-align: center;
+}
+.crop-spec label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+.crop-spec span {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.1rem;
+  color: var(--text-dark);
+}
+
+.crop-varieties {
+  margin-bottom: 24px;
+}
+.crop-varieties h4 {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  font-family: 'Source Sans 3', sans-serif;
+}
+.variety-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.variety-tag {
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  background: var(--cream);
+  color: var(--text-body);
+  border: 1px solid var(--cream-dark);
+}
+
+.crop-guarantee {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, var(--forest), var(--forest-deep));
+  border-radius: var(--radius);
+  color: var(--cream);
+}
+.crop-guarantee svg {
+  flex-shrink: 0;
+  color: var(--wheat);
+}
+.crop-guarantee p {
+  font-size: 0.85rem;
+  color: var(--sage-light);
+  margin: 0;
+  line-height: 1.5;
+}
+.crop-guarantee strong {
+  color: var(--cream);
+}
+
+/* ========== ORDER FORM ========== */
+.order-form-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  box-shadow: var(--shadow-md);
+}
+.form-header {
+  margin-bottom: 32px;
+}
+.form-header h3 {
+  font-size: 1.4rem;
+  margin-bottom: 6px;
+}
+.form-header p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.order-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.form-field label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-body);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.form-field label .required {
+  color: var(--terracotta);
+  margin-left: 2px;
+}
+.form-field input,
+.form-field select,
+.form-field textarea {
+  padding: 13px 16px;
+  border-radius: 10px;
+  border: 1.5px solid var(--cream-dark);
+  background: var(--cream-warm);
+  color: var(--text-dark);
+  font-family: inherit;
+  font-size: 0.92rem;
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.form-field input::placeholder,
+.form-field textarea::placeholder {
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  border-color: var(--wheat);
+  box-shadow: 0 0 0 3px rgba(212,168,75,0.12);
+}
+.form-field select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%237a776e' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+.form-field textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-divider {
+  height: 1px;
+  background: var(--cream-dark);
+  margin: 4px 0;
+}
+
+.form-pricing {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  background: var(--cream-warm);
+  border-radius: var(--radius);
+  border: 1.5px dashed var(--cream-dark);
+}
+.form-pricing .pricing-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+.form-pricing .pricing-value {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.3rem;
+  color: var(--forest);
+}
+.form-pricing .pricing-note {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 16px 32px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--forest), var(--moss));
+  color: var(--cream);
+  border: none;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition);
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 4px;
+}
+.submit-btn:hover {
+  background: linear-gradient(135deg, var(--forest-deep), var(--forest));
+  box-shadow: 0 8px 30px rgba(26,58,42,0.3);
+  transform: translateY(-2px);
+}
+.submit-btn svg {
+  transition: transform var(--transition);
+}
+.submit-btn:hover svg {
+  transform: translateX(4px);
+}
+
+/* ========== SUCCESS STATE ========== */
+.success-overlay {
+  display: none;
+  position: absolute;
+  inset: 0;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px;
+  z-index: 10;
+  animation: fadeIn 0.5s ease;
+}
+.success-overlay.active {
+  display: flex;
+}
+.success-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--sage), var(--moss));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  animation: scaleIn 0.5s 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.success-icon svg {
+  color: var(--cream);
+  width: 32px;
+  height: 32px;
+}
+.success-overlay h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  animation: fadeSlide 0.5s 0.3s both;
+}
+.success-overlay p {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  max-width: 360px;
+  line-height: 1.7;
+  animation: fadeSlide 0.5s 0.4s both;
+}
+.success-overlay .back-home {
+  margin-top: 28px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border-radius: 100px;
+  background: var(--forest);
+  color: var(--cream);
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all var(--transition);
+  animation: fadeSlide 0.5s 0.5s both;
+}
+.success-overlay .back-home:hover {
+  background: var(--forest-deep);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(26,58,42,0.25);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.5); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 1024px) {
+  .grow-grid { grid-template-columns: 1fr; }
+  .crop-summary { position: static; }
+}
+@media (max-width: 768px) {
+  .container { padding: 0 24px; }
+  .grow-page { padding-top: 100px; padding-bottom: 60px; }
+  .form-row { grid-template-columns: 1fr; }
+  .order-form-card { padding: 28px; }
+  .crop-specs { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="nav">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <svg viewBox="0 0 32 32" fill="none">
+          <circle cx="16" cy="16" r="15" fill="#1a3a2a" stroke="#d4a84b" stroke-width="1"/>
+          <path d="M16 7c0 0-6 4-6 11s6 7 6 7 6 0 6-7-6-11-6-11z" fill="#d4a84b" opacity="0.9"/>
+          <path d="M16 7v18" stroke="#f5f0e8" stroke-width="1.5"/>
+          <path d="M16 13c-2-1-4 0-5 2" stroke="#f5f0e8" stroke-width="1.2" fill="none"/>
+          <path d="M16 17c2-1 4 0 5 2" stroke="#f5f0e8" stroke-width="1.2" fill="none"/>
+        </svg>
+        GrowTogether
+      </a>
+      <a href="index.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Back to Home
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- Page Content -->
+<section class="grow-page">
+  <div class="container">
+    <div class="page-header reveal">
+      <div class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="sep">/</span>
+        <a href="index.html#products">Products</a>
+        <span class="sep">/</span>
+        <span id="breadcrumb-crop">Crop</span>
+      </div>
+      <h1 class="page-title">Start growing <em id="title-crop">your crop.</em></h1>
+      <p class="page-subtitle">Fill in your details and we'll match you with the best farmer and land for your chosen crop.</p>
+    </div>
+
+    <div class="grow-grid">
+      <!-- Left: Crop Summary -->
+      <div class="crop-summary reveal reveal-delay-1">
+        <div class="crop-hero-img" id="crop-img">
+          <span class="crop-hero-name" id="crop-name">Crop Name</span>
+        </div>
+        <div class="crop-details-body">
+          <p id="crop-desc">A premium crop grown on our certified organic land in Siddipet, Telangana. Our expert farmers use sustainable practices to ensure the highest quality harvest.</p>
+          <div class="crop-specs">
+            <div class="crop-spec">
+              <label>Grow Time</label>
+              <span id="crop-time">--</span>
+            </div>
+            <div class="crop-spec">
+              <label>Per Acre</label>
+              <span id="crop-price">--</span>
+            </div>
+            <div class="crop-spec">
+              <label>Yield</label>
+              <span id="crop-yield">--</span>
+            </div>
+          </div>
+          <div class="crop-varieties" id="varieties-section">
+            <h4>Available Varieties</h4>
+            <div class="variety-tags" id="variety-tags"></div>
+          </div>
+          <div class="crop-guarantee">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <p><strong>Harvest Guarantee</strong> — If your crop fails due to natural causes, we replant at no extra cost or refund 100% of your investment.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Order Form -->
+      <div class="order-form-card reveal reveal-delay-2" style="position: relative;">
+        <div class="form-header">
+          <h3>Place Your Growing Order</h3>
+          <p>Our team will confirm availability and connect you with a farmer within 24 hours.</p>
+        </div>
+        <form class="order-form" id="grow-form">
+          <div class="form-row">
+            <div class="form-field">
+              <label>Full Name <span class="required">*</span></label>
+              <input type="text" placeholder="e.g. Rajesh Kumar" required>
+            </div>
+            <div class="form-field">
+              <label>Phone Number <span class="required">*</span></label>
+              <input type="tel" placeholder="e.g. 9876543210" required>
+            </div>
+          </div>
+          <div class="form-field">
+            <label>Email Address</label>
+            <input type="email" placeholder="e.g. rajesh@example.com">
+          </div>
+
+          <div class="form-divider"></div>
+
+          <div class="form-row">
+            <div class="form-field">
+              <label>Preferred Land <span class="required">*</span></label>
+              <select required>
+                <option value="" disabled selected>Select location</option>
+                <option>Siddipet Central Farm — 220 acres</option>
+                <option>Dubbak Highlands — 180 acres</option>
+                <option>Gajwel Green Belt — 280 acres</option>
+                <option>Husnabad Fields — 170 acres</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label>Number of Acres <span class="required">*</span></label>
+              <input type="number" placeholder="e.g. 5" min="1" max="50" required id="acres-input">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-field">
+              <label>Preferred Variety</label>
+              <input type="text" placeholder="e.g. Arka Rakshak" id="variety-input">
+            </div>
+            <div class="form-field">
+              <label>Preferred Season</label>
+              <select>
+                <option value="" disabled selected>Select season</option>
+                <option>Kharif (June–Oct)</option>
+                <option>Rabi (Nov–Mar)</option>
+                <option>Zaid (Mar–Jun)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-field">
+            <label>Additional Notes</label>
+            <textarea placeholder="Any specific requirements — organic preferences, delivery needs, etc."></textarea>
+          </div>
+
+          <div class="form-pricing" id="pricing-display">
+            <div>
+              <div class="pricing-label">Estimated Investment</div>
+              <div class="pricing-note">Based on selected crop &times; acres</div>
+            </div>
+            <div style="text-align: right;">
+              <div class="pricing-value" id="estimated-price">--</div>
+            </div>
+          </div>
+
+          <button type="submit" class="submit-btn">
+            Submit Growing Request
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </form>
+
+        <!-- Success Overlay -->
+        <div class="success-overlay" id="success-overlay">
+          <div class="success-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <h3>Request Submitted!</h3>
+          <p>Your growing request has been submitted! Our team will contact you within 24 hours to confirm your order and assign a farmer.</p>
+          <a href="index.html" class="back-home">
+            Back to Home
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+// Crop data
+const crops = {
+  'Hybrid Tomatoes': {
+    time: '14 weeks', price: 72000, yield: '~20 tons',
+    varieties: ['Arka Rakshak', 'US-618', 'Lakshmi'],
+    img: 'https://images.pexels.com/photos/5561311/pexels-photo-5561311.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop',
+    desc: 'Premium hybrid tomatoes cultivated on black cotton soil in Siddipet. High-yield varieties suited to Telangana\'s climate, with expert irrigation from the Kaleshwaram project ensuring consistent quality.'
+  },
+  'Turmeric': {
+    time: '32 weeks', price: 55000, yield: '~8 tons',
+    varieties: ['Salem', 'Erode', 'Nizamabad Local'],
+    img: 'https://images.pexels.com/photos/6104651/pexels-photo-6104651.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop',
+    desc: 'Nizamabad-quality turmeric grown in the rich soils of Siddipet district. Our farmers follow traditional cultivation methods combined with modern irrigation for high curcumin content.'
+  },
+  'Red Chillies': {
+    time: '20 weeks', price: 62000, yield: '~1 ton dry',
+    varieties: ['Teja', 'Byadgi', 'Guntur Sannam'],
+    img: 'https://images.pexels.com/photos/4084633/pexels-photo-4084633.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop',
+    desc: 'Fiery red chillies grown in Telangana\'s ideal climate. Our Teja and Byadgi varieties are known for their vibrant color and pungency, perfect for spice markets and food processing.'
+  },
+  'Leafy Greens': {
+    time: '6 weeks', price: 28000, yield: '~6 tons',
+    varieties: ['Palak', 'Methi', 'Coriander', 'Amaranthus'],
+    img: 'https://images.pexels.com/photos/2095569/pexels-photo-2095569.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop',
+    desc: 'Quick-growing leafy vegetables harvested fresh from our organic plots. Multiple cutting cycles ensure sustained supply, ideal for urban markets and restaurant chains.'
+  },
+  'Paddy (Rice)': {
+    time: '18 weeks', price: 45000, yield: '~2.5 tons',
+    varieties: ['BPT-5204', 'Telangana Sona', 'RNR-15048'],
+    img: 'https://images.pexels.com/photos/247599/pexels-photo-247599.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop',
+    desc: 'Premium paddy varieties including the prized Telangana Sona, cultivated in canal-irrigated fields. KLIP water ensures reliable cultivation through the kharif and rabi seasons.'
+  },
+  'Vegetables': {
+    time: '12 weeks', price: 35000, yield: '~8 tons',
+    varieties: ['Brinjal', 'Okra', 'Ridge Gourd', 'Bitter Gourd'],
+    img: 'https://images.pexels.com/photos/13103276/pexels-photo-13103276.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop',
+    desc: 'A diverse mix of vegetables perfectly suited to Siddipet\'s climate. From brinjal to gourds, our farmers use integrated pest management for chemical-free produce.'
+  },
+  'Sunflower': {
+    time: '13 weeks', price: 22000, yield: '~0.7 tons',
+    varieties: ['KBSH-44', 'DRSH-1', 'Morden'],
+    img: 'https://images.pexels.com/photos/1169084/pexels-photo-1169084.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop',
+    desc: 'Oil-rich sunflower varieties grown on red loamy and alluvial soils. Low water requirement makes this an efficient crop with strong market demand for cold-pressed oil production.'
+  },
+  'Maize (Corn)': {
+    time: '14 weeks', price: 30000, yield: '~3 tons',
+    varieties: ['DHM-117', 'NK-6240', 'Pioneer 3396'],
+    img: 'https://images.pexels.com/photos/96715/pexels-photo-96715.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop',
+    desc: 'High-yield maize varieties cultivated for grain and cattle feed markets. Our hybrid varieties are drought-resistant and produce excellent returns in Telangana\'s semi-arid conditions.'
+  }
+};
+
+// Default fallback
+const defaultCrop = {
+  time: '--', price: 0, yield: '--',
+  varieties: [],
+  img: 'https://images.pexels.com/photos/440731/pexels-photo-440731.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop',
+  desc: 'Tell us what you\'d like to grow and we\'ll match you with the right farmer and land. Our team will work with you to find the best crop for the current season.'
+};
+
+// Parse URL param
+const params = new URLSearchParams(window.location.search);
+const cropName = params.get('crop') || 'Custom Crop';
+const cropData = crops[cropName] || defaultCrop;
+
+// Populate page
+document.getElementById('breadcrumb-crop').textContent = cropName;
+document.getElementById('title-crop').textContent = cropName.toLowerCase() + '.';
+document.getElementById('crop-name').textContent = cropName;
+document.getElementById('crop-desc').textContent = cropData.desc;
+document.getElementById('crop-time').textContent = cropData.time;
+document.getElementById('crop-price').textContent = cropData.price ? '₹' + cropData.price.toLocaleString('en-IN') : '--';
+document.getElementById('crop-yield').textContent = cropData.yield;
+document.getElementById('crop-img').style.background =
+  'linear-gradient(to top, rgba(15,36,25,0.5) 0%, transparent 60%), url(\'' + cropData.img + '\')';
+document.getElementById('crop-img').style.backgroundSize = 'cover';
+document.getElementById('crop-img').style.backgroundPosition = 'center';
+document.title = 'Start Growing ' + cropName + ' — GrowTogether';
+
+// Varieties
+const tagsContainer = document.getElementById('variety-tags');
+if (cropData.varieties.length) {
+  cropData.varieties.forEach(v => {
+    const tag = document.createElement('span');
+    tag.className = 'variety-tag';
+    tag.textContent = v;
+    tagsContainer.appendChild(tag);
+  });
+} else {
+  document.getElementById('varieties-section').style.display = 'none';
+}
+
+// Dynamic pricing
+const acresInput = document.getElementById('acres-input');
+const priceDisplay = document.getElementById('estimated-price');
+function updatePrice() {
+  const acres = parseInt(acresInput.value) || 0;
+  if (acres > 0 && cropData.price) {
+    const total = acres * cropData.price;
+    priceDisplay.textContent = '₹' + total.toLocaleString('en-IN');
+  } else {
+    priceDisplay.textContent = '--';
+  }
+}
+acresInput.addEventListener('input', updatePrice);
+
+// Form submission
+document.getElementById('grow-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  document.getElementById('success-overlay').classList.add('active');
+});
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

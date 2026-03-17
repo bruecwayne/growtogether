@@ -2301,7 +2301,7 @@ a { text-decoration: none; color: inherit; }
       <h2>Ready to grow <em>something?</em></h2>
       <p>Join thousands of customers and farmers building a more connected food system, one harvest at a time.</p>
       <div class="cta-buttons">
-        <a href="#" class="btn btn-wheat btn-lg">Start Growing Today</a>
+        <a href="grow.html" class="btn btn-wheat btn-lg">Start Growing Today</a>
         <a href="#" class="btn btn-lg" style="border: 1.5px solid rgba(245,240,232,0.3); color: var(--cream);">Apply as a Farmer</a>
       </div>
     </div>
@@ -2416,6 +2416,15 @@ tabs.forEach(tab => {
         ${i < 2 ? '<span class="how-connector">&#x2192;</span>' : ''}
       </div>
     `).join('');
+  });
+});
+
+// Product CTA buttons — redirect to grow.html with crop name
+document.querySelectorAll('.product-cta').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const card = btn.closest('.product-card');
+    const cropName = card.querySelector('.product-name').textContent;
+    window.location.href = 'grow.html?crop=' + encodeURIComponent(cropName);
   });
 });
 
