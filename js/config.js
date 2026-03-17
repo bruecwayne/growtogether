@@ -10,7 +10,7 @@
  */
 
 const BACK4APP_CONFIG = {
-  APP_ID: 'YOUR_APP_ID_HERE',
-  JS_KEY: 'YOUR_JS_KEY_HERE',
+  APP_ID: 'PXH1eRCLDbQtVgFUPJ4SMeCTJCWdYlGxNJEPLbCF',
+  JS_KEY: 'pekDMDyUG8Fpn7E4ty2mYtypRfQzlHHVXlpRQvUF',
   SERVER_URL: 'https://parseapi.back4app.com'
 };
