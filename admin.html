@@ -408,6 +408,27 @@ a { text-decoration: none; color: inherit; }
   white-space: nowrap;
 }
 
+.products-toggle-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+}
+.product-toggle {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.88rem;
+  color: var(--text-dark);
+  cursor: pointer;
+  user-select: none;
+}
+.product-toggle input[type="checkbox"] {
+  accent-color: var(--forest);
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
 /* ========== FILTERS & SEARCH ========== */
 .filters-bar {
   padding: 0 40px 20px;
@@ -1137,6 +1158,30 @@ a { text-decoration: none; color: inherit; }
       </div>
     </div>
 
+    <!-- Product Visibility -->
+    <div class="site-settings-bar" style="padding-top:0;">
+      <div class="site-settings-card" style="flex-direction:column;align-items:flex-start;gap:14px;">
+        <div class="site-settings-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          Browse Products Visibility
+        </div>
+        <div class="products-toggle-grid">
+          <label class="product-toggle"><input type="checkbox" data-product-id="tomatoes" checked> Hybrid Tomatoes</label>
+          <label class="product-toggle"><input type="checkbox" data-product-id="turmeric" checked> Turmeric</label>
+          <label class="product-toggle"><input type="checkbox" data-product-id="chillies" checked> Red Chillies</label>
+          <label class="product-toggle"><input type="checkbox" data-product-id="greens" checked> Leafy Greens</label>
+          <label class="product-toggle"><input type="checkbox" data-product-id="paddy" checked> Paddy (Rice)</label>
+          <label class="product-toggle"><input type="checkbox" data-product-id="vegetables" checked> Vegetables</label>
+          <label class="product-toggle"><input type="checkbox" data-product-id="sunflower" checked> Sunflower</label>
+          <label class="product-toggle"><input type="checkbox" data-product-id="maize" checked> Maize (Corn)</label>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <button class="site-settings-save" onclick="saveProductVisibility()">Save Changes</button>
+          <span class="site-settings-hint">Unchecked products are hidden on the homepage</span>
+        </div>
+      </div>
+    </div>
+
     <!-- Filters -->
     <div class="filters-bar">
       <div class="search-box">
@@ -1729,6 +1774,25 @@ function exportPDF() {
 }
 
 // ========== SITE SETTINGS ==========
+function loadProductVisibility() {
+  const hidden = JSON.parse(localStorage.getItem('gt_hidden_products') || '[]');
+  document.querySelectorAll('.product-toggle input[data-product-id]').forEach(cb => {
+    cb.checked = !hidden.includes(cb.dataset.productId);
+  });
+}
+
+function saveProductVisibility() {
+  const hidden = [];
+  document.querySelectorAll('.product-toggle input[data-product-id]').forEach(cb => {
+    if (!cb.checked) hidden.push(cb.dataset.productId);
+  });
+  localStorage.setItem('gt_hidden_products', JSON.stringify(hidden));
+  const btn = document.querySelector('[onclick="saveProductVisibility()"]');
+  btn.textContent = 'Saved!';
+  btn.style.background = 'var(--status-approved)';
+  setTimeout(() => { btn.textContent = 'Save Changes'; btn.style.background = ''; }, 2000);
+}
+
 function loadHeroBadge() {
   const saved = localStorage.getItem('gt_hero_badge');
   const input = document.getElementById('hero-badge-input');
@@ -1752,6 +1816,7 @@ function saveHeroBadge() {
 // ========== INIT ==========
 checkAuth();
 loadHeroBadge();
+loadProductVisibility();
 </script>
 
 </body>
