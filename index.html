@@ -150,6 +150,9 @@ a { text-decoration: none; color: inherit; }
 }
 .nav-links a:hover { color: var(--forest); }
 .nav-links a:hover::after { width: 100%; }
+.nav-links .btn-primary { color: var(--white); }
+.nav-links .btn-primary::after { display: none; }
+.nav-links .btn-primary:hover { color: var(--white); }
 
 .btn {
   display: inline-flex;
@@ -167,7 +170,7 @@ a { text-decoration: none; color: inherit; }
 }
 .btn-primary {
   background: var(--forest);
-  color: var(--cream);
+  color: var(--white);
 }
 .btn-primary:hover {
   background: var(--forest-deep);
