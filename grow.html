@@ -701,6 +701,11 @@ a { text-decoration: none; color: inherit; }
   </div>
 </section>
 
+<!-- Parse SDK / Back4App -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/parse/4.3.0/parse.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/parse-service.js"></script>
+
 <script>
 // Crop data
 const crops = {
@@ -808,16 +813,18 @@ function updatePrice() {
 }
 acresInput.addEventListener('input', updatePrice);
 
-// Form submission — save to localStorage
-document.getElementById('grow-form').addEventListener('submit', function(e) {
+// Form submission — save to Back4App
+document.getElementById('grow-form').addEventListener('submit', async function(e) {
   e.preventDefault();
   const form = this;
+  const submitBtn = form.querySelector('button[type="submit"]');
+  submitBtn.textContent = 'Submitting...';
+  submitBtn.disabled = true;
+
   const acres = parseInt(form.querySelector('[name="acres"]').value) || 0;
-  const data = JSON.parse(localStorage.getItem('gt_enquiries') || '[]');
-  data.push({
-    id: Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
+
+  const result = await ParseService.createEnquiry({
     type: 'grow',
-    timestamp: new Date().toISOString(),
     status: 'pending',
     name: form.querySelector('[name="name"]').value,
     phone: form.querySelector('[name="phone"]').value,
@@ -830,7 +837,7 @@ document.getElementById('grow-form').addEventListener('submit', function(e) {
     estimatedInvestment: acres * (cropData.price || 0),
     notes: form.querySelector('[name="notes"]').value
   });
-  localStorage.setItem('gt_enquiries', JSON.stringify(data));
+
   document.getElementById('success-overlay').classList.add('active');
 });
 
@@ -845,6 +852,7 @@ const observer = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
+
 
 </body>
 </html>

@@ -2368,6 +2368,11 @@ a { text-decoration: none; color: inherit; }
   </div>
 </footer>
 
+<!-- Parse SDK / Back4App -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/parse/4.3.0/parse.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/parse-service.js"></script>
+
 <script>
 // Scroll reveal animation
 const observer = new IntersectionObserver((entries) => {
@@ -2419,13 +2424,14 @@ tabs.forEach(tab => {
   });
 });
 
-// Lease form submission — save to localStorage
-function submitLeaseForm(form) {
-  const data = JSON.parse(localStorage.getItem('gt_enquiries') || '[]');
-  data.push({
-    id: Date.now().toString(36) + Math.random().toString(36).substr(2, 5),
+// Lease form submission — save to Back4App
+async function submitLeaseForm(form) {
+  const btn = form.querySelector('.lease-submit');
+  btn.textContent = 'Submitting...';
+  btn.disabled = true;
+
+  const result = await ParseService.createEnquiry({
     type: 'lease',
-    timestamp: new Date().toISOString(),
     status: 'pending',
     name: form.querySelector('[name="name"]').value,
     phone: form.querySelector('[name="phone"]').value,
@@ -2435,10 +2441,10 @@ function submitLeaseForm(form) {
     irrigationSource: form.querySelector('[name="irrigationSource"]').value,
     details: form.querySelector('[name="details"]').value
   });
-  localStorage.setItem('gt_enquiries', JSON.stringify(data));
-  form.querySelector('.lease-submit').textContent = 'Inquiry Submitted \u2713';
-  form.querySelector('.lease-submit').style.background = 'var(--moss)';
-  form.querySelector('.lease-submit').style.color = 'var(--cream)';
+
+  btn.textContent = 'Inquiry Submitted ✓';
+  btn.style.background = 'var(--moss)';
+  btn.style.color = 'var(--cream)';
 }
 
 // Product CTA buttons — redirect to grow.html with crop name
@@ -2474,6 +2480,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   50% { transform: translateY(-10px) rotate(2deg); }
 }
 </style>
+
 
 </body>
 </html>

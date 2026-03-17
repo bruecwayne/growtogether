@@ -832,23 +832,32 @@ a { text-decoration: none; color: inherit; }
   </div>
 </div>
 
+<!-- Parse SDK / Back4App -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/parse/4.3.0/parse.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/parse-service.js"></script>
+
 <script>
-// ========== DATA LAYER ==========
-function getEnquiries() {
-  return JSON.parse(localStorage.getItem('gt_enquiries') || '[]');
+// ========== DATA LAYER (Back4App) ==========
+let cachedEnquiries = [];
+
+async function fetchEnquiries() {
+  cachedEnquiries = await ParseService.getEnquiries();
+  return cachedEnquiries;
 }
-function saveEnquiries(data) {
-  localStorage.setItem('gt_enquiries', JSON.stringify(data));
+
+async function updateEnquiryStatus(id, status) {
+  await ParseService.updateEnquiryStatus(id, status);
+  await fetchAndRender();
 }
-function updateEnquiryStatus(id, status) {
-  const data = getEnquiries();
-  const item = data.find(e => e.id === id);
-  if (item) { item.status = status; saveEnquiries(data); }
-  render();
+
+async function deleteEnquiry(id) {
+  await ParseService.deleteEnquiry(id);
+  await fetchAndRender();
 }
-function deleteEnquiry(id) {
-  const data = getEnquiries().filter(e => e.id !== id);
-  saveEnquiries(data);
+
+async function fetchAndRender() {
+  await fetchEnquiries();
   render();
 }
 
@@ -865,7 +874,7 @@ document.getElementById('current-date').textContent = new Date().toLocaleDateStr
 
 // ========== RENDER ==========
 function render() {
-  const all = getEnquiries();
+  const all = cachedEnquiries;
 
   // Stats
   document.getElementById('stat-total').textContent = all.length;
@@ -926,7 +935,7 @@ function render() {
     const typeLabel = e.type === 'grow' ? 'Growing' : 'Lease';
     const cropOrLand = e.type === 'grow' ? (e.crop || '--') : (e.village || '--');
     const acres = e.acres || e.acreage || '--';
-    const amount = e.type === 'grow' && e.estimatedInvestment ? '₹' + Number(e.estimatedInvestment).toLocaleString('en-IN') : '--';
+    const amount = e.type === 'grow' && e.estimatedInvestment ? '\u20b9' + Number(e.estimatedInvestment).toLocaleString('en-IN') : '--';
 
     return `<tr onclick="openModal('${e.id}')">
       <td>
@@ -991,8 +1000,7 @@ document.getElementById('search-input').addEventListener('input', (e) => {
 
 // ========== MODAL ==========
 function openModal(id) {
-  const data = getEnquiries();
-  const e = data.find(item => item.id === id);
+  const e = cachedEnquiries.find(item => item.id === id);
   if (!e) return;
   currentModalId = id;
 
@@ -1024,7 +1032,7 @@ function openModal(id) {
       </div>
       <div class="modal-row">
         <div class="modal-field"><div class="modal-field-label">Preferred Variety</div><div class="modal-field-value">${e.preferredVariety || '--'}</div></div>
-        <div class="modal-field"><div class="modal-field-label">Estimated Investment</div><div class="modal-field-value" style="color:var(--forest); font-family:'DM Serif Display',serif;">${e.estimatedInvestment ? '₹' + Number(e.estimatedInvestment).toLocaleString('en-IN') : '--'}</div></div>
+        <div class="modal-field"><div class="modal-field-label">Estimated Investment</div><div class="modal-field-value" style="color:var(--forest); font-family:'DM Serif Display',serif;">${e.estimatedInvestment ? '\u20b9' + Number(e.estimatedInvestment).toLocaleString('en-IN') : '--'}</div></div>
       </div>
       ${e.notes ? `<div class="modal-divider"></div><div class="modal-field"><div class="modal-field-label">Additional Notes</div><div class="modal-field-value">${e.notes}</div></div>` : ''}
       <div class="modal-divider"></div>
@@ -1077,7 +1085,7 @@ document.getElementById('modal-overlay').addEventListener('click', (e) => {
 
 // ========== EXPORT CSV ==========
 function exportCSV() {
-  const data = getEnquiries();
+  const data = cachedEnquiries;
   if (!data.length) { alert('No data to export.'); return; }
   const headers = ['Type','Name','Phone','Email','Crop','Village','Acres','Soil','Irrigation','Land','Season','Variety','Investment','Notes','Status','Date'];
   const rows = data.map(e => [
@@ -1098,7 +1106,9 @@ function exportCSV() {
 }
 
 // ========== INIT ==========
-render();
+// Show loading state
+document.getElementById('table-body').innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;opacity:0.6;">Loading enquiries from server...</td></tr>';
+fetchAndRender();
 </script>
 
 </body>
