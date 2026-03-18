@@ -2139,49 +2139,11 @@ a { text-decoration: none; color: inherit; }
 <section class="section testimonials" id="testimonials">
   <div class="container">
     <div class="section-header section-header-center reveal">
-      <div class="section-label">Stories</div>
-      <h2 class="section-title">Rooted in <em>trust.</em></h2>
-      <p class="section-desc">Hear from the customers and farmers who make GrowTogether a thriving community.</p>
+      <div class="section-label" id="testimonials-section-label">Stories</div>
+      <h2 class="section-title" id="testimonials-section-title">Rooted in <em>trust.</em></h2>
+      <p class="section-desc" id="testimonials-section-desc">Hear from the customers and farmers who make GrowTogether a thriving community.</p>
     </div>
-    <div class="testimonials-grid">
-
-      <div class="testimonial-card reveal">
-        <span class="testimonial-type type-customer">Customer</span>
-        <p class="testimonial-text">Living in Hyderabad, I never imagined I could grow my own vegetables. GrowTogether gave me a 2-acre tomato plot in Siddipet and a farmer who sends me weekly photo updates. The freshness is unbeatable.</p>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar" style="background:linear-gradient(135deg, #a8c5ab, #7a9e7e);">&#x1F469;</div>
-          <div class="testimonial-author-info">
-            <h5>Ananya Reddy</h5>
-            <span>Home Chef, Hyderabad</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="testimonial-card reveal reveal-delay-1">
-        <span class="testimonial-type type-farmer">Farmer</span>
-        <p class="testimonial-text">After years of selling at the local mandi, GrowTogether changed the game. I get matched with customers who value quality, I grow on well-irrigated land, and I earn 40% more than my previous arrangement.</p>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar" style="background:linear-gradient(135deg, #d4956a, #c2703e);">&#x1F468;</div>
-          <div class="testimonial-author-info">
-            <h5>Narasimha Goud</h5>
-            <span>Farmer, Dubbak, 9 years</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="testimonial-card reveal reveal-delay-2">
-        <span class="testimonial-type type-customer">Customer</span>
-        <p class="testimonial-text">We ordered turmeric for our Ayurvedic products business. The dashboard tracking was incredible — we knew exactly when to expect our harvest. The quality exceeded wholesale market supplies by far.</p>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar" style="background:linear-gradient(135deg, #b19cd9, #7b5ea7);">&#x1F469;</div>
-          <div class="testimonial-author-info">
-            <h5>Priya Sharma</h5>
-            <span>Founder, Veda Naturals</span>
-          </div>
-        </div>
-      </div>
-
-    </div>
+    <div class="testimonials-grid" id="testimonials-grid"></div>
   </div>
 </section>
 
@@ -2438,6 +2400,59 @@ async function submitLeaseForm(form) {
     window.location.href = 'grow.html?crop=' + encodeURIComponent(cropName);
   });
   // Observe newly rendered product cards for scroll-reveal animation
+  if (typeof observer !== 'undefined') {
+    grid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  }
+})();
+
+// Render testimonial cards from admin settings
+(function renderTestimonials() {
+  const AVATAR_GRADIENTS = {
+    green:  'linear-gradient(135deg, #a8c5ab, #7a9e7e)',
+    orange: 'linear-gradient(135deg, #d4956a, #c2703e)',
+    purple: 'linear-gradient(135deg, #b19cd9, #7b5ea7)',
+    blue:   'linear-gradient(135deg, #91b8d8, #5b8fb9)',
+    gold:   'linear-gradient(135deg, #d4a84b, #b87c2a)'
+  };
+  const DEFAULT_TESTIMONIALS = {
+    sectionLabel: 'Stories',
+    sectionTitle: 'Rooted in trust.',
+    sectionDesc: 'Hear from the customers and farmers who make GrowTogether a thriving community.',
+    items: [
+      { id: 'tm-1', type: 'customer', text: 'Living in Hyderabad, I never imagined I could grow my own vegetables. GrowTogether gave me a 2-acre tomato plot in Siddipet and a farmer who sends me weekly photo updates. The freshness is unbeatable.', authorName: 'Ananya Reddy', authorRole: 'Home Chef, Hyderabad', emoji: '\uD83D\uDC69', gradient: 'green', visible: true },
+      { id: 'tm-2', type: 'farmer',   text: 'After years of selling at the local mandi, GrowTogether changed the game. I get matched with customers who value quality, I grow on well-irrigated land, and I earn 40% more than my previous arrangement.', authorName: 'Narasimha Goud', authorRole: 'Farmer, Dubbak, 9 years', emoji: '\uD83D\uDC68', gradient: 'orange', visible: true },
+      { id: 'tm-3', type: 'customer', text: 'We ordered turmeric for our Ayurvedic products business. The dashboard tracking was incredible — we knew exactly when to expect our harvest. The quality exceeded wholesale market supplies by far.', authorName: 'Priya Sharma', authorRole: 'Founder, Veda Naturals', emoji: '\uD83D\uDC69', gradient: 'purple', visible: true }
+    ]
+  };
+  let data = JSON.parse(localStorage.getItem('gt_testimonials') || 'null');
+  if (!data) { data = DEFAULT_TESTIMONIALS; localStorage.setItem('gt_testimonials', JSON.stringify(data)); }
+
+  // Update section header
+  const labelEl = document.getElementById('testimonials-section-label');
+  const titleEl = document.getElementById('testimonials-section-title');
+  const descEl  = document.getElementById('testimonials-section-desc');
+  if (labelEl) labelEl.textContent = data.sectionLabel || DEFAULT_TESTIMONIALS.sectionLabel;
+  if (titleEl) titleEl.textContent = data.sectionTitle || DEFAULT_TESTIMONIALS.sectionTitle;
+  if (descEl)  descEl.textContent  = data.sectionDesc  || DEFAULT_TESTIMONIALS.sectionDesc;
+
+  // Render cards
+  const grid = document.getElementById('testimonials-grid');
+  if (!grid) return;
+  const delays = ['', 'reveal-delay-1', 'reveal-delay-2', 'reveal-delay-3'];
+  const visible = (data.items || []).filter(t => t.visible !== false);
+  grid.innerHTML = visible.map((t, i) => `
+    <div class="testimonial-card reveal ${delays[i % 4]}">
+      <span class="testimonial-type type-${t.type}">${t.type === 'farmer' ? 'Farmer' : 'Customer'}</span>
+      <p class="testimonial-text">${t.text}</p>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar" style="background:${AVATAR_GRADIENTS[t.gradient] || AVATAR_GRADIENTS.green};">${t.emoji || '&#x1F464;'}</div>
+        <div class="testimonial-author-info">
+          <h5>${t.authorName}</h5>
+          <span>${t.authorRole}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
   if (typeof observer !== 'undefined') {
     grid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   }

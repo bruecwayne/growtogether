@@ -1357,6 +1357,85 @@ a { text-decoration: none; color: inherit; }
 }
 .img-clear-btn:hover { background: var(--status-rejected); color: #fff; border-color: var(--status-rejected); }
 
+/* ========== TESTIMONIALS MANAGEMENT ========== */
+.tm-admin-list { display: flex; flex-direction: column; gap: 0; }
+.tm-admin-item {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 14px 24px; border-bottom: 1px solid var(--cream-dark);
+  transition: background var(--transition);
+}
+.tm-admin-item:last-child { border-bottom: none; }
+.tm-admin-item:hover { background: var(--cream); }
+.tm-admin-avatar {
+  width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem;
+}
+.tm-admin-info { flex: 1; min-width: 0; }
+.tm-admin-name {
+  font-weight: 600; font-size: 0.9rem; color: var(--text-dark);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.tm-admin-role { font-size: 0.78rem; color: var(--text-muted); margin-top: 1px; }
+.tm-admin-snippet {
+  font-size: 0.78rem; color: var(--text-muted); margin-top: 4px;
+  overflow: hidden; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical;
+}
+.tm-admin-type {
+  font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 2px 8px; border-radius: 100px; margin-top: 3px; display: inline-block;
+}
+.tm-admin-type.type-customer { background: rgba(74,158,110,0.12); color: var(--status-approved); }
+.tm-admin-type.type-farmer   { background: rgba(212,168,75,0.12);  color: #b87c2a; }
+.tm-admin-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; padding-top: 2px; }
+.tm-form-wrap {
+  padding: 20px 24px; border-top: 1px solid var(--cream-dark); background: var(--cream-warm);
+}
+.tm-form-title { font-size: 0.85rem; font-weight: 700; color: var(--text-dark); margin-bottom: 16px; }
+.tm-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.tm-form-field { display: flex; flex-direction: column; gap: 5px; }
+.tm-form-field label {
+  font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--text-muted);
+}
+.tm-form-field input,
+.tm-form-field select,
+.tm-form-field textarea {
+  border: 1.5px solid var(--cream-dark); border-radius: 8px; padding: 8px 12px;
+  font-size: 0.88rem; color: var(--text-dark); background: var(--white);
+  font-family: inherit; outline: none; transition: border-color var(--transition);
+}
+.tm-form-field input:focus,
+.tm-form-field select:focus,
+.tm-form-field textarea:focus { border-color: var(--moss); }
+.tm-form-field textarea { resize: vertical; min-height: 80px; }
+.tm-form-field.full-width { grid-column: 1 / -1; }
+.tm-form-actions { display: flex; gap: 10px; margin-top: 16px; }
+.tm-form-cancel {
+  background: none; border: 1.5px solid var(--cream-dark); border-radius: 8px;
+  padding: 9px 20px; font-size: 0.85rem; font-weight: 600; cursor: pointer;
+  font-family: inherit; color: var(--text-muted); transition: all var(--transition);
+}
+.tm-form-cancel:hover { border-color: var(--text-muted); color: var(--text-dark); }
+.tm-section-header-fields { display: flex; flex-direction: column; gap: 10px; padding: 20px 24px; }
+.tm-section-header-fields label {
+  font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--text-muted); display: block; margin-bottom: 4px;
+}
+.tm-section-header-fields input,
+.tm-section-header-fields textarea {
+  width: 100%; box-sizing: border-box; border: 1.5px solid var(--cream-dark); border-radius: 8px;
+  padding: 8px 12px; font-size: 0.88rem; color: var(--text-dark);
+  background: var(--white); font-family: inherit; outline: none;
+  transition: border-color var(--transition);
+}
+.tm-section-header-fields input:focus,
+.tm-section-header-fields textarea:focus { border-color: var(--moss); }
+.tm-section-header-fields textarea { resize: vertical; min-height: 60px; }
+.tm-header-divider {
+  border: none; border-top: 1px solid var(--cream-dark); margin: 4px 0;
+}
+
 /* ========== RESPONSIVE ========== */
 @media (max-width: 1024px) {
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1761,6 +1840,84 @@ a { text-decoration: none; color: inherit; }
           <div class="land-form-actions">
             <button class="settings-save-btn" onclick="saveLandForm()">Save Land</button>
             <button class="land-form-cancel" onclick="closeLandForm()">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonials / Rooted in Trust -->
+      <div class="settings-section">
+        <div class="settings-section-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          Rooted in Trust
+          <button class="section-title-action" onclick="openTestimonialForm()">+ Add Testimonial</button>
+        </div>
+
+        <!-- Section header fields -->
+        <div class="tm-section-header-fields">
+          <div>
+            <label>Section Label</label>
+            <input type="text" id="tm-section-label" placeholder="e.g. Stories" maxlength="60">
+          </div>
+          <div>
+            <label>Section Title</label>
+            <input type="text" id="tm-section-title" placeholder="e.g. Rooted in trust." maxlength="100">
+          </div>
+          <div>
+            <label>Section Description</label>
+            <textarea id="tm-section-desc" placeholder="e.g. Hear from the customers and farmers..." rows="2"></textarea>
+          </div>
+          <div>
+            <button class="settings-save-btn" onclick="saveTestimonialsHeader()">Save Header</button>
+          </div>
+        </div>
+
+        <hr class="tm-header-divider">
+
+        <!-- Testimonial items list -->
+        <div id="tm-admin-list" class="tm-admin-list"></div>
+
+        <!-- Add / Edit form -->
+        <div id="tm-form-wrap" class="tm-form-wrap" style="display:none;">
+          <div class="tm-form-title" id="tm-form-title">Add Testimonial</div>
+          <input type="hidden" id="tmf-edit-id">
+          <div class="tm-form-grid">
+            <div class="tm-form-field">
+              <label>Author Name</label>
+              <input type="text" id="tmf-author-name" placeholder="e.g. Ananya Reddy">
+            </div>
+            <div class="tm-form-field">
+              <label>Author Role</label>
+              <input type="text" id="tmf-author-role" placeholder="e.g. Home Chef, Hyderabad">
+            </div>
+            <div class="tm-form-field">
+              <label>Type</label>
+              <select id="tmf-type">
+                <option value="customer">Customer</option>
+                <option value="farmer">Farmer</option>
+              </select>
+            </div>
+            <div class="tm-form-field">
+              <label>Avatar Emoji</label>
+              <input type="text" id="tmf-emoji" placeholder="e.g. 👩 or 👨" maxlength="4">
+            </div>
+            <div class="tm-form-field">
+              <label>Avatar Color</label>
+              <select id="tmf-gradient">
+                <option value="green">Green</option>
+                <option value="orange">Orange / Terracotta</option>
+                <option value="purple">Purple</option>
+                <option value="blue">Blue</option>
+                <option value="gold">Gold</option>
+              </select>
+            </div>
+            <div class="tm-form-field full-width">
+              <label>Testimonial Text</label>
+              <textarea id="tmf-text" placeholder="What did they say about GrowTogether?" rows="3"></textarea>
+            </div>
+          </div>
+          <div class="tm-form-actions">
+            <button class="settings-save-btn" onclick="saveTestimonialForm()">Save Testimonial</button>
+            <button class="tm-form-cancel" onclick="closeTestimonialForm()">Cancel</button>
           </div>
         </div>
       </div>
@@ -2742,11 +2899,157 @@ function saveHeroBadge() {
   setTimeout(() => { btn.textContent = 'Save'; btn.style.background = ''; }, 2000);
 }
 
+// ========== TESTIMONIALS ==========
+const AVATAR_GRADIENTS_ADMIN = {
+  green:  'linear-gradient(135deg, #a8c5ab, #7a9e7e)',
+  orange: 'linear-gradient(135deg, #d4956a, #c2703e)',
+  purple: 'linear-gradient(135deg, #b19cd9, #7b5ea7)',
+  blue:   'linear-gradient(135deg, #91b8d8, #5b8fb9)',
+  gold:   'linear-gradient(135deg, #d4a84b, #b87c2a)'
+};
+const DEFAULT_TESTIMONIALS_ADMIN = {
+  sectionLabel: 'Stories',
+  sectionTitle: 'Rooted in trust.',
+  sectionDesc: 'Hear from the customers and farmers who make GrowTogether a thriving community.',
+  items: [
+    { id: 'tm-1', type: 'customer', text: 'Living in Hyderabad, I never imagined I could grow my own vegetables. GrowTogether gave me a 2-acre tomato plot in Siddipet and a farmer who sends me weekly photo updates. The freshness is unbeatable.', authorName: 'Ananya Reddy', authorRole: 'Home Chef, Hyderabad', emoji: '👩', gradient: 'green', visible: true },
+    { id: 'tm-2', type: 'farmer',   text: 'After years of selling at the local mandi, GrowTogether changed the game. I get matched with customers who value quality, I grow on well-irrigated land, and I earn 40% more than my previous arrangement.', authorName: 'Narasimha Goud', authorRole: 'Farmer, Dubbak, 9 years', emoji: '👨', gradient: 'orange', visible: true },
+    { id: 'tm-3', type: 'customer', text: 'We ordered turmeric for our Ayurvedic products business. The dashboard tracking was incredible — we knew exactly when to expect our harvest. The quality exceeded wholesale market supplies by far.', authorName: 'Priya Sharma', authorRole: 'Founder, Veda Naturals', emoji: '👩', gradient: 'purple', visible: true }
+  ]
+};
+
+function getTestimonials() {
+  const saved = localStorage.getItem('gt_testimonials');
+  if (!saved) { localStorage.setItem('gt_testimonials', JSON.stringify(DEFAULT_TESTIMONIALS_ADMIN)); return JSON.parse(JSON.stringify(DEFAULT_TESTIMONIALS_ADMIN)); }
+  return JSON.parse(saved);
+}
+function saveTestimonials(data) { localStorage.setItem('gt_testimonials', JSON.stringify(data)); }
+
+function renderTestimonialsAdmin() {
+  const data = getTestimonials();
+  const list = document.getElementById('tm-admin-list');
+  if (!list) return;
+  if (!data.items || data.items.length === 0) {
+    list.innerHTML = '<div style="padding:20px 24px;color:var(--text-muted);font-size:0.85rem;">No testimonials yet. Click + Add Testimonial to get started.</div>';
+    return;
+  }
+  list.innerHTML = data.items.map(t => `
+    <div class="tm-admin-item" data-id="${t.id}">
+      <div class="tm-admin-avatar" style="background:${AVATAR_GRADIENTS_ADMIN[t.gradient] || AVATAR_GRADIENTS_ADMIN.green};">${t.emoji || '👤'}</div>
+      <div class="tm-admin-info">
+        <div class="tm-admin-name">${t.authorName}</div>
+        <div class="tm-admin-role">${t.authorRole}</div>
+        <span class="tm-admin-type type-${t.type}">${t.type === 'farmer' ? 'Farmer' : 'Customer'}</span>
+        <div class="tm-admin-snippet">${t.text}</div>
+      </div>
+      <div class="tm-admin-actions">
+        <label class="land-toggle-label">
+          <input type="checkbox" ${t.visible !== false ? 'checked' : ''} onchange="toggleTestimonialVisibility('${t.id}', this.checked)"> Show
+        </label>
+        <button class="land-action-btn" onclick="openTestimonialForm('${t.id}')">Edit</button>
+        <button class="land-action-btn delete" onclick="deleteTestimonial('${t.id}')">Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openTestimonialForm(id) {
+  const data = getTestimonials();
+  const wrap = document.getElementById('tm-form-wrap');
+  const titleEl = document.getElementById('tm-form-title');
+  document.getElementById('tmf-edit-id').value = id || '';
+  if (id) {
+    const t = data.items.find(x => x.id === id);
+    if (!t) return;
+    titleEl.textContent = 'Edit Testimonial';
+    document.getElementById('tmf-author-name').value = t.authorName || '';
+    document.getElementById('tmf-author-role').value = t.authorRole || '';
+    document.getElementById('tmf-type').value = t.type || 'customer';
+    document.getElementById('tmf-emoji').value = t.emoji || '';
+    document.getElementById('tmf-gradient').value = t.gradient || 'green';
+    document.getElementById('tmf-text').value = t.text || '';
+  } else {
+    titleEl.textContent = 'Add Testimonial';
+    document.getElementById('tmf-author-name').value = '';
+    document.getElementById('tmf-author-role').value = '';
+    document.getElementById('tmf-type').value = 'customer';
+    document.getElementById('tmf-emoji').value = '';
+    document.getElementById('tmf-gradient').value = 'green';
+    document.getElementById('tmf-text').value = '';
+  }
+  wrap.style.display = '';
+  wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function closeTestimonialForm() {
+  document.getElementById('tm-form-wrap').style.display = 'none';
+}
+
+function saveTestimonialForm() {
+  const editId = document.getElementById('tmf-edit-id').value;
+  const entry = {
+    id: editId || ('tm-' + Date.now()),
+    type: document.getElementById('tmf-type').value,
+    text: document.getElementById('tmf-text').value.trim(),
+    authorName: document.getElementById('tmf-author-name').value.trim(),
+    authorRole: document.getElementById('tmf-author-role').value.trim(),
+    emoji: document.getElementById('tmf-emoji').value.trim() || '👤',
+    gradient: document.getElementById('tmf-gradient').value,
+    visible: true
+  };
+  if (!entry.authorName || !entry.text) { alert('Author name and testimonial text are required.'); return; }
+  const data = getTestimonials();
+  if (editId) {
+    const idx = data.items.findIndex(x => x.id === editId);
+    if (idx > -1) { const vis = data.items[idx].visible; data.items[idx] = { ...entry, visible: vis }; }
+  } else {
+    data.items.push(entry);
+  }
+  saveTestimonials(data);
+  renderTestimonialsAdmin();
+  closeTestimonialForm();
+}
+
+function deleteTestimonial(id) {
+  if (!confirm('Delete this testimonial?')) return;
+  const data = getTestimonials();
+  data.items = data.items.filter(x => x.id !== id);
+  saveTestimonials(data);
+  renderTestimonialsAdmin();
+}
+
+function toggleTestimonialVisibility(id, visible) {
+  const data = getTestimonials();
+  const t = data.items.find(x => x.id === id);
+  if (t) { t.visible = visible; saveTestimonials(data); }
+}
+
+function saveTestimonialsHeader() {
+  const data = getTestimonials();
+  data.sectionLabel = document.getElementById('tm-section-label').value.trim() || DEFAULT_TESTIMONIALS_ADMIN.sectionLabel;
+  data.sectionTitle = document.getElementById('tm-section-title').value.trim() || DEFAULT_TESTIMONIALS_ADMIN.sectionTitle;
+  data.sectionDesc  = document.getElementById('tm-section-desc').value.trim()  || DEFAULT_TESTIMONIALS_ADMIN.sectionDesc;
+  saveTestimonials(data);
+  const btn = event.target;
+  btn.textContent = 'Saved!';
+  btn.style.background = 'var(--status-approved)';
+  setTimeout(() => { btn.textContent = 'Save Header'; btn.style.background = ''; }, 2000);
+}
+
+function initTestimonials() {
+  const data = getTestimonials();
+  document.getElementById('tm-section-label').value = data.sectionLabel || '';
+  document.getElementById('tm-section-title').value = data.sectionTitle || '';
+  document.getElementById('tm-section-desc').value  = data.sectionDesc  || '';
+  renderTestimonialsAdmin();
+}
+
 // ========== INIT ==========
 checkAuth();
 loadHeroBadge();
 initProducts();
 initLands();
+initTestimonials();
 </script>
 
 </body>
