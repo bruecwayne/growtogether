@@ -8,8 +8,38 @@ Parse.initialize(BACK4APP_CONFIG.APP_ID, BACK4APP_CONFIG.JS_KEY);
 Parse.serverURL = BACK4APP_CONFIG.SERVER_URL;
 
 const Enquiry = Parse.Object.extend('Enquiry');
+const SiteSettings = Parse.Object.extend('SiteSettings');
 
 const ParseService = {
+
+  // ─── SITE SETTINGS ─────────────────────────────────────
+
+  async getSetting(key) {
+    try {
+      const query = new Parse.Query(SiteSettings);
+      query.equalTo('key', key);
+      const result = await query.first();
+      return result ? result.get('value') : null;
+    } catch (error) {
+      console.error('Error getting setting:', error);
+      return null;
+    }
+  },
+
+  async setSetting(key, value) {
+    try {
+      const query = new Parse.Query(SiteSettings);
+      query.equalTo('key', key);
+      let obj = await query.first();
+      if (!obj) { obj = new SiteSettings(); obj.set('key', key); }
+      obj.set('value', value);
+      await obj.save();
+      return { success: true };
+    } catch (error) {
+      console.error('Error saving setting:', error);
+      return { success: false, error };
+    }
+  },
 
   // ─── CREATE ────────────────────────────────────────────
 

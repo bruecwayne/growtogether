@@ -3085,21 +3085,40 @@ function initLands() {
   renderLandAdmin();
 }
 
-function loadHeroBadge() {
-  const saved = localStorage.getItem('gt_hero_badge');
+async function loadHeroBadge() {
   const input = document.getElementById('hero-badge-input');
-  if (input && saved) input.value = saved;
+  if (!input) return;
+  // Try Parse first, fall back to localStorage
+  const value = await ParseService.getSetting('hero_badge');
+  if (value) {
+    input.value = value;
+    localStorage.setItem('gt_hero_badge', value); // keep local in sync
+  } else {
+    const local = localStorage.getItem('gt_hero_badge');
+    if (local) input.value = local;
+  }
 }
 
-function saveHeroBadge() {
+async function saveHeroBadge() {
   const input = document.getElementById('hero-badge-input');
   const text = input.value.trim();
   if (!text) return;
-  localStorage.setItem('gt_hero_badge', text);
   const btn = document.querySelector('[onclick="saveHeroBadge()"]');
-  btn.textContent = 'Saved!';
-  btn.style.background = 'var(--status-approved)';
-  setTimeout(() => { btn.textContent = 'Save'; btn.style.background = ''; }, 2000);
+  btn.textContent = 'Saving…';
+  btn.disabled = true;
+  const result = await ParseService.setSetting('hero_badge', text);
+  if (result.success) {
+    localStorage.setItem('gt_hero_badge', text); // keep local in sync as cache
+    btn.textContent = 'Saved!';
+    btn.style.background = 'var(--status-approved)';
+  } else {
+    // Fallback: save to localStorage only
+    localStorage.setItem('gt_hero_badge', text);
+    btn.textContent = 'Saved (offline)';
+    btn.style.background = 'var(--status-pending)';
+  }
+  btn.disabled = false;
+  setTimeout(() => { btn.textContent = 'Save'; btn.style.background = ''; }, 2500);
 }
 
 // ========== FARMERS ==========

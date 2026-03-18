@@ -2670,12 +2670,22 @@ async function submitLeaseForm(form) {
   }
 })();
 
-// Load hero badge text from admin settings
-(function loadHeroBadge() {
-  const savedBadge = localStorage.getItem('gt_hero_badge');
-  if (savedBadge) {
-    const el = document.getElementById('hero-badge-text');
-    if (el) el.textContent = savedBadge;
+// Load hero badge text — from Parse backend, with localStorage cache fallback
+(async function loadHeroBadge() {
+  const el = document.getElementById('hero-badge-text');
+  if (!el) return;
+  // Show cached value instantly while fetch is in flight
+  const cached = localStorage.getItem('gt_hero_badge');
+  if (cached) el.textContent = cached;
+  // Then fetch live value from Parse and update
+  try {
+    const value = await ParseService.getSetting('hero_badge');
+    if (value) {
+      el.textContent = value;
+      localStorage.setItem('gt_hero_badge', value); // refresh local cache
+    }
+  } catch (e) {
+    // Network unavailable — cached value already shown, nothing more to do
   }
 })();
 
