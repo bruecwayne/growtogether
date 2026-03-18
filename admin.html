@@ -1095,10 +1095,20 @@ a { text-decoration: none; color: inherit; }
   letter-spacing: 0.08em;
   color: var(--text-muted);
   border-bottom: 1px solid var(--cream-dark);
+  cursor: pointer;
+  user-select: none;
+  transition: background var(--transition);
 }
-.settings-section-title svg { width: 15px; height: 15px; flex-shrink: 0; }
-.settings-section-title .section-title-action {
+.settings-section-title:hover { background: rgba(0,0,0,0.02); }
+.settings-section.collapsed .settings-section-title { border-bottom: none; }
+.settings-section-title > svg:first-child { width: 15px; height: 15px; flex-shrink: 0; }
+.section-title-right {
   margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.settings-section-title .section-title-action {
   background: var(--forest);
   color: #fff;
   border: none;
@@ -1112,6 +1122,20 @@ a { text-decoration: none; color: inherit; }
   transition: background var(--transition);
 }
 .settings-section-title .section-title-action:hover { background: var(--moss); }
+.collapse-chevron {
+  width: 16px; height: 16px; flex-shrink: 0; opacity: 0.45;
+  transition: transform 0.25s ease, opacity 0.2s;
+}
+.settings-section-title:hover .collapse-chevron { opacity: 0.7; }
+.settings-section.collapsed .collapse-chevron { transform: rotate(-90deg); }
+/* Collapse animation using CSS grid rows */
+.section-collapse-body {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.28s ease;
+}
+.section-collapse-inner { overflow: hidden; min-height: 0; }
+.settings-section.collapsed .section-collapse-body { grid-template-rows: 0fr; }
 .settings-section-body {
   padding: 20px 24px;
   display: flex;
@@ -1676,27 +1700,38 @@ a { text-decoration: none; color: inherit; }
     <div class="settings-content">
 
       <!-- Hero Badge -->
-      <div class="settings-section">
-        <div class="settings-section-title">
+      <div class="settings-section" id="section-hero">
+        <div class="settings-section-title" onclick="toggleSection('hero')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"/></svg>
           Hero Badge Text
-        </div>
-        <div class="settings-section-body">
-          <div class="settings-row">
-            <input type="text" id="hero-badge-input" class="settings-input" placeholder="Now accepting spring crops" maxlength="80">
-            <button class="settings-save-btn" onclick="saveHeroBadge()">Save</button>
+          <div class="section-title-right">
+            <svg class="collapse-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
           </div>
-          <div class="settings-hint">Shown on the homepage banner</div>
+        </div>
+        <div class="section-collapse-body">
+          <div class="section-collapse-inner">
+            <div class="settings-section-body">
+              <div class="settings-row">
+                <input type="text" id="hero-badge-input" class="settings-input" placeholder="Now accepting spring crops" maxlength="80">
+                <button class="settings-save-btn" onclick="saveHeroBadge()">Save</button>
+              </div>
+              <div class="settings-hint">Shown on the homepage banner</div>
+            </div>
+          </div>
         </div>
       </div>
 
       <!-- Products Visibility -->
-      <div class="settings-section">
-        <div class="settings-section-title">
+      <div class="settings-section" id="section-products">
+        <div class="settings-section-title" onclick="toggleSection('products')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           Browse Products
-          <button class="section-title-action" onclick="openProductForm()">+ Add Product</button>
+          <div class="section-title-right">
+            <button class="section-title-action" onclick="event.stopPropagation(); openProductForm()">+ Add Product</button>
+            <svg class="collapse-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
         </div>
+        <div class="section-collapse-body"><div class="section-collapse-inner">
         <div id="product-admin-list" class="product-admin-list"></div>
         <div id="product-form-wrap" class="product-form-wrap" style="display:none;">
           <div class="product-form-title" id="product-form-title">Add New Product</div>
@@ -1760,15 +1795,20 @@ a { text-decoration: none; color: inherit; }
             <button class="land-form-cancel" onclick="closeProductForm()">Cancel</button>
           </div>
         </div>
+        </div></div>
       </div>
 
       <!-- Land Management -->
-      <div class="settings-section">
-        <div class="settings-section-title">
+      <div class="settings-section" id="section-land">
+        <div class="settings-section-title" onclick="toggleSection('land')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
           Our Land
-          <button class="section-title-action" onclick="openLandForm()">+ Add Land</button>
+          <div class="section-title-right">
+            <button class="section-title-action" onclick="event.stopPropagation(); openLandForm()">+ Add Land</button>
+            <svg class="collapse-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
         </div>
+        <div class="section-collapse-body"><div class="section-collapse-inner">
         <div id="land-admin-list" class="land-admin-list"></div>
         <div id="land-form-wrap" class="land-form-wrap" style="display:none;">
           <div class="land-form-title" id="land-form-title">Add New Land</div>
@@ -1842,15 +1882,20 @@ a { text-decoration: none; color: inherit; }
             <button class="land-form-cancel" onclick="closeLandForm()">Cancel</button>
           </div>
         </div>
+        </div></div>
       </div>
 
       <!-- Testimonials / Rooted in Trust -->
-      <div class="settings-section">
-        <div class="settings-section-title">
+      <div class="settings-section" id="section-testimonials">
+        <div class="settings-section-title" onclick="toggleSection('testimonials')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
           Rooted in Trust
-          <button class="section-title-action" onclick="openTestimonialForm()">+ Add Testimonial</button>
+          <div class="section-title-right">
+            <button class="section-title-action" onclick="event.stopPropagation(); openTestimonialForm()">+ Add Testimonial</button>
+            <svg class="collapse-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
         </div>
+        <div class="section-collapse-body"><div class="section-collapse-inner">
 
         <!-- Section header fields -->
         <div class="tm-section-header-fields">
@@ -1920,6 +1965,7 @@ a { text-decoration: none; color: inherit; }
             <button class="tm-form-cancel" onclick="closeTestimonialForm()">Cancel</button>
           </div>
         </div>
+        </div></div>
       </div>
 
     </div>
@@ -2899,6 +2945,26 @@ function saveHeroBadge() {
   setTimeout(() => { btn.textContent = 'Save'; btn.style.background = ''; }, 2000);
 }
 
+// ========== COLLAPSIBLE SECTIONS ==========
+function toggleSection(key) {
+  const section = document.getElementById('section-' + key);
+  if (!section) return;
+  const isCollapsed = section.classList.toggle('collapsed');
+  // Persist state
+  const state = JSON.parse(localStorage.getItem('gt_section_states') || '{}');
+  state[key] = isCollapsed;
+  localStorage.setItem('gt_section_states', JSON.stringify(state));
+}
+function restoreSectionStates() {
+  const state = JSON.parse(localStorage.getItem('gt_section_states') || '{}');
+  Object.entries(state).forEach(([key, collapsed]) => {
+    if (collapsed) {
+      const section = document.getElementById('section-' + key);
+      if (section) section.classList.add('collapsed');
+    }
+  });
+}
+
 // ========== TESTIMONIALS ==========
 const AVATAR_GRADIENTS_ADMIN = {
   green:  'linear-gradient(135deg, #a8c5ab, #7a9e7e)',
@@ -3050,6 +3116,7 @@ loadHeroBadge();
 initProducts();
 initLands();
 initTestimonials();
+restoreSectionStates();
 </script>
 
 </body>
