@@ -1632,6 +1632,213 @@ a { text-decoration: none; color: inherit; }
   .footer-bottom { flex-direction: column; gap: 16px; }
   .farmers-header { flex-direction: column; gap: 24px; align-items: flex-start; }
 }
+
+/* ========== START GROWING MODAL ========== */
+.sg-overlay {
+  position: fixed; inset: 0; z-index: 9000;
+  background: rgba(10,20,15,0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.sg-overlay.open { opacity: 1; pointer-events: all; }
+.sg-modal {
+  background: var(--cream-warm);
+  border-radius: 20px;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.28);
+  width: 100%; max-width: 960px;
+  max-height: 90vh; overflow-y: auto;
+  position: relative;
+  transform: scale(0.94) translateY(16px);
+  transition: transform 0.32s cubic-bezier(0.34,1.4,0.64,1);
+}
+.sg-overlay.open .sg-modal { transform: scale(1) translateY(0); }
+.sg-close {
+  position: absolute; top: 18px; right: 18px; z-index: 10;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--cream-dark); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted); transition: all 0.2s;
+}
+.sg-close:hover { background: var(--forest); color: #fff; }
+.sg-close svg { width: 18px; height: 18px; }
+.sg-grid {
+  display: grid; grid-template-columns: 1fr 1.2fr;
+}
+/* Left panel — crop info */
+.sg-crop-panel {
+  background: linear-gradient(170deg, var(--forest-deep) 0%, var(--forest) 100%);
+  border-radius: 20px 0 0 20px;
+  padding: 0 0 32px;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.sg-crop-img {
+  width: 100%; height: 200px; position: relative;
+  background-size: cover; background-position: center;
+  flex-shrink: 0;
+}
+.sg-crop-img::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to top, var(--forest-deep) 0%, transparent 55%);
+}
+.sg-crop-name {
+  position: absolute; bottom: 18px; left: 24px; z-index: 2;
+  font-family: 'DM Serif Display', serif; font-size: 1.6rem;
+  color: var(--cream); line-height: 1.1;
+}
+.sg-crop-body { padding: 24px 28px 0; }
+.sg-crop-desc {
+  font-size: 0.88rem; color: rgba(245,240,232,0.65);
+  line-height: 1.65; margin-bottom: 20px;
+}
+.sg-crop-specs {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 1px; background: rgba(255,255,255,0.08);
+  border-radius: 10px; overflow: hidden; margin-bottom: 20px;
+}
+.sg-crop-spec {
+  background: rgba(255,255,255,0.05);
+  padding: 12px 10px; text-align: center;
+}
+.sg-crop-spec label {
+  display: block; font-size: 0.65rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  color: rgba(245,240,232,0.45); margin-bottom: 5px;
+}
+.sg-crop-spec span {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1rem; color: var(--cream);
+}
+.sg-varieties h4 {
+  font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; color: rgba(245,240,232,0.45);
+  margin-bottom: 8px; font-family: 'Source Sans 3', sans-serif;
+}
+.sg-variety-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.sg-variety-tag {
+  padding: 4px 12px; border-radius: 100px; font-size: 0.8rem;
+  background: rgba(255,255,255,0.08); color: rgba(245,240,232,0.7);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.sg-guarantee {
+  display: flex; align-items: flex-start; gap: 10px;
+  margin-top: 20px; padding: 14px 16px;
+  background: rgba(212,168,75,0.1); border-radius: 10px;
+  border: 1px solid rgba(212,168,75,0.2);
+}
+.sg-guarantee svg { color: var(--wheat); flex-shrink: 0; margin-top: 2px; }
+.sg-guarantee p { font-size: 0.8rem; color: rgba(245,240,232,0.6); margin: 0; line-height: 1.5; }
+.sg-guarantee strong { color: var(--wheat); }
+/* Right panel — form */
+.sg-form-panel {
+  padding: 40px 40px 40px 36px;
+  background: var(--white);
+  border-radius: 0 20px 20px 0;
+  position: relative;
+}
+.sg-form-header { margin-bottom: 24px; }
+.sg-form-header h3 { font-size: 1.35rem; margin-bottom: 4px; color: var(--text-dark); }
+.sg-form-header p { font-size: 0.88rem; color: var(--text-muted); }
+.sg-form { display: flex; flex-direction: column; gap: 16px; }
+.sg-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.sg-field { display: flex; flex-direction: column; gap: 6px; }
+.sg-field label {
+  font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.05em; color: var(--text-muted);
+}
+.sg-field label .req { color: var(--terracotta); margin-left: 2px; }
+.sg-field input, .sg-field select, .sg-field textarea {
+  padding: 11px 14px; border-radius: 9px;
+  border: 1.5px solid var(--cream-dark);
+  background: var(--cream-warm); color: var(--text-dark);
+  font-family: inherit; font-size: 0.9rem; outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.sg-field input::placeholder, .sg-field textarea::placeholder { color: var(--text-muted); opacity: 0.6; }
+.sg-field input:focus, .sg-field select:focus, .sg-field textarea:focus {
+  border-color: var(--wheat);
+  box-shadow: 0 0 0 3px rgba(212,168,75,0.12);
+}
+.sg-field select {
+  cursor: pointer; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%237a776e' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px;
+}
+.sg-field textarea { resize: vertical; min-height: 80px; }
+.sg-field.full-width { grid-column: 1 / -1; }
+.sg-divider { height: 1px; background: var(--cream-dark); margin: 2px 0; }
+.sg-pricing {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 18px; background: var(--cream-warm);
+  border-radius: 9px; border: 1.5px dashed var(--cream-dark);
+}
+.sg-pricing-label { font-size: 0.82rem; color: var(--text-muted); }
+.sg-pricing-note { font-size: 0.73rem; color: var(--text-muted); margin-top: 2px; }
+.sg-pricing-value {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.25rem; color: var(--forest);
+}
+.sg-submit-btn {
+  width: 100%; padding: 14px 28px; border-radius: 11px;
+  background: linear-gradient(135deg, var(--forest), var(--moss));
+  color: var(--cream); border: none; font-family: inherit;
+  font-size: 0.95rem; font-weight: 700; cursor: pointer;
+  transition: all 0.3s; display: flex; align-items: center;
+  justify-content: center; gap: 8px; margin-top: 4px;
+}
+.sg-submit-btn:hover {
+  background: linear-gradient(135deg, var(--forest-deep), var(--forest));
+  box-shadow: 0 8px 28px rgba(26,58,42,0.28); transform: translateY(-1px);
+}
+.sg-submit-btn:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
+.sg-submit-btn svg { transition: transform 0.2s; }
+.sg-submit-btn:hover:not(:disabled) svg { transform: translateX(4px); }
+/* Success state */
+.sg-success {
+  display: none; position: absolute; inset: 0;
+  background: var(--white); border-radius: 0 20px 20px 0;
+  flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 40px; z-index: 5;
+}
+.sg-success.active { display: flex; animation: sgFadeIn 0.4s ease; }
+.sg-success-icon {
+  width: 68px; height: 68px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--sage), var(--moss));
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 20px;
+}
+.sg-success-icon svg { color: #fff; width: 30px; height: 30px; }
+.sg-success h3 { font-size: 1.4rem; margin-bottom: 8px; color: var(--text-dark); }
+.sg-success p { font-size: 0.9rem; color: var(--text-muted); max-width: 320px; line-height: 1.65; }
+.sg-success-close {
+  margin-top: 24px; padding: 11px 28px; border-radius: 100px;
+  background: var(--forest); color: var(--cream);
+  font-family: inherit; font-size: 0.88rem; font-weight: 600;
+  border: none; cursor: pointer; transition: all 0.2s;
+}
+.sg-success-close:hover { background: var(--forest-deep); transform: translateY(-1px); }
+@keyframes sgFadeIn { from { opacity: 0; } to { opacity: 1; } }
+/* Dark mode adjustments */
+[data-theme="dark"] .sg-form-panel { background: var(--white); }
+[data-theme="dark"] .sg-field input,
+[data-theme="dark"] .sg-field select,
+[data-theme="dark"] .sg-field textarea {
+  background: var(--cream); border-color: var(--cream-dark); color: var(--text-dark);
+}
+[data-theme="dark"] .sg-success { background: var(--white); }
+[data-theme="dark"] .sg-pricing { background: var(--cream); }
+/* Responsive */
+@media (max-width: 760px) {
+  .sg-grid { grid-template-columns: 1fr; }
+  .sg-crop-panel { border-radius: 20px 20px 0 0; }
+  .sg-form-panel { border-radius: 0 0 20px 20px; padding: 28px 24px; }
+  .sg-form-row { grid-template-columns: 1fr; }
+  .sg-modal { max-height: 95vh; }
+}
 </style>
 </head>
 <body>
@@ -2157,7 +2364,7 @@ a { text-decoration: none; color: inherit; }
       <h2>Ready to grow <em>something?</em></h2>
       <p>Join thousands of customers and farmers building a more connected food system, one harvest at a time.</p>
       <div class="cta-buttons">
-        <a href="grow.html" class="btn btn-wheat btn-lg">Start Growing Today</a>
+        <button onclick="openStartGrowing()" class="btn btn-wheat btn-lg">Start Growing Today</button>
         <a href="#" class="btn btn-lg" style="border: 1.5px solid rgba(245,240,232,0.3); color: var(--cream);">Apply as a Farmer</a>
       </div>
     </div>
@@ -2400,13 +2607,13 @@ async function submitLeaseForm(form) {
       </div>
     </div>
   `).join('');
-  // Event delegation for CTA buttons (cards are dynamically rendered)
+  // Event delegation for CTA buttons — open Start Growing modal
   grid.addEventListener('click', function(e) {
     const btn = e.target.closest('.product-cta');
     if (!btn) return;
     const card = btn.closest('.product-card');
     const cropName = card.querySelector('.product-name').textContent;
-    window.location.href = 'grow.html?crop=' + encodeURIComponent(cropName);
+    openStartGrowing(cropName);
   });
   // Observe newly rendered product cards for scroll-reveal animation
   if (typeof observer !== 'undefined') {
@@ -2488,6 +2695,157 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     }
   });
 });
+
+// ===== START GROWING MODAL =====
+// Crop descriptions for modal
+const SG_CROP_DESCS = {
+  'Hybrid Tomatoes': 'Premium hybrid tomatoes on black cotton soil in Siddipet. High-yield varieties suited to Telangana\'s climate, with expert irrigation from the Kaleshwaram project.',
+  'Turmeric': 'Nizamabad-quality turmeric grown in the rich soils of Siddipet. Traditional cultivation methods with modern irrigation for high curcumin content.',
+  'Red Chillies': 'Fiery red chillies grown in Telangana\'s ideal climate. Teja and Byadgi varieties known for vibrant colour and pungency.',
+  'Leafy Greens': 'Quick-growing leafy vegetables harvested fresh from organic plots. Multiple cutting cycles ensure sustained supply.',
+  'Paddy (Rice)': 'Premium paddy including the prized Telangana Sona, cultivated in canal-irrigated fields via the KLIP project.',
+  'Vegetables': 'A diverse mix of vegetables suited to Siddipet\'s climate. Integrated pest management for chemical-free produce.',
+  'Sunflower': 'Oil-rich sunflower varieties on red loamy and alluvial soils. Low water requirement with strong demand for cold-pressed oil.',
+  'Maize (Corn)': 'High-yield drought-resistant maize for grain and cattle feed markets. Excellent returns in Telangana\'s semi-arid conditions.'
+};
+
+let sgCurrentPrice = 0;
+
+function openStartGrowing(cropName) {
+  // Get products from localStorage
+  const products = JSON.parse(localStorage.getItem('gt_products') || '[]');
+  const lands = JSON.parse(localStorage.getItem('gt_lands') || '[]');
+
+  // Populate land select
+  const landSelect = document.getElementById('sg-land-select');
+  landSelect.innerHTML = '<option value="" disabled selected>Select location</option>';
+  lands.filter(l => l.visible !== false).forEach(l => {
+    const opt = document.createElement('option');
+    opt.textContent = l.name + (l.acreage ? ' — ' + l.acreage : '');
+    opt.value = l.name;
+    landSelect.appendChild(opt);
+  });
+  // Fallback if no lands
+  if (landSelect.options.length <= 1) {
+    ['Siddipet Central Farm — 220 acres','Dubbak Highlands — 180 acres','Gajwel Green Belt — 280 acres','Husnabad Fields — 170 acres'].forEach(v => {
+      const opt = document.createElement('option'); opt.textContent = v; opt.value = v; landSelect.appendChild(opt);
+    });
+  }
+
+  // Find product data
+  const product = cropName ? products.find(p => p.name === cropName) : null;
+  const defaultImg = 'https://images.pexels.com/photos/440731/pexels-photo-440731.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop';
+
+  // Set crop image
+  const imgEl = document.getElementById('sg-crop-img');
+  const imgUrl = (product && product.imageUrl) ? product.imageUrl : defaultImg;
+  imgEl.style.background = 'linear-gradient(to top, rgba(10,20,15,0.7) 0%, transparent 55%), url(\'' + imgUrl + '\')';
+  imgEl.style.backgroundSize = 'cover';
+  imgEl.style.backgroundPosition = 'center';
+
+  // Set crop name
+  document.getElementById('sg-crop-name').textContent = cropName || 'Choose Your Crop';
+  document.getElementById('sg-crop-hidden').value = cropName || '';
+
+  // Set specs
+  document.getElementById('sg-crop-time').textContent = (product && product.growTime) ? product.growTime : '--';
+
+  // Parse price for live estimate
+  let rawPrice = 0;
+  if (product && product.perAcre) {
+    rawPrice = parseInt(product.perAcre.replace(/[^\d]/g, '')) || 0;
+  }
+  sgCurrentPrice = rawPrice;
+  document.getElementById('sg-crop-price').textContent = (product && product.perAcre) ? product.perAcre : '--';
+  document.getElementById('sg-crop-yield').textContent = (product && product.yield) ? product.yield : '--';
+
+  // Description
+  const desc = SG_CROP_DESCS[cropName] || 'Tell us what you\'d like to grow and we\'ll match you with the right farmer and land.';
+  document.getElementById('sg-crop-desc').textContent = desc;
+
+  // Varieties — parse from product.variety string
+  const varietiesSection = document.getElementById('sg-varieties-section');
+  const varietyTags = document.getElementById('sg-variety-tags');
+  if (product && product.variety) {
+    const varieties = product.variety.split('•').map(v => v.trim()).filter(Boolean);
+    varietyTags.innerHTML = varieties.map(v => `<span class="sg-variety-tag">${v}</span>`).join('');
+    varietiesSection.style.display = '';
+  } else {
+    varietiesSection.style.display = 'none';
+  }
+
+  // Pre-fill variety input with first variety
+  const varietyInput = document.getElementById('sg-variety-input');
+  if (product && product.variety) {
+    varietyInput.placeholder = product.variety.split('•')[0].trim() || 'e.g. Arka Rakshak';
+  } else {
+    varietyInput.placeholder = 'e.g. Arka Rakshak';
+  }
+
+  // Reset form & success
+  document.getElementById('sg-form').reset();
+  document.getElementById('sg-success').classList.remove('active');
+  document.getElementById('sg-estimated-price').textContent = '--';
+  const submitBtn = document.getElementById('sg-submit-btn');
+  submitBtn.textContent = 'Submit Growing Request';
+  submitBtn.disabled = false;
+
+  // Open overlay
+  document.getElementById('sg-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeStartGrowing() {
+  document.getElementById('sg-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function handleSgOverlayClick(e) {
+  if (e.target === document.getElementById('sg-overlay')) closeStartGrowing();
+}
+
+// Live price estimate
+document.getElementById('sg-acres').addEventListener('input', function() {
+  const acres = parseInt(this.value) || 0;
+  const priceEl = document.getElementById('sg-estimated-price');
+  priceEl.textContent = (acres > 0 && sgCurrentPrice > 0)
+    ? '₹' + (acres * sgCurrentPrice).toLocaleString('en-IN')
+    : '--';
+});
+
+// Form submit
+async function submitStartGrowing(e) {
+  e.preventDefault();
+  const form = document.getElementById('sg-form');
+  const btn = document.getElementById('sg-submit-btn');
+  btn.textContent = 'Submitting…';
+  btn.disabled = true;
+
+  const cropName = document.getElementById('sg-crop-hidden').value;
+  const acres = parseInt(form.querySelector('[name="acres"]').value) || 0;
+
+  await ParseService.createEnquiry({
+    type: 'grow',
+    status: 'pending',
+    name: form.querySelector('[name="name"]').value,
+    phone: form.querySelector('[name="phone"]').value,
+    email: form.querySelector('[name="email"]').value,
+    crop: cropName || 'Custom',
+    acres: acres,
+    preferredLand: form.querySelector('[name="preferredLand"]').value,
+    preferredVariety: form.querySelector('[name="preferredVariety"]').value,
+    preferredSeason: form.querySelector('[name="preferredSeason"]').value,
+    estimatedInvestment: acres * sgCurrentPrice,
+    notes: form.querySelector('[name="notes"]').value
+  });
+
+  document.getElementById('sg-success').classList.add('active');
+}
+
+// Escape key closes modal
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeStartGrowing();
+});
 </script>
 
 <style>
@@ -2501,6 +2859,121 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 }
 </style>
 
+<!-- ===== START GROWING MODAL ===== -->
+<div class="sg-overlay" id="sg-overlay" onclick="handleSgOverlayClick(event)">
+  <div class="sg-modal" role="dialog" aria-modal="true" aria-label="Start Growing">
+
+    <button class="sg-close" onclick="closeStartGrowing()" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+
+    <div class="sg-grid">
+
+      <!-- Left: Crop Info -->
+      <div class="sg-crop-panel">
+        <div class="sg-crop-img" id="sg-crop-img">
+          <span class="sg-crop-name" id="sg-crop-name">Your Crop</span>
+        </div>
+        <div class="sg-crop-body">
+          <p class="sg-crop-desc" id="sg-crop-desc">Tell us what you'd like to grow and we'll match you with the right farmer and land. Our team will work with you to find the best crop for the current season.</p>
+          <div class="sg-crop-specs">
+            <div class="sg-crop-spec"><label>Grow Time</label><span id="sg-crop-time">--</span></div>
+            <div class="sg-crop-spec"><label>Per Acre</label><span id="sg-crop-price">--</span></div>
+            <div class="sg-crop-spec"><label>Yield</label><span id="sg-crop-yield">--</span></div>
+          </div>
+          <div class="sg-varieties" id="sg-varieties-section">
+            <h4>Available Varieties</h4>
+            <div class="sg-variety-tags" id="sg-variety-tags"></div>
+          </div>
+          <div class="sg-guarantee">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <p><strong>Harvest Guarantee</strong> — If your crop fails due to natural causes, we replant at no cost or refund 100% of your investment.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Order Form -->
+      <div class="sg-form-panel">
+        <div class="sg-form-header">
+          <h3>Place Your Growing Order</h3>
+          <p>Our team confirms availability and connects you with a farmer within 24 hours.</p>
+        </div>
+
+        <form class="sg-form" id="sg-form" onsubmit="submitStartGrowing(event)">
+          <input type="hidden" id="sg-crop-hidden" name="crop">
+          <div class="sg-form-row">
+            <div class="sg-field">
+              <label>Full Name <span class="req">*</span></label>
+              <input type="text" name="name" placeholder="e.g. Rajesh Kumar" required>
+            </div>
+            <div class="sg-field">
+              <label>Phone Number <span class="req">*</span></label>
+              <input type="tel" name="phone" placeholder="e.g. 9876543210" required>
+            </div>
+          </div>
+          <div class="sg-field">
+            <label>Email Address</label>
+            <input type="email" name="email" placeholder="e.g. rajesh@example.com">
+          </div>
+          <div class="sg-divider"></div>
+          <div class="sg-form-row">
+            <div class="sg-field">
+              <label>Preferred Land <span class="req">*</span></label>
+              <select name="preferredLand" id="sg-land-select" required>
+                <option value="" disabled selected>Select location</option>
+              </select>
+            </div>
+            <div class="sg-field">
+              <label>Number of Acres <span class="req">*</span></label>
+              <input type="number" name="acres" id="sg-acres" placeholder="e.g. 5" min="1" max="50" required>
+            </div>
+          </div>
+          <div class="sg-form-row">
+            <div class="sg-field">
+              <label>Preferred Variety</label>
+              <input type="text" name="preferredVariety" id="sg-variety-input" placeholder="e.g. Arka Rakshak">
+            </div>
+            <div class="sg-field">
+              <label>Preferred Season</label>
+              <select name="preferredSeason">
+                <option value="" disabled selected>Select season</option>
+                <option>Kharif (June–Oct)</option>
+                <option>Rabi (Nov–Mar)</option>
+                <option>Zaid (Mar–Jun)</option>
+              </select>
+            </div>
+          </div>
+          <div class="sg-field">
+            <label>Additional Notes</label>
+            <textarea name="notes" placeholder="Any specific requirements — organic preferences, delivery needs, etc."></textarea>
+          </div>
+          <div class="sg-pricing">
+            <div>
+              <div class="sg-pricing-label">Estimated Investment</div>
+              <div class="sg-pricing-note">Based on selected crop &times; acres</div>
+            </div>
+            <div class="sg-pricing-value" id="sg-estimated-price">--</div>
+          </div>
+          <button type="submit" class="sg-submit-btn" id="sg-submit-btn">
+            Submit Growing Request
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </form>
+
+        <!-- Success state -->
+        <div class="sg-success" id="sg-success">
+          <div class="sg-success-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <h3>Request Submitted!</h3>
+          <p>Your growing request is in. Our team will contact you within 24 hours to confirm your order and assign a farmer.</p>
+          <button class="sg-success-close" onclick="closeStartGrowing()">Back to Browsing</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
