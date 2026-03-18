@@ -687,6 +687,130 @@ a { text-decoration: none; color: inherit; }
   font-size: 1.2rem;
 }
 
+/* Farmer CTA below steps */
+.how-farmer-cta {
+  display: none;
+  text-align: center;
+  margin-top: 48px;
+}
+.how-farmer-cta.visible { display: block; }
+.how-farmer-cta p {
+  color: rgba(245,240,232,0.55);
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+}
+.btn-farmer-apply {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 14px 34px;
+  background: var(--wheat); color: var(--forest-deep);
+  border: none; border-radius: 100px;
+  font-family: inherit; font-size: 0.95rem; font-weight: 700;
+  cursor: pointer; transition: all 0.25s ease;
+  letter-spacing: 0.01em;
+}
+.btn-farmer-apply:hover { background: var(--wheat-light); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(212,168,75,0.3); }
+
+/* Farmer Application Modal */
+.farmer-modal-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 2000;
+  background: rgba(10,24,10,0.82);
+  backdrop-filter: blur(6px);
+  align-items: center; justify-content: center;
+  padding: 20px;
+}
+.farmer-modal-overlay.open { display: flex; }
+.farmer-modal {
+  background: var(--forest-mid, #1a2e1a);
+  border: 1px solid rgba(212,168,75,0.2);
+  border-radius: var(--radius-lg);
+  width: 100%; max-width: 580px;
+  max-height: 90vh; overflow-y: auto;
+  padding: 40px;
+  animation: modalIn 0.3s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+@keyframes modalIn { from { opacity:0; transform:scale(0.94) translateY(20px); } to { opacity:1; transform:scale(1) translateY(0); } }
+.farmer-modal-head {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 28px; gap: 16px;
+}
+.farmer-modal-head h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.6rem; color: var(--cream); line-height: 1.2;
+}
+.farmer-modal-head h2 em { color: var(--wheat); font-style: normal; }
+.farmer-modal-head p { color: rgba(245,240,232,0.55); font-size: 0.85rem; margin-top: 6px; line-height: 1.5; }
+.farmer-modal-close {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 50%; width: 34px; height: 34px; flex-shrink: 0;
+  color: rgba(245,240,232,0.5); font-size: 1.1rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.farmer-modal-close:hover { background: rgba(220,38,38,0.15); color: #f87171; border-color: rgba(220,38,38,0.3); }
+
+.farmer-form { display: flex; flex-direction: column; gap: 16px; }
+.f-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.f-field { display: flex; flex-direction: column; gap: 6px; }
+.f-field.full { grid-column: 1/-1; }
+.f-label {
+  font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; color: rgba(212,168,75,0.7);
+}
+.f-ctrl {
+  width: 100%; padding: 10px 14px;
+  background: rgba(255,255,255,0.04); border: 1.5px solid rgba(255,255,255,0.1);
+  border-radius: 10px; font-family: inherit; font-size: 0.875rem;
+  color: var(--cream); outline: none; transition: border-color 0.2s;
+}
+.f-ctrl:focus { border-color: var(--wheat); }
+.f-ctrl::placeholder { color: rgba(245,240,232,0.3); }
+.f-ctrl option { background: #1a2e1a; }
+select.f-ctrl { cursor: pointer; }
+textarea.f-ctrl { resize: vertical; min-height: 80px; }
+
+.crop-check-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+}
+.crop-check-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 12px; background: rgba(255,255,255,0.04);
+  border: 1.5px solid rgba(255,255,255,0.08); border-radius: 8px;
+  cursor: pointer; transition: all 0.2s;
+}
+.crop-check-item:hover { border-color: rgba(212,168,75,0.3); }
+.crop-check-item input[type="checkbox"] { accent-color: var(--wheat); width: 14px; height: 14px; }
+.crop-check-item span { font-size: 0.82rem; color: rgba(245,240,232,0.7); }
+
+.radio-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.radio-item {
+  display: flex; align-items: center; gap: 7px;
+  padding: 8px 14px; background: rgba(255,255,255,0.04);
+  border: 1.5px solid rgba(255,255,255,0.08); border-radius: 100px;
+  cursor: pointer; transition: all 0.2s; font-size: 0.85rem; color: rgba(245,240,232,0.7);
+}
+.radio-item:has(input:checked) { background: rgba(212,168,75,0.12); border-color: rgba(212,168,75,0.4); color: var(--wheat); }
+.radio-item input[type="radio"] { accent-color: var(--wheat); }
+
+.btn-farmer-submit {
+  width: 100%; padding: 14px;
+  background: var(--wheat); color: var(--forest-deep);
+  border: none; border-radius: 100px;
+  font-family: inherit; font-size: 0.95rem; font-weight: 700;
+  cursor: pointer; transition: all 0.25s; margin-top: 6px;
+  letter-spacing: 0.01em;
+}
+.btn-farmer-submit:hover { background: var(--wheat-light); }
+.btn-farmer-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.farmer-success {
+  display: none; text-align: center; padding: 20px 0;
+}
+.farmer-success.show { display: block; }
+.farmer-success-icon { font-size: 3rem; margin-bottom: 16px; }
+.farmer-success h3 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; color: var(--cream); margin-bottom: 10px; }
+.farmer-success p { color: rgba(245,240,232,0.55); font-size: 0.9rem; line-height: 1.6; }
+
 /* ========== PRODUCTS ========== */
 .products { background: var(--cream-warm); }
 .products-grid {
@@ -1976,6 +2100,12 @@ a { text-decoration: none; color: inherit; }
         <p>Watch your crop grow with real-time updates, photos, and data. When it's ready, we deliver your fresh harvest to your door.</p>
       </div>
     </div>
+    <div class="how-farmer-cta" id="how-farmer-cta">
+      <p>Ready to grow with us? Apply in minutes — verification usually takes 2–3 days.</p>
+      <button class="btn-farmer-apply" onclick="openFarmerModal()">
+        🌱 Apply & Get Verified
+      </button>
+    </div>
   </div>
 </section>
 
@@ -2409,6 +2539,8 @@ const farmerSteps = [
   { num: '03', icon: '&#x1F4B0;', title: 'Grow & Earn', desc: 'Cultivate crops, share updates with customers, and earn competitive pay plus bonuses for exceptional harvests.' }
 ];
 
+const farmerCta = document.getElementById('how-farmer-cta');
+
 tabs.forEach(tab => {
   tab.addEventListener('click', () => {
     // Landowner tab scrolls to lease section
@@ -2419,7 +2551,8 @@ tabs.forEach(tab => {
     }
     tabs.forEach(t => t.classList.remove('active'));
     tab.classList.add('active');
-    const steps = tab.dataset.tab === 'farmer' ? farmerSteps : customerSteps;
+    const isFarmer = tab.dataset.tab === 'farmer';
+    const steps = isFarmer ? farmerSteps : customerSteps;
     stepsContainer.innerHTML = steps.map((step, i) => `
       <div class="how-step reveal visible" style="animation: fadeSlide 0.5s ${i * 0.1}s both;">
         <div class="how-step-num">${step.num}</div>
@@ -2429,8 +2562,60 @@ tabs.forEach(tab => {
         ${i < 2 ? '<span class="how-connector">&#x2192;</span>' : ''}
       </div>
     `).join('');
+    farmerCta.classList.toggle('visible', isFarmer);
   });
 });
+
+// Farmer Application Modal
+function openFarmerModal() {
+  document.getElementById('farmer-modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeFarmerModal() {
+  document.getElementById('farmer-modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.getElementById('farmer-modal-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeFarmerModal();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeFarmerModal(); });
+
+async function submitFarmerApplication(e) {
+  e.preventDefault();
+  const form = e.target;
+  const btn = document.getElementById('farmer-submit-btn');
+  btn.textContent = 'Submitting…';
+  btn.disabled = true;
+
+  const crops = [...form.querySelectorAll('[name="crops"]:checked')].map(c => c.value);
+
+  const data = {
+    type: 'farmer_application',
+    status: 'pending',
+    fullName:    form.querySelector('[name="fullName"]').value.trim(),
+    phone:       form.querySelector('[name="phone"]').value.trim(),
+    village:     form.querySelector('[name="village"]').value.trim(),
+    experience:  form.querySelector('[name="experience"]').value,
+    crops:       crops.join(', '),
+    farmingType: form.querySelector('[name="farmingType"]:checked')?.value || '',
+    land:        form.querySelector('[name="land"]:checked')?.value || '',
+    idType:      form.querySelector('[name="idType"]').value,
+    idNumber:    form.querySelector('[name="idNumber"]').value.trim(),
+    bio:         form.querySelector('[name="bio"]').value.trim(),
+  };
+
+  try {
+    await ParseService.createEnquiry(data);
+  } catch (err) {
+    // Save locally as fallback
+    const apps = JSON.parse(localStorage.getItem('gt_farmer_apps') || '[]');
+    apps.push({ ...data, submittedAt: new Date().toISOString() });
+    localStorage.setItem('gt_farmer_apps', JSON.stringify(apps));
+  }
+
+  document.getElementById('farmer-form-wrap').style.display = 'none';
+  document.getElementById('farmer-success').classList.add('show');
+}
 
 // Lease form submission — save to Back4App
 async function submitLeaseForm(form) {
@@ -2979,6 +3164,117 @@ document.addEventListener('keydown', function(e) {
         </div>
       </div>
 
+    </div>
+  </div>
+</div>
+
+<!-- Farmer Application Modal -->
+<div class="farmer-modal-overlay" id="farmer-modal-overlay">
+  <div class="farmer-modal">
+    <div class="farmer-modal-head">
+      <div>
+        <h2>Join as a <em>Farmer</em></h2>
+        <p>Apply to grow on our certified land, get matched with customers, and earn competitively.</p>
+      </div>
+      <button class="farmer-modal-close" onclick="closeFarmerModal()" aria-label="Close">✕</button>
+    </div>
+
+    <div id="farmer-form-wrap">
+      <form class="farmer-form" id="farmer-apply-form" onsubmit="submitFarmerApplication(event)">
+        <div class="f-row">
+          <div class="f-field">
+            <label class="f-label">Full Name *</label>
+            <input type="text" class="f-ctrl" name="fullName" placeholder="e.g. Venkat Rao" required>
+          </div>
+          <div class="f-field">
+            <label class="f-label">Phone Number *</label>
+            <input type="tel" class="f-ctrl" name="phone" placeholder="+91 9XXXXXXXXX" required>
+          </div>
+        </div>
+        <div class="f-row">
+          <div class="f-field">
+            <label class="f-label">Village / District *</label>
+            <input type="text" class="f-ctrl" name="village" placeholder="e.g. Dubbak, Siddipet" required>
+          </div>
+          <div class="f-field">
+            <label class="f-label">Years of Experience *</label>
+            <select class="f-ctrl" name="experience" required>
+              <option value="">Select…</option>
+              <option>Less than 1 year</option>
+              <option>1–3 years</option>
+              <option>4–7 years</option>
+              <option>8–15 years</option>
+              <option>15+ years</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="f-field">
+          <label class="f-label">Crop Specialties (select all that apply)</label>
+          <div class="crop-check-grid">
+            <label class="crop-check-item"><input type="checkbox" name="crops" value="Vegetables"><span>🥦 Vegetables</span></label>
+            <label class="crop-check-item"><input type="checkbox" name="crops" value="Paddy"><span>🌾 Paddy / Rice</span></label>
+            <label class="crop-check-item"><input type="checkbox" name="crops" value="Turmeric"><span>🟡 Turmeric</span></label>
+            <label class="crop-check-item"><input type="checkbox" name="crops" value="Chillies"><span>🌶 Chillies</span></label>
+            <label class="crop-check-item"><input type="checkbox" name="crops" value="Fruits"><span>🍅 Fruits</span></label>
+            <label class="crop-check-item"><input type="checkbox" name="crops" value="Leafy Greens"><span>🥬 Leafy Greens</span></label>
+            <label class="crop-check-item"><input type="checkbox" name="crops" value="Maize"><span>🌽 Maize</span></label>
+            <label class="crop-check-item"><input type="checkbox" name="crops" value="Sunflower"><span>🌻 Sunflower</span></label>
+            <label class="crop-check-item"><input type="checkbox" name="crops" value="Other"><span>📦 Other</span></label>
+          </div>
+        </div>
+
+        <div class="f-field">
+          <label class="f-label">Farming Method *</label>
+          <div class="radio-row">
+            <label class="radio-item"><input type="radio" name="farmingType" value="Organic" required><span>🌿 Organic</span></label>
+            <label class="radio-item"><input type="radio" name="farmingType" value="Conventional"><span>🚜 Conventional</span></label>
+            <label class="radio-item"><input type="radio" name="farmingType" value="Both"><span>⚖️ Both</span></label>
+          </div>
+        </div>
+
+        <div class="f-field">
+          <label class="f-label">Land Availability</label>
+          <div class="radio-row">
+            <label class="radio-item"><input type="radio" name="land" value="Own land"><span>🏡 I own land</span></label>
+            <label class="radio-item"><input type="radio" name="land" value="Open to lease"><span>🤝 Open to lease</span></label>
+            <label class="radio-item"><input type="radio" name="land" value="No land"><span>🔍 No land yet</span></label>
+          </div>
+        </div>
+
+        <div class="f-row">
+          <div class="f-field">
+            <label class="f-label">ID Type</label>
+            <select class="f-ctrl" name="idType">
+              <option value="">Select…</option>
+              <option>Aadhaar Card</option>
+              <option>Kisan Credit Card</option>
+              <option>PM-Kisan ID</option>
+              <option>Voter ID</option>
+              <option>Other Govt. ID</option>
+            </select>
+          </div>
+          <div class="f-field">
+            <label class="f-label">ID Number</label>
+            <input type="text" class="f-ctrl" name="idNumber" placeholder="XXXX XXXX XXXX">
+          </div>
+        </div>
+
+        <div class="f-field">
+          <label class="f-label">Tell us about yourself</label>
+          <textarea class="f-ctrl" name="bio" placeholder="Briefly describe your farming background, past harvests, and why you want to join GrowTogether…"></textarea>
+        </div>
+
+        <button type="submit" class="btn-farmer-submit" id="farmer-submit-btn">
+          Submit Application →
+        </button>
+      </form>
+    </div>
+
+    <div class="farmer-success" id="farmer-success">
+      <div class="farmer-success-icon">🌱</div>
+      <h3>Application Submitted!</h3>
+      <p>Thank you for applying to grow with us. Our team will review your profile and reach out within <strong style="color:var(--wheat)">2–3 business days</strong> to complete your verification and get you started.</p>
     </div>
   </div>
 </div>
