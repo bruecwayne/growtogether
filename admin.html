@@ -1132,14 +1132,14 @@ a { text-decoration: none; color: inherit; }
 }
 .settings-section-title:hover .collapse-chevron { opacity: 0.7; }
 .settings-section.collapsed .collapse-chevron { transform: rotate(-90deg); }
-/* Collapse animation using CSS grid rows */
+/* Collapse animation */
 .section-collapse-body {
-  display: grid;
-  grid-template-rows: 1fr;
-  transition: grid-template-rows 0.28s ease;
+  overflow: hidden;
+  max-height: 6000px;
+  transition: max-height 0.35s ease;
 }
-.section-collapse-inner { overflow: hidden; min-height: 0; }
-.settings-section.collapsed .section-collapse-body { grid-template-rows: 0fr; }
+.section-collapse-inner { /* wrapper only */ }
+.settings-section.collapsed .section-collapse-body { max-height: 0; }
 .settings-section-body {
   padding: 20px 24px;
   display: flex;
