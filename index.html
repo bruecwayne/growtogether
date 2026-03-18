@@ -630,6 +630,8 @@ a { text-decoration: none; color: inherit; }
   color: var(--forest-deep);
 }
 .how-tab:hover:not(.active) { color: var(--cream); }
+.how-tab-landowner { border-left: 1px solid rgba(255,255,255,0.12); margin-left: 4px; padding-left: 24px; }
+.how-tab-landowner::after { content: ' ↓'; font-size: 0.8em; opacity: 0.6; }
 
 .how-steps {
   display: grid;
@@ -1740,6 +1742,7 @@ a { text-decoration: none; color: inherit; }
     <div class="how-tabs reveal">
       <button class="how-tab active" data-tab="customer">For Customers</button>
       <button class="how-tab" data-tab="farmer">For Farmers</button>
+      <button class="how-tab how-tab-landowner" data-tab="landowner">For Landowners</button>
     </div>
     <div class="how-steps" id="how-steps">
       <!-- Customer steps (default) -->
@@ -2265,6 +2268,12 @@ const farmerSteps = [
 
 tabs.forEach(tab => {
   tab.addEventListener('click', () => {
+    // Landowner tab scrolls to lease section
+    if (tab.dataset.tab === 'landowner') {
+      const leaseSection = document.getElementById('lease');
+      if (leaseSection) leaseSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
     tabs.forEach(t => t.classList.remove('active'));
     tab.classList.add('active');
     const steps = tab.dataset.tab === 'farmer' ? farmerSteps : customerSteps;
