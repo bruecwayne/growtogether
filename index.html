@@ -2575,8 +2575,9 @@ function closeFarmerModal() {
   document.getElementById('farmer-modal-overlay').classList.remove('open');
   document.body.style.overflow = '';
 }
-document.getElementById('farmer-modal-overlay').addEventListener('click', function(e) {
-  if (e.target === this) closeFarmerModal();
+document.addEventListener('click', function(e) {
+  const overlay = document.getElementById('farmer-modal-overlay');
+  if (overlay && e.target === overlay) closeFarmerModal();
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeFarmerModal(); });
 
