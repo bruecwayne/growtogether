@@ -1995,79 +1995,13 @@ a { text-decoration: none; color: inherit; }
   <div class="container">
     <div class="section-header farmers-header reveal">
       <div>
-        <div class="section-label">Our Experts</div>
-        <h2 class="section-title">Meet the <em>farmers</em></h2>
-        <p class="section-desc">Skilled growers with years of organic farming experience, hand-picked for your crops.</p>
+        <div class="section-label" id="farmers-section-label">Our Experts</div>
+        <h2 class="section-title" id="farmers-section-title">Meet the <em>farmers</em></h2>
+        <p class="section-desc" id="farmers-section-desc">Skilled growers with years of organic farming experience, hand-picked for your crops.</p>
       </div>
-      <a href="#" class="btn btn-wheat">Become a Farmer &rarr;</a>
+      <a href="#" class="btn btn-wheat" id="farmers-become-btn">Become a Farmer &rarr;</a>
     </div>
-    <div class="farmers-grid">
-
-      <div class="farmer-card reveal">
-        <div class="farmer-avatar" style="background: linear-gradient(135deg, rgba(212,149,106,0.3), rgba(194,112,62,0.3)), url('https://images.pexels.com/photos/31983759/pexels-photo-31983759.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'); background-size: cover; background-position: center;"></div>
-        <div class="farmer-name">Venkat Rao</div>
-        <div class="farmer-specialty">Organic Vegetable Specialist</div>
-        <div class="farmer-meta">
-          <div class="farmer-meta-item"><label>Exp.</label><span>12 yrs</span></div>
-          <div class="farmer-meta-item"><label>Rating</label><span>4.9 &#x2605;</span></div>
-          <div class="farmer-meta-item"><label>Harvests</label><span>340+</span></div>
-        </div>
-        <div class="farmer-crops">
-          <span class="farmer-crop-tag">&#x1F345; Tomatoes</span>
-          <span class="farmer-crop-tag">&#x1F336;&#xFE0F; Chillies</span>
-          <span class="farmer-crop-tag">&#x1F955; Vegetables</span>
-        </div>
-      </div>
-
-      <div class="farmer-card reveal reveal-delay-1">
-        <div class="farmer-avatar" style="background: linear-gradient(135deg, rgba(168,197,171,0.3), rgba(122,158,126,0.3)), url('https://images.pexels.com/photos/14092191/pexels-photo-14092191.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'); background-size: cover; background-position: center;"></div>
-        <div class="farmer-name">Ramesh Reddy</div>
-        <div class="farmer-specialty">Paddy &amp; Grain Expert</div>
-        <div class="farmer-meta">
-          <div class="farmer-meta-item"><label>Exp.</label><span>8 yrs</span></div>
-          <div class="farmer-meta-item"><label>Rating</label><span>4.8 &#x2605;</span></div>
-          <div class="farmer-meta-item"><label>Harvests</label><span>210+</span></div>
-        </div>
-        <div class="farmer-crops">
-          <span class="farmer-crop-tag">&#x1F33E; Paddy</span>
-          <span class="farmer-crop-tag">&#x1F33D; Maize</span>
-          <span class="farmer-crop-tag">&#x1F33E; Turmeric</span>
-        </div>
-      </div>
-
-      <div class="farmer-card reveal reveal-delay-2">
-        <div class="farmer-avatar" style="background: linear-gradient(135deg, rgba(232,201,125,0.3), rgba(212,168,75,0.3)), url('https://images.pexels.com/photos/20445171/pexels-photo-20445171.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'); background-size: cover; background-position: center;"></div>
-        <div class="farmer-name">Lakshmi Devi</div>
-        <div class="farmer-specialty">Spice &amp; Oilseed Grower</div>
-        <div class="farmer-meta">
-          <div class="farmer-meta-item"><label>Exp.</label><span>15 yrs</span></div>
-          <div class="farmer-meta-item"><label>Rating</label><span>5.0 &#x2605;</span></div>
-          <div class="farmer-meta-item"><label>Harvests</label><span>420+</span></div>
-        </div>
-        <div class="farmer-crops">
-          <span class="farmer-crop-tag">&#x1F33B; Sunflower</span>
-          <span class="farmer-crop-tag">&#x1F33E; Turmeric</span>
-          <span class="farmer-crop-tag">&#x1F336;&#xFE0F; Chillies</span>
-        </div>
-      </div>
-
-      <div class="farmer-card reveal reveal-delay-3">
-        <div class="farmer-avatar" style="background: linear-gradient(135deg, rgba(177,156,217,0.3), rgba(123,94,167,0.3)), url('https://images.pexels.com/photos/29912210/pexels-photo-29912210.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'); background-size: cover; background-position: center;"></div>
-        <div class="farmer-name">Suresh Goud</div>
-        <div class="farmer-specialty">Vegetable &amp; Leafy Green Expert</div>
-        <div class="farmer-meta">
-          <div class="farmer-meta-item"><label>Exp.</label><span>10 yrs</span></div>
-          <div class="farmer-meta-item"><label>Rating</label><span>4.9 &#x2605;</span></div>
-          <div class="farmer-meta-item"><label>Harvests</label><span>280+</span></div>
-        </div>
-        <div class="farmer-crops">
-          <span class="farmer-crop-tag">&#x1F955; Brinjal</span>
-          <span class="farmer-crop-tag">&#x1F96C; Palak</span>
-          <span class="farmer-crop-tag">&#x1F33F; Coriander</span>
-        </div>
-      </div>
-
-    </div>
+    <div class="farmers-grid" id="farmers-grid"></div>
   </div>
 </section>
 
@@ -2616,6 +2550,68 @@ async function submitLeaseForm(form) {
     openStartGrowing(cropName);
   });
   // Observe newly rendered product cards for scroll-reveal animation
+  if (typeof observer !== 'undefined') {
+    grid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  }
+})();
+
+// Render farmer cards from admin settings
+(function renderFarmers() {
+  const FARMER_GRADIENTS = {
+    orange: 'rgba(212,149,106,0.3), rgba(194,112,62,0.3)',
+    green:  'rgba(168,197,171,0.3), rgba(122,158,126,0.3)',
+    gold:   'rgba(232,201,125,0.3), rgba(212,168,75,0.3)',
+    purple: 'rgba(177,156,217,0.3), rgba(123,94,167,0.3)',
+    blue:   'rgba(91,143,212,0.3), rgba(44,86,151,0.3)',
+    teal:   'rgba(91,200,170,0.3), rgba(44,140,120,0.3)'
+  };
+  const DEFAULT_FARMERS = {
+    sectionLabel: 'Our Experts',
+    sectionTitle: 'Meet the farmers',
+    sectionDesc: 'Skilled growers with years of organic farming experience, hand-picked for your crops.',
+    becomeUrl: '#',
+    items: [
+      { id: 'f-1', name: 'Venkat Rao',    specialty: 'Organic Vegetable Specialist',   experience: '12 yrs', rating: '4.9', harvests: '340+', crops: '\uD83C\uDF45 Tomatoes, \uD83C\uDF36\uFE0F Chillies, \uD83E\uDD55 Vegetables', imageUrl: 'https://images.pexels.com/photos/31983759/pexels-photo-31983759.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop', gradient: 'orange', visible: true },
+      { id: 'f-2', name: 'Ramesh Reddy',  specialty: 'Paddy & Grain Expert',           experience: '8 yrs',  rating: '4.8', harvests: '210+', crops: '\uD83C\uDF3E Paddy, \uD83C\uDF3D Maize, \uD83C\uDF3E Turmeric',             imageUrl: 'https://images.pexels.com/photos/14092191/pexels-photo-14092191.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop',  gradient: 'green',  visible: true },
+      { id: 'f-3', name: 'Lakshmi Devi',  specialty: 'Spice & Oilseed Grower',         experience: '15 yrs', rating: '5.0', harvests: '420+', crops: '\uD83C\uDF3B Sunflower, \uD83C\uDF3E Turmeric, \uD83C\uDF36\uFE0F Chillies', imageUrl: 'https://images.pexels.com/photos/20445171/pexels-photo-20445171.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop',  gradient: 'gold',   visible: true },
+      { id: 'f-4', name: 'Suresh Goud',   specialty: 'Vegetable & Leafy Green Expert', experience: '10 yrs', rating: '4.9', harvests: '280+', crops: '\uD83E\uDD55 Brinjal, \uD83E\uDD6C Palak, \uD83C\uDF3F Coriander',          imageUrl: 'https://images.pexels.com/photos/29912210/pexels-photo-29912210.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop',  gradient: 'purple', visible: true }
+    ]
+  };
+  let data = JSON.parse(localStorage.getItem('gt_farmers') || 'null');
+  if (!data) { data = DEFAULT_FARMERS; localStorage.setItem('gt_farmers', JSON.stringify(data)); }
+
+  // Section header
+  const labelEl = document.getElementById('farmers-section-label');
+  const titleEl = document.getElementById('farmers-section-title');
+  const descEl  = document.getElementById('farmers-section-desc');
+  const becomeBtn = document.getElementById('farmers-become-btn');
+  if (labelEl) labelEl.textContent = data.sectionLabel || DEFAULT_FARMERS.sectionLabel;
+  if (titleEl) titleEl.innerHTML = (data.sectionTitle || DEFAULT_FARMERS.sectionTitle).replace(/farmers/i, '<em>farmers</em>');
+  if (descEl)  descEl.textContent  = data.sectionDesc  || DEFAULT_FARMERS.sectionDesc;
+  if (becomeBtn && data.becomeUrl) becomeBtn.href = data.becomeUrl;
+
+  // Render cards
+  const grid = document.getElementById('farmers-grid');
+  if (!grid) return;
+  const delays = ['', 'reveal-delay-1', 'reveal-delay-2', 'reveal-delay-3'];
+  const visible = (data.items || []).filter(f => f.visible !== false);
+  grid.innerHTML = visible.map((f, i) => {
+    const grad = FARMER_GRADIENTS[f.gradient] || FARMER_GRADIENTS.orange;
+    const tags = (f.crops || '').split(',').map(c => c.trim()).filter(Boolean)
+      .map(c => `<span class="farmer-crop-tag">${c}</span>`).join('');
+    return `
+    <div class="farmer-card reveal ${delays[i % 4]}">
+      <div class="farmer-avatar" style="background: linear-gradient(135deg, ${grad}), url('${f.imageUrl}'); background-size: cover; background-position: center;"></div>
+      <div class="farmer-name">${f.name}</div>
+      <div class="farmer-specialty">${f.specialty}</div>
+      <div class="farmer-meta">
+        <div class="farmer-meta-item"><label>Exp.</label><span>${f.experience}</span></div>
+        <div class="farmer-meta-item"><label>Rating</label><span>${f.rating} &#x2605;</span></div>
+        <div class="farmer-meta-item"><label>Harvests</label><span>${f.harvests}</span></div>
+      </div>
+      <div class="farmer-crops">${tags}</div>
+    </div>`;
+  }).join('');
   if (typeof observer !== 'undefined') {
     grid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   }

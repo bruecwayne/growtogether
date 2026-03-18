@@ -1381,6 +1381,70 @@ a { text-decoration: none; color: inherit; }
 }
 .img-clear-btn:hover { background: var(--status-rejected); color: #fff; border-color: var(--status-rejected); }
 
+/* ========== FARMER MANAGEMENT ========== */
+.farmer-admin-list { display: flex; flex-direction: column; gap: 0; }
+.farmer-admin-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 24px; border-bottom: 1px solid var(--cream-dark);
+  transition: background var(--transition);
+}
+.farmer-admin-item:last-child { border-bottom: none; }
+.farmer-admin-item:hover { background: var(--cream); }
+.farmer-admin-thumb {
+  width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;
+  background-size: cover; background-position: center;
+}
+.farmer-admin-info { flex: 1; min-width: 0; }
+.farmer-admin-name {
+  font-weight: 600; font-size: 0.9rem; color: var(--text-dark);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.farmer-admin-specialty { font-size: 0.78rem; color: var(--text-muted); margin-top: 1px; }
+.farmer-admin-meta { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; }
+.farmer-admin-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.farmer-form-wrap {
+  padding: 20px 24px; border-top: 1px solid var(--cream-dark); background: var(--cream-warm);
+}
+.farmer-form-title { font-size: 0.85rem; font-weight: 700; color: var(--text-dark); margin-bottom: 16px; }
+.farmer-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.farmer-form-field { display: flex; flex-direction: column; gap: 5px; }
+.farmer-form-field label {
+  font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--text-muted);
+}
+.farmer-form-field input,
+.farmer-form-field select,
+.farmer-form-field textarea {
+  border: 1.5px solid var(--cream-dark); border-radius: 8px; padding: 8px 12px;
+  font-size: 0.88rem; color: var(--text-dark); background: var(--white);
+  font-family: inherit; outline: none; transition: border-color var(--transition);
+}
+.farmer-form-field input:focus,
+.farmer-form-field select:focus,
+.farmer-form-field textarea:focus { border-color: var(--moss); }
+.farmer-form-field.full-width { grid-column: 1 / -1; }
+.farmer-form-actions { display: flex; gap: 10px; margin-top: 16px; }
+.farmer-form-cancel {
+  background: none; border: 1.5px solid var(--cream-dark); border-radius: 8px;
+  padding: 9px 20px; font-size: 0.85rem; font-weight: 600; cursor: pointer;
+  font-family: inherit; color: var(--text-muted); transition: all var(--transition);
+}
+.farmer-form-cancel:hover { border-color: var(--text-muted); color: var(--text-dark); }
+.farmer-section-header-fields { display: flex; flex-direction: column; gap: 10px; padding: 20px 24px; }
+.farmer-section-header-fields label {
+  font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--text-muted); display: block; margin-bottom: 4px;
+}
+.farmer-section-header-fields input,
+.farmer-section-header-fields textarea {
+  width: 100%; box-sizing: border-box; border: 1.5px solid var(--cream-dark); border-radius: 8px;
+  padding: 8px 12px; font-size: 0.88rem; color: var(--text-dark);
+  background: var(--white); font-family: inherit; outline: none;
+  transition: border-color var(--transition);
+}
+.farmer-section-header-fields input:focus,
+.farmer-section-header-fields textarea:focus { border-color: var(--moss); }
+
 /* ========== TESTIMONIALS MANAGEMENT ========== */
 .tm-admin-list { display: flex; flex-direction: column; gap: 0; }
 .tm-admin-item {
@@ -1880,6 +1944,99 @@ a { text-decoration: none; color: inherit; }
           <div class="land-form-actions">
             <button class="settings-save-btn" onclick="saveLandForm()">Save Land</button>
             <button class="land-form-cancel" onclick="closeLandForm()">Cancel</button>
+          </div>
+        </div>
+        </div></div>
+      </div>
+
+      <!-- Meet the Farmers -->
+      <div class="settings-section" id="section-farmers">
+        <div class="settings-section-title" onclick="toggleSection('farmers')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+          Meet the Farmers
+          <div class="section-title-right">
+            <button class="section-title-action" onclick="event.stopPropagation(); openFarmerForm()">+ Add Farmer</button>
+            <svg class="collapse-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+        </div>
+        <div class="section-collapse-body"><div class="section-collapse-inner">
+
+        <!-- Section header fields -->
+        <div class="farmer-section-header-fields">
+          <div>
+            <label>Section Label</label>
+            <input type="text" id="farmer-section-label" placeholder="e.g. Our Experts" maxlength="60">
+          </div>
+          <div>
+            <label>Section Title</label>
+            <input type="text" id="farmer-section-title" placeholder="e.g. Meet the farmers" maxlength="100">
+          </div>
+          <div>
+            <label>Section Description</label>
+            <textarea id="farmer-section-desc" placeholder="e.g. Skilled growers with years of experience..." rows="2"></textarea>
+          </div>
+          <div>
+            <label>Become a Farmer Button URL</label>
+            <input type="text" id="farmer-become-url" placeholder="e.g. https://... or #apply">
+          </div>
+          <div>
+            <button class="settings-save-btn" onclick="saveFarmersHeader()">Save Header</button>
+          </div>
+        </div>
+
+        <hr class="tm-header-divider">
+
+        <!-- Farmer list -->
+        <div id="farmer-admin-list" class="farmer-admin-list"></div>
+
+        <!-- Add / Edit form -->
+        <div id="farmer-form-wrap" class="farmer-form-wrap" style="display:none;">
+          <div class="farmer-form-title" id="farmer-form-title">Add Farmer</div>
+          <input type="hidden" id="ff-edit-id">
+          <div class="farmer-form-grid">
+            <div class="farmer-form-field">
+              <label>Full Name</label>
+              <input type="text" id="ff-name" placeholder="e.g. Venkat Rao">
+            </div>
+            <div class="farmer-form-field">
+              <label>Specialty</label>
+              <input type="text" id="ff-specialty" placeholder="e.g. Organic Vegetable Specialist">
+            </div>
+            <div class="farmer-form-field">
+              <label>Experience</label>
+              <input type="text" id="ff-experience" placeholder="e.g. 12 yrs">
+            </div>
+            <div class="farmer-form-field">
+              <label>Rating (out of 5)</label>
+              <input type="text" id="ff-rating" placeholder="e.g. 4.9">
+            </div>
+            <div class="farmer-form-field">
+              <label>Total Harvests</label>
+              <input type="text" id="ff-harvests" placeholder="e.g. 340+">
+            </div>
+            <div class="farmer-form-field">
+              <label>Avatar Color</label>
+              <select id="ff-gradient">
+                <option value="orange">Orange / Terracotta</option>
+                <option value="green">Green</option>
+                <option value="gold">Gold</option>
+                <option value="purple">Purple</option>
+                <option value="blue">Blue</option>
+                <option value="teal">Teal</option>
+              </select>
+            </div>
+            <div class="farmer-form-field full-width">
+              <label>Crop Tags (comma-separated, use emoji)</label>
+              <input type="text" id="ff-crops" placeholder="e.g. 🍅 Tomatoes, 🌶️ Chillies, 🥕 Vegetables">
+            </div>
+            <div class="farmer-form-field full-width">
+              <label>Photo URL</label>
+              <input type="text" id="ff-image" placeholder="https://images.pexels.com/...">
+            </div>
+          </div>
+          <div class="farmer-form-actions">
+            <button class="settings-save-btn" onclick="saveFarmerForm()">Save Farmer</button>
+            <button class="farmer-form-cancel" onclick="closeFarmerForm()">Cancel</button>
           </div>
         </div>
         </div></div>
@@ -2945,6 +3102,163 @@ function saveHeroBadge() {
   setTimeout(() => { btn.textContent = 'Save'; btn.style.background = ''; }, 2000);
 }
 
+// ========== FARMERS ==========
+const FARMER_GRADIENTS_ADMIN = {
+  orange: 'rgba(212,149,106,0.3), rgba(194,112,62,0.3)',
+  green:  'rgba(168,197,171,0.3), rgba(122,158,126,0.3)',
+  gold:   'rgba(232,201,125,0.3), rgba(212,168,75,0.3)',
+  purple: 'rgba(177,156,217,0.3), rgba(123,94,167,0.3)',
+  blue:   'rgba(91,143,212,0.3), rgba(44,86,151,0.3)',
+  teal:   'rgba(91,200,170,0.3), rgba(44,140,120,0.3)'
+};
+const DEFAULT_FARMERS_ADMIN = {
+  sectionLabel: 'Our Experts',
+  sectionTitle: 'Meet the farmers',
+  sectionDesc: 'Skilled growers with years of organic farming experience, hand-picked for your crops.',
+  becomeUrl: '#',
+  items: [
+    { id: 'f-1', name: 'Venkat Rao',   specialty: 'Organic Vegetable Specialist',   experience: '12 yrs', rating: '4.9', harvests: '340+', crops: '🍅 Tomatoes, 🌶️ Chillies, 🥕 Vegetables', imageUrl: 'https://images.pexels.com/photos/31983759/pexels-photo-31983759.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop', gradient: 'orange', visible: true },
+    { id: 'f-2', name: 'Ramesh Reddy', specialty: 'Paddy & Grain Expert',           experience: '8 yrs',  rating: '4.8', harvests: '210+', crops: '🌾 Paddy, 🌽 Maize, 🌾 Turmeric',             imageUrl: 'https://images.pexels.com/photos/14092191/pexels-photo-14092191.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop',  gradient: 'green',  visible: true },
+    { id: 'f-3', name: 'Lakshmi Devi', specialty: 'Spice & Oilseed Grower',         experience: '15 yrs', rating: '5.0', harvests: '420+', crops: '🌻 Sunflower, 🌾 Turmeric, 🌶️ Chillies',     imageUrl: 'https://images.pexels.com/photos/20445171/pexels-photo-20445171.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop',  gradient: 'gold',   visible: true },
+    { id: 'f-4', name: 'Suresh Goud',  specialty: 'Vegetable & Leafy Green Expert', experience: '10 yrs', rating: '4.9', harvests: '280+', crops: '🥕 Brinjal, 🥬 Palak, 🌿 Coriander',          imageUrl: 'https://images.pexels.com/photos/29912210/pexels-photo-29912210.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop',  gradient: 'purple', visible: true }
+  ]
+};
+
+function getFarmers() {
+  const saved = localStorage.getItem('gt_farmers');
+  if (!saved) { localStorage.setItem('gt_farmers', JSON.stringify(DEFAULT_FARMERS_ADMIN)); return JSON.parse(JSON.stringify(DEFAULT_FARMERS_ADMIN)); }
+  return JSON.parse(saved);
+}
+function saveFarmers(data) { localStorage.setItem('gt_farmers', JSON.stringify(data)); }
+
+function renderFarmerAdmin() {
+  const data = getFarmers();
+  const list = document.getElementById('farmer-admin-list');
+  if (!list) return;
+  if (!data.items || data.items.length === 0) {
+    list.innerHTML = '<div style="padding:20px 24px;color:var(--text-muted);font-size:0.85rem;">No farmers yet. Click + Add Farmer to get started.</div>';
+    return;
+  }
+  list.innerHTML = data.items.map(f => {
+    const grad = FARMER_GRADIENTS_ADMIN[f.gradient] || FARMER_GRADIENTS_ADMIN.orange;
+    return `
+    <div class="farmer-admin-item" data-id="${f.id}">
+      <div class="farmer-admin-thumb" style="background: linear-gradient(135deg, ${grad}), url('${f.imageUrl}'); background-size: cover; background-position: center;"></div>
+      <div class="farmer-admin-info">
+        <div class="farmer-admin-name">${f.name}</div>
+        <div class="farmer-admin-specialty">${f.specialty}</div>
+        <div class="farmer-admin-meta">${f.experience} exp &bull; ${f.rating}★ &bull; ${f.harvests} harvests</div>
+      </div>
+      <div class="farmer-admin-actions">
+        <label class="land-toggle-label">
+          <input type="checkbox" ${f.visible !== false ? 'checked' : ''} onchange="toggleFarmerVisibility('${f.id}', this.checked)"> Show
+        </label>
+        <button class="land-action-btn" onclick="openFarmerForm('${f.id}')">Edit</button>
+        <button class="land-action-btn delete" onclick="deleteFarmer('${f.id}')">Delete</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openFarmerForm(id) {
+  const data = getFarmers();
+  const wrap = document.getElementById('farmer-form-wrap');
+  const titleEl = document.getElementById('farmer-form-title');
+  document.getElementById('ff-edit-id').value = id || '';
+  if (id) {
+    const f = data.items.find(x => x.id === id);
+    if (!f) return;
+    titleEl.textContent = 'Edit Farmer';
+    document.getElementById('ff-name').value = f.name || '';
+    document.getElementById('ff-specialty').value = f.specialty || '';
+    document.getElementById('ff-experience').value = f.experience || '';
+    document.getElementById('ff-rating').value = f.rating || '';
+    document.getElementById('ff-harvests').value = f.harvests || '';
+    document.getElementById('ff-gradient').value = f.gradient || 'orange';
+    document.getElementById('ff-crops').value = f.crops || '';
+    document.getElementById('ff-image').value = f.imageUrl || '';
+  } else {
+    titleEl.textContent = 'Add Farmer';
+    document.getElementById('ff-name').value = '';
+    document.getElementById('ff-specialty').value = '';
+    document.getElementById('ff-experience').value = '';
+    document.getElementById('ff-rating').value = '';
+    document.getElementById('ff-harvests').value = '';
+    document.getElementById('ff-gradient').value = 'orange';
+    document.getElementById('ff-crops').value = '';
+    document.getElementById('ff-image').value = '';
+  }
+  wrap.style.display = '';
+  wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function closeFarmerForm() {
+  document.getElementById('farmer-form-wrap').style.display = 'none';
+}
+
+function saveFarmerForm() {
+  const editId = document.getElementById('ff-edit-id').value;
+  const entry = {
+    id: editId || ('f-' + Date.now()),
+    name: document.getElementById('ff-name').value.trim(),
+    specialty: document.getElementById('ff-specialty').value.trim(),
+    experience: document.getElementById('ff-experience').value.trim(),
+    rating: document.getElementById('ff-rating').value.trim(),
+    harvests: document.getElementById('ff-harvests').value.trim(),
+    gradient: document.getElementById('ff-gradient').value,
+    crops: document.getElementById('ff-crops').value.trim(),
+    imageUrl: document.getElementById('ff-image').value.trim(),
+    visible: true
+  };
+  if (!entry.name) { alert('Farmer name is required.'); return; }
+  const data = getFarmers();
+  if (editId) {
+    const idx = data.items.findIndex(x => x.id === editId);
+    if (idx > -1) { const vis = data.items[idx].visible; data.items[idx] = { ...entry, visible: vis }; }
+  } else {
+    data.items.push(entry);
+  }
+  saveFarmers(data);
+  renderFarmerAdmin();
+  closeFarmerForm();
+}
+
+function deleteFarmer(id) {
+  if (!confirm('Delete this farmer?')) return;
+  const data = getFarmers();
+  data.items = data.items.filter(x => x.id !== id);
+  saveFarmers(data);
+  renderFarmerAdmin();
+}
+
+function toggleFarmerVisibility(id, visible) {
+  const data = getFarmers();
+  const f = data.items.find(x => x.id === id);
+  if (f) { f.visible = visible; saveFarmers(data); }
+}
+
+function saveFarmersHeader() {
+  const data = getFarmers();
+  data.sectionLabel = document.getElementById('farmer-section-label').value.trim() || DEFAULT_FARMERS_ADMIN.sectionLabel;
+  data.sectionTitle = document.getElementById('farmer-section-title').value.trim() || DEFAULT_FARMERS_ADMIN.sectionTitle;
+  data.sectionDesc  = document.getElementById('farmer-section-desc').value.trim()  || DEFAULT_FARMERS_ADMIN.sectionDesc;
+  data.becomeUrl    = document.getElementById('farmer-become-url').value.trim()    || '#';
+  saveFarmers(data);
+  const btn = event.target;
+  btn.textContent = 'Saved!';
+  btn.style.background = 'var(--status-approved)';
+  setTimeout(() => { btn.textContent = 'Save Header'; btn.style.background = ''; }, 2000);
+}
+
+function initFarmers() {
+  const data = getFarmers();
+  document.getElementById('farmer-section-label').value = data.sectionLabel || '';
+  document.getElementById('farmer-section-title').value = data.sectionTitle || '';
+  document.getElementById('farmer-section-desc').value  = data.sectionDesc  || '';
+  document.getElementById('farmer-become-url').value    = data.becomeUrl    || '';
+  renderFarmerAdmin();
+}
+
 // ========== COLLAPSIBLE SECTIONS ==========
 function toggleSection(key) {
   const section = document.getElementById('section-' + key);
@@ -3116,6 +3430,7 @@ loadHeroBadge();
 initProducts();
 initLands();
 initTestimonials();
+initFarmers();
 restoreSectionStates();
 </script>
 
