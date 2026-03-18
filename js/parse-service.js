@@ -67,6 +67,16 @@ const ParseService = {
       enquiry.set('soilType', data.soilType || '');
       enquiry.set('irrigationSource', data.irrigationSource || '');
       enquiry.set('details', data.details || '');
+    } else if (data.type === 'farmer_application') {
+      enquiry.set('name', data.fullName || data.name || '');
+      enquiry.set('village', data.village || '');
+      enquiry.set('experience', data.experience || '');
+      enquiry.set('crops', data.crops || '');
+      enquiry.set('farmingType', data.farmingType || '');
+      enquiry.set('land', data.land || '');
+      enquiry.set('idType', data.idType || '');
+      enquiry.set('idNumber', data.idNumber || '');
+      enquiry.set('bio', data.bio || '');
     }
 
     try {

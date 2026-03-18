@@ -661,6 +661,10 @@ a { text-decoration: none; color: inherit; }
   background: rgba(122,158,126,0.12);
   color: var(--moss);
 }
+.type-farmer {
+  background: rgba(212,168,75,0.15);
+  color: #b87c2a;
+}
 .type-lease {
   background: rgba(212,168,75,0.12);
   color: var(--soil);
@@ -1603,6 +1607,11 @@ a { text-decoration: none; color: inherit; }
         Lease Enquiries
         <span class="badge-count" id="count-lease">0</span>
       </div>
+      <div class="sidebar-link" data-filter="farmer_application">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        Farmer Applications
+        <span class="badge-count" id="count-farmer">0</span>
+      </div>
 
       <div class="sidebar-divider"></div>
 
@@ -1706,6 +1715,16 @@ a { text-decoration: none; color: inherit; }
         </div>
         <div class="stat-value" id="stat-lease">0</div>
         <div class="stat-change">Land offers</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">
+          <div class="stat-icon" style="background: rgba(212,168,75,0.12); color: #b87c2a;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          </div>
+          Farmer Applications
+        </div>
+        <div class="stat-value" id="stat-farmer">0</div>
+        <div class="stat-change">Pending onboarding</div>
       </div>
     </div>
 
@@ -2400,11 +2419,13 @@ function render() {
   document.getElementById('stat-pending').textContent = all.filter(e => e.status === 'pending').length;
   document.getElementById('stat-grow').textContent = all.filter(e => e.type === 'grow').length;
   document.getElementById('stat-lease').textContent = all.filter(e => e.type === 'lease').length;
+  document.getElementById('stat-farmer').textContent = all.filter(e => e.type === 'farmer_application').length;
 
   // Sidebar counts
   document.getElementById('count-all').textContent = all.length;
   document.getElementById('count-grow').textContent = all.filter(e => e.type === 'grow').length;
   document.getElementById('count-lease').textContent = all.filter(e => e.type === 'lease').length;
+  document.getElementById('count-farmer').textContent = all.filter(e => e.type === 'farmer_application').length;
   document.getElementById('count-pending').textContent = all.filter(e => e.status === 'pending').length;
   document.getElementById('count-approved').textContent = all.filter(e => e.status === 'approved').length;
 
@@ -2412,6 +2433,7 @@ function render() {
   let filtered = all;
   if (currentFilter === 'grow') filtered = filtered.filter(e => e.type === 'grow');
   if (currentFilter === 'lease') filtered = filtered.filter(e => e.type === 'lease');
+  if (currentFilter === 'farmer_application') filtered = filtered.filter(e => e.type === 'farmer_application');
   if (currentFilter === 'pending') filtered = filtered.filter(e => e.status === 'pending');
   if (currentFilter === 'approved') filtered = filtered.filter(e => e.status === 'approved');
 
@@ -2450,11 +2472,12 @@ function render() {
     const date = new Date(e.timestamp);
     const dateStr = date.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: '2-digit' });
     const timeStr = date.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
-    const typeClass = e.type === 'grow' ? 'type-grow' : 'type-lease';
-    const typeLabel = e.type === 'grow' ? 'Growing' : 'Lease';
-    const cropOrLand = e.type === 'grow' ? (e.crop || '--') : (e.village || '--');
-    const acres = e.acres || e.acreage || '--';
-    const amount = e.type === 'grow' && e.estimatedInvestment ? '\u20b9' + Number(e.estimatedInvestment).toLocaleString('en-IN') : '--';
+    const isFarmer = e.type === 'farmer_application';
+    const typeClass = e.type === 'grow' ? 'type-grow' : isFarmer ? 'type-farmer' : 'type-lease';
+    const typeLabel = e.type === 'grow' ? 'Growing' : isFarmer ? 'Farmer App' : 'Lease';
+    const cropOrLand = isFarmer ? (e.village || '--') : e.type === 'grow' ? (e.crop || '--') : (e.village || '--');
+    const acres = isFarmer ? (e.experience || '--') : (e.acres || e.acreage || '--');
+    const amount = isFarmer ? (e.farmingType || '--') : (e.type === 'grow' && e.estimatedInvestment ? '\u20b9' + Number(e.estimatedInvestment).toLocaleString('en-IN') : '--');
 
     return `<tr onclick="openModal('${e.id}')">
       <td>
@@ -2536,8 +2559,9 @@ function openModal(id) {
   currentModalId = id;
 
   document.getElementById('modal-name').textContent = e.name || '--';
-  const typeClass = e.type === 'grow' ? 'type-grow' : 'type-lease';
-  const typeLabel = e.type === 'grow' ? 'Growing Order' : 'Lease Enquiry';
+  const isFarmerApp = e.type === 'farmer_application';
+  const typeClass = e.type === 'grow' ? 'type-grow' : isFarmerApp ? 'type-farmer' : 'type-lease';
+  const typeLabel = e.type === 'grow' ? 'Growing Order' : isFarmerApp ? 'Farmer Application' : 'Lease Enquiry';
   document.getElementById('modal-type-badge').innerHTML = `<span class="cell-type ${typeClass}">${typeLabel}</span>`;
 
   const date = new Date(e.timestamp);
@@ -2566,6 +2590,29 @@ function openModal(id) {
         <div class="modal-field"><div class="modal-field-label">Estimated Investment</div><div class="modal-field-value" style="color:var(--forest); font-family:'DM Serif Display',serif;">${e.estimatedInvestment ? '\u20b9' + Number(e.estimatedInvestment).toLocaleString('en-IN') : '--'}</div></div>
       </div>
       ${e.notes ? `<div class="modal-divider"></div><div class="modal-field"><div class="modal-field-label">Additional Notes</div><div class="modal-field-value">${e.notes}</div></div>` : ''}
+      <div class="modal-divider"></div>
+      <div class="modal-row">
+        <div class="modal-field"><div class="modal-field-label">Submitted</div><div class="modal-field-value">${dateStr}</div></div>
+        <div class="modal-field"><div class="modal-field-label">Time</div><div class="modal-field-value">${timeStr}</div></div>
+      </div>
+    `;
+  } else if (isFarmerApp) {
+    bodyHTML = `
+      <div class="modal-row">
+        <div class="modal-field"><div class="modal-field-label">Phone</div><div class="modal-field-value">${e.phone || '--'}</div></div>
+        <div class="modal-field"><div class="modal-field-label">Village / District</div><div class="modal-field-value">${e.village || '--'}</div></div>
+      </div>
+      <div class="modal-divider"></div>
+      <div class="modal-row">
+        <div class="modal-field"><div class="modal-field-label">Experience</div><div class="modal-field-value">${e.experience || '--'}</div></div>
+        <div class="modal-field"><div class="modal-field-label">Farming Method</div><div class="modal-field-value">${e.farmingType || '--'}</div></div>
+      </div>
+      <div class="modal-row">
+        <div class="modal-field"><div class="modal-field-label">Land Availability</div><div class="modal-field-value">${e.land || '--'}</div></div>
+        <div class="modal-field"><div class="modal-field-label">ID Type</div><div class="modal-field-value">${e.idType || '--'}${e.idNumber ? ' — ' + e.idNumber : ''}</div></div>
+      </div>
+      ${e.crops ? `<div class="modal-divider"></div><div class="modal-field"><div class="modal-field-label">Crop Specialties</div><div class="modal-field-value">${e.crops}</div></div>` : ''}
+      ${e.bio ? `<div class="modal-divider"></div><div class="modal-field"><div class="modal-field-label">About the Farmer</div><div class="modal-field-value">${e.bio}</div></div>` : ''}
       <div class="modal-divider"></div>
       <div class="modal-row">
         <div class="modal-field"><div class="modal-field-label">Submitted</div><div class="modal-field-value">${dateStr}</div></div>
