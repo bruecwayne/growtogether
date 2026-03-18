@@ -830,6 +830,7 @@ a { text-decoration: none; color: inherit; }
 .farmer-avatar {
   width: 80px; height: 80px;
   border-radius: 50%;
+  overflow: hidden;
   margin: 0 auto 16px;
   display: flex;
   align-items: center;
@@ -1268,6 +1269,7 @@ a { text-decoration: none; color: inherit; }
 .testimonial-avatar {
   width: 44px; height: 44px;
   border-radius: 50%;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2657,7 +2659,7 @@ async function submitLeaseForm(form) {
       <span class="testimonial-type type-${t.type}">${t.type === 'farmer' ? 'Farmer' : 'Customer'}</span>
       <p class="testimonial-text">${t.text}</p>
       <div class="testimonial-author">
-        <div class="testimonial-avatar" style="background:${AVATAR_GRADIENTS[t.gradient] || AVATAR_GRADIENTS.green};">${t.emoji || '&#x1F464;'}</div>
+        <div class="testimonial-avatar" style="${t.authorPhoto ? `background:url('${t.authorPhoto}') center/cover` : `background:${AVATAR_GRADIENTS[t.gradient] || AVATAR_GRADIENTS.green}`};">${t.authorPhoto ? '' : (t.emoji || '&#x1F464;')}</div>
         <div class="testimonial-author-info">
           <h5>${t.authorName}</h5>
           <span>${t.authorRole}</span>

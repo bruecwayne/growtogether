@@ -1456,6 +1456,7 @@ a { text-decoration: none; color: inherit; }
 .tm-admin-item:hover { background: var(--cream); }
 .tm-admin-avatar {
   width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+  overflow: hidden;
   display: flex; align-items: center; justify-content: center;
   font-size: 1.2rem;
 }
@@ -2030,8 +2031,28 @@ a { text-decoration: none; color: inherit; }
               <input type="text" id="ff-crops" placeholder="e.g. 🍅 Tomatoes, 🌶️ Chillies, 🥕 Vegetables">
             </div>
             <div class="farmer-form-field full-width">
-              <label>Photo URL</label>
-              <input type="text" id="ff-image" placeholder="https://images.pexels.com/...">
+              <label>Photo</label>
+              <div class="img-source-tabs">
+                <button type="button" class="img-tab ff-img-tab active" data-tab="url" onclick="switchFarmerImgTab('url')">From URL</button>
+                <button type="button" class="img-tab ff-img-tab" data-tab="upload" onclick="switchFarmerImgTab('upload')">Upload from Device</button>
+              </div>
+              <div id="ff-img-tab-url">
+                <input type="text" id="ff-image" placeholder="https://images.pexels.com/..." style="width:100%;box-sizing:border-box;">
+              </div>
+              <div id="ff-img-tab-upload" style="display:none;">
+                <div class="img-upload-area" id="ff-upload-area" onclick="document.getElementById('ff-image-file').click()">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>
+                  Click to browse or drag &amp; drop an image
+                  <div class="img-upload-hint">JPG, PNG, WEBP — stored locally</div>
+                </div>
+                <input type="file" id="ff-image-file" accept="image/*" style="display:none;" onchange="handleFarmerImageUpload(this)">
+                <div class="img-preview-wrap" id="ff-preview-wrap">
+                  <img id="ff-preview" src="" alt="Preview">
+                  <div class="img-preview-info">Image ready to save</div>
+                  <button type="button" class="img-clear-btn" onclick="clearFarmerImageUpload()">Remove</button>
+                </div>
+              </div>
+              <input type="hidden" id="ff-image-data">
             </div>
           </div>
           <div class="farmer-form-actions">
@@ -2111,6 +2132,30 @@ a { text-decoration: none; color: inherit; }
                 <option value="blue">Blue</option>
                 <option value="gold">Gold</option>
               </select>
+            </div>
+            <div class="tm-form-field full-width">
+              <label>Author Photo <span style="font-weight:400;opacity:0.5;font-size:0.75rem;">(optional — replaces emoji avatar)</span></label>
+              <div class="img-source-tabs">
+                <button type="button" class="img-tab tmf-img-tab active" data-tab="url" onclick="switchTmImgTab('url')">From URL</button>
+                <button type="button" class="img-tab tmf-img-tab" data-tab="upload" onclick="switchTmImgTab('upload')">Upload from Device</button>
+              </div>
+              <div id="tmf-img-tab-url">
+                <input type="text" id="tmf-image" placeholder="https://images.pexels.com/..." style="width:100%;box-sizing:border-box;">
+              </div>
+              <div id="tmf-img-tab-upload" style="display:none;">
+                <div class="img-upload-area" id="tmf-upload-area" onclick="document.getElementById('tmf-image-file').click()">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>
+                  Click to browse or drag &amp; drop an image
+                  <div class="img-upload-hint">JPG, PNG, WEBP — stored locally</div>
+                </div>
+                <input type="file" id="tmf-image-file" accept="image/*" style="display:none;" onchange="handleTmImageUpload(this)">
+                <div class="img-preview-wrap" id="tmf-preview-wrap">
+                  <img id="tmf-preview" src="" alt="Preview">
+                  <div class="img-preview-info">Image ready to save</div>
+                  <button type="button" class="img-clear-btn" onclick="clearTmImageUpload()">Remove</button>
+                </div>
+              </div>
+              <input type="hidden" id="tmf-image-data">
             </div>
             <div class="tm-form-field full-width">
               <label>Testimonial Text</label>
@@ -3004,6 +3049,114 @@ function initImgDropzone() {
   });
 }
 
+// ── Farmer photo upload helpers ──────────────────────────────
+function switchFarmerImgTab(tab) {
+  document.querySelectorAll('.ff-img-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  document.getElementById('ff-img-tab-url').style.display = tab === 'url' ? '' : 'none';
+  document.getElementById('ff-img-tab-upload').style.display = tab === 'upload' ? '' : 'none';
+  if (tab === 'url') document.getElementById('ff-image-data').value = '';
+}
+
+function handleFarmerImageUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    document.getElementById('ff-image-data').value = e.target.result;
+    document.getElementById('ff-preview').src = e.target.result;
+    document.getElementById('ff-preview-wrap').style.display = 'flex';
+    document.getElementById('ff-upload-area').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+}
+
+function clearFarmerImageUpload() {
+  const dataEl = document.getElementById('ff-image-data');
+  if (dataEl) dataEl.value = '';
+  const fi = document.getElementById('ff-image-file');
+  if (fi) fi.value = '';
+  const pw = document.getElementById('ff-preview-wrap');
+  const ua = document.getElementById('ff-upload-area');
+  if (pw) pw.style.display = 'none';
+  if (ua) ua.style.display = '';
+}
+
+function initFarmerDropzone() {
+  const area = document.getElementById('ff-upload-area');
+  if (!area || area._dropReady) return;
+  area._dropReady = true;
+  area.addEventListener('dragover', e => { e.preventDefault(); area.classList.add('drag-over'); });
+  area.addEventListener('dragleave', () => area.classList.remove('drag-over'));
+  area.addEventListener('drop', e => {
+    e.preventDefault();
+    area.classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (!file || !file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      document.getElementById('ff-image-data').value = ev.target.result;
+      document.getElementById('ff-preview').src = ev.target.result;
+      document.getElementById('ff-preview-wrap').style.display = 'flex';
+      area.style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+// ── Testimonial author photo upload helpers ──────────────────
+function switchTmImgTab(tab) {
+  document.querySelectorAll('.tmf-img-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  document.getElementById('tmf-img-tab-url').style.display = tab === 'url' ? '' : 'none';
+  document.getElementById('tmf-img-tab-upload').style.display = tab === 'upload' ? '' : 'none';
+  if (tab === 'url') document.getElementById('tmf-image-data').value = '';
+}
+
+function handleTmImageUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    document.getElementById('tmf-image-data').value = e.target.result;
+    document.getElementById('tmf-preview').src = e.target.result;
+    document.getElementById('tmf-preview-wrap').style.display = 'flex';
+    document.getElementById('tmf-upload-area').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+}
+
+function clearTmImageUpload() {
+  const dataEl = document.getElementById('tmf-image-data');
+  if (dataEl) dataEl.value = '';
+  const fi = document.getElementById('tmf-image-file');
+  if (fi) fi.value = '';
+  const pw = document.getElementById('tmf-preview-wrap');
+  const ua = document.getElementById('tmf-upload-area');
+  if (pw) pw.style.display = 'none';
+  if (ua) ua.style.display = '';
+}
+
+function initTmDropzone() {
+  const area = document.getElementById('tmf-upload-area');
+  if (!area || area._dropReady) return;
+  area._dropReady = true;
+  area.addEventListener('dragover', e => { e.preventDefault(); area.classList.add('drag-over'); });
+  area.addEventListener('dragleave', () => area.classList.remove('drag-over'));
+  area.addEventListener('drop', e => {
+    e.preventDefault();
+    area.classList.remove('drag-over');
+    const file = e.dataTransfer.files[0];
+    if (!file || !file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      document.getElementById('tmf-image-data').value = ev.target.result;
+      document.getElementById('tmf-preview').src = ev.target.result;
+      document.getElementById('tmf-preview-wrap').style.display = 'flex';
+      area.style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
 function openLandForm(id) {
   const wrap = document.getElementById('land-form-wrap');
   wrap.style.display = '';
@@ -3183,6 +3336,7 @@ function openFarmerForm(id) {
   const data = getFarmers();
   const wrap = document.getElementById('farmer-form-wrap');
   const titleEl = document.getElementById('farmer-form-title');
+  clearFarmerImageUpload();
   document.getElementById('ff-edit-id').value = id || '';
   if (id) {
     const f = data.items.find(x => x.id === id);
@@ -3195,7 +3349,16 @@ function openFarmerForm(id) {
     document.getElementById('ff-harvests').value = f.harvests || '';
     document.getElementById('ff-gradient').value = f.gradient || 'orange';
     document.getElementById('ff-crops').value = f.crops || '';
-    document.getElementById('ff-image').value = f.imageUrl || '';
+    if (f.imageUrl && f.imageUrl.startsWith('data:')) {
+      switchFarmerImgTab('upload');
+      document.getElementById('ff-image-data').value = f.imageUrl;
+      document.getElementById('ff-preview').src = f.imageUrl;
+      document.getElementById('ff-preview-wrap').style.display = 'flex';
+      document.getElementById('ff-upload-area').style.display = 'none';
+    } else {
+      switchFarmerImgTab('url');
+      document.getElementById('ff-image').value = f.imageUrl || '';
+    }
   } else {
     titleEl.textContent = 'Add Farmer';
     document.getElementById('ff-name').value = '';
@@ -3209,9 +3372,11 @@ function openFarmerForm(id) {
   }
   wrap.style.display = '';
   wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  initFarmerDropzone();
 }
 
 function closeFarmerForm() {
+  clearFarmerImageUpload();
   document.getElementById('farmer-form-wrap').style.display = 'none';
 }
 
@@ -3226,7 +3391,7 @@ function saveFarmerForm() {
     harvests: document.getElementById('ff-harvests').value.trim(),
     gradient: document.getElementById('ff-gradient').value,
     crops: document.getElementById('ff-crops').value.trim(),
-    imageUrl: document.getElementById('ff-image').value.trim(),
+    imageUrl: document.getElementById('ff-image-data').value || document.getElementById('ff-image').value.trim(),
     visible: true
   };
   if (!entry.name) { alert('Farmer name is required.'); return; }
@@ -3334,7 +3499,7 @@ function renderTestimonialsAdmin() {
   }
   list.innerHTML = data.items.map(t => `
     <div class="tm-admin-item" data-id="${t.id}">
-      <div class="tm-admin-avatar" style="background:${AVATAR_GRADIENTS_ADMIN[t.gradient] || AVATAR_GRADIENTS_ADMIN.green};">${t.emoji || '👤'}</div>
+      <div class="tm-admin-avatar" style="${t.authorPhoto ? `background:url('${t.authorPhoto}') center/cover` : `background:${AVATAR_GRADIENTS_ADMIN[t.gradient] || AVATAR_GRADIENTS_ADMIN.green}`};">${t.authorPhoto ? '' : (t.emoji || '👤')}</div>
       <div class="tm-admin-info">
         <div class="tm-admin-name">${t.authorName}</div>
         <div class="tm-admin-role">${t.authorRole}</div>
@@ -3356,6 +3521,7 @@ function openTestimonialForm(id) {
   const data = getTestimonials();
   const wrap = document.getElementById('tm-form-wrap');
   const titleEl = document.getElementById('tm-form-title');
+  clearTmImageUpload();
   document.getElementById('tmf-edit-id').value = id || '';
   if (id) {
     const t = data.items.find(x => x.id === id);
@@ -3367,6 +3533,16 @@ function openTestimonialForm(id) {
     document.getElementById('tmf-emoji').value = t.emoji || '';
     document.getElementById('tmf-gradient').value = t.gradient || 'green';
     document.getElementById('tmf-text').value = t.text || '';
+    if (t.authorPhoto && t.authorPhoto.startsWith('data:')) {
+      switchTmImgTab('upload');
+      document.getElementById('tmf-image-data').value = t.authorPhoto;
+      document.getElementById('tmf-preview').src = t.authorPhoto;
+      document.getElementById('tmf-preview-wrap').style.display = 'flex';
+      document.getElementById('tmf-upload-area').style.display = 'none';
+    } else {
+      switchTmImgTab('url');
+      document.getElementById('tmf-image').value = t.authorPhoto || '';
+    }
   } else {
     titleEl.textContent = 'Add Testimonial';
     document.getElementById('tmf-author-name').value = '';
@@ -3375,12 +3551,15 @@ function openTestimonialForm(id) {
     document.getElementById('tmf-emoji').value = '';
     document.getElementById('tmf-gradient').value = 'green';
     document.getElementById('tmf-text').value = '';
+    document.getElementById('tmf-image').value = '';
   }
   wrap.style.display = '';
   wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  initTmDropzone();
 }
 
 function closeTestimonialForm() {
+  clearTmImageUpload();
   document.getElementById('tm-form-wrap').style.display = 'none';
 }
 
@@ -3394,6 +3573,7 @@ function saveTestimonialForm() {
     authorRole: document.getElementById('tmf-author-role').value.trim(),
     emoji: document.getElementById('tmf-emoji').value.trim() || '👤',
     gradient: document.getElementById('tmf-gradient').value,
+    authorPhoto: document.getElementById('tmf-image-data').value || document.getElementById('tmf-image').value.trim(),
     visible: true
   };
   if (!entry.authorName || !entry.text) { alert('Author name and testimonial text are required.'); return; }
