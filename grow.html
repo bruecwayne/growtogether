@@ -610,6 +610,99 @@ a { text-decoration: none; color: inherit; }
   .crop-specs { grid-template-columns: 1fr; }
 }
 </style>
+
+<!-- ═══ OTP Verification Styles ═══ -->
+<style>
+.otp-group { position: relative; }
+.otp-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.otp-input-row input[data-otp-target="identifier"] {
+  flex: 1;
+  min-width: 0;
+}
+.otp-send-btn {
+  flex-shrink: 0;
+  height: 44px;
+  padding: 0 14px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  white-space: nowrap;
+  background: transparent;
+  color: var(--moss);
+  border: 1.5px solid var(--moss);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.otp-send-btn:hover:not(:disabled) { background: var(--moss); color: #fff; }
+.otp-send-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+.otp-verified-badge {
+  display: none;
+  align-items: center;
+  gap: 5px;
+  background: rgba(61,107,79,0.12);
+  color: var(--moss);
+  border: 1.5px solid rgba(61,107,79,0.45);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.otp-verify-row {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+.otp-verify-row.show { display: flex; }
+.otp-code-input {
+  width: 148px !important;
+  flex-shrink: 0 !important;
+  letter-spacing: 0.2em;
+  font-size: 17px !important;
+  font-weight: 700 !important;
+  text-align: center;
+}
+.otp-confirm-btn {
+  height: 42px;
+  padding: 0 18px;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  background: var(--wheat);
+  color: var(--forest);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.otp-confirm-btn:hover { background: var(--wheat-light); }
+.otp-msg {
+  font-size: 12px;
+  line-height: 1.45;
+  min-height: 16px;
+  margin-top: 5px;
+}
+.otp-msg-error { color: #c0392b; }
+.otp-msg-info  { color: var(--moss); }
+.otp-timer {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+[data-otp-submit]:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+}
+</style>
 </head>
 <body>
 
@@ -703,13 +796,37 @@ a { text-decoration: none; color: inherit; }
               <input type="text" name="name" placeholder="e.g. Rajesh Kumar" required>
             </div>
             <div class="form-field">
-              <label>Phone Number <span class="required">*</span></label>
-              <input type="tel" name="phone" placeholder="e.g. 9876543210" required>
+              <label>Phone Number <span class="required">*</span> <span style="color:var(--terracotta);font-size:11px;font-weight:600;margin-left:2px;">OTP required</span></label>
+              <div class="otp-group" data-type="phone" data-required="true">
+                <div class="otp-input-row">
+                  <input type="tel" name="phone" data-otp-target="identifier" placeholder="e.g. 9876543210" required>
+                  <button type="button" class="otp-send-btn">Send OTP</button>
+                  <span class="otp-verified-badge">✓ Verified</span>
+                </div>
+                <div class="otp-verify-row">
+                  <input type="text" class="otp-code-input" placeholder="6-digit OTP" maxlength="6" inputmode="numeric" pattern="\d{6}">
+                  <button type="button" class="otp-confirm-btn">Verify</button>
+                </div>
+                <div class="otp-msg"></div>
+                <div class="otp-timer"></div>
+              </div>
             </div>
           </div>
           <div class="form-field">
-            <label>Email Address</label>
-            <input type="email" name="email" placeholder="e.g. rajesh@example.com">
+            <label>Email Address <span style="color:var(--text-muted);font-size:11px;font-weight:400;">(verify if provided)</span></label>
+            <div class="otp-group" data-type="email" data-required="false">
+              <div class="otp-input-row">
+                <input type="email" name="email" data-otp-target="identifier" placeholder="e.g. rajesh@example.com">
+                <button type="button" class="otp-send-btn">Send OTP</button>
+                <span class="otp-verified-badge">✓ Verified</span>
+              </div>
+              <div class="otp-verify-row">
+                <input type="text" class="otp-code-input" placeholder="6-digit OTP" maxlength="6" inputmode="numeric" pattern="\d{6}">
+                <button type="button" class="otp-confirm-btn">Verify</button>
+              </div>
+              <div class="otp-msg"></div>
+              <div class="otp-timer"></div>
+            </div>
           </div>
 
           <div class="form-divider"></div>
@@ -760,7 +877,7 @@ a { text-decoration: none; color: inherit; }
             </div>
           </div>
 
-          <button type="submit" class="submit-btn">
+          <button type="submit" class="submit-btn" data-otp-submit disabled>
             Submit Growing Request
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </button>
@@ -790,6 +907,7 @@ a { text-decoration: none; color: inherit; }
 <script src="https://cdnjs.cloudflare.com/ajax/libs/parse/4.3.0/parse.min.js"></script>
 <script src="js/config.js"></script>
 <script src="js/parse-service.js"></script>
+<script src="js/otp-service.js"></script>
 
 <script>
 // Crop data
@@ -902,6 +1020,7 @@ acresInput.addEventListener('input', updatePrice);
 document.getElementById('grow-form').addEventListener('submit', async function(e) {
   e.preventDefault();
   const form = this;
+  if (!otpGuardSubmit(form)) return;
   const submitBtn = form.querySelector('button[type="submit"]');
   submitBtn.textContent = 'Submitting...';
   submitBtn.disabled = true;
