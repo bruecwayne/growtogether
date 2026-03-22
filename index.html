@@ -3088,14 +3088,6 @@ function openStartGrowing(cropName) {
     varietiesSection.style.display = 'none';
   }
 
-  // Pre-fill variety input with first variety
-  const varietyInput = document.getElementById('sg-variety-input');
-  if (product && product.variety) {
-    varietyInput.placeholder = product.variety.split('•')[0].trim() || 'e.g. Arka Rakshak';
-  } else {
-    varietyInput.placeholder = 'e.g. Arka Rakshak';
-  }
-
   // Reset form & success
   document.getElementById('sg-form').reset();
   document.getElementById('sg-success').classList.remove('active');
