@@ -36,6 +36,10 @@
   --radius: 12px;
   --radius-lg: 20px;
   --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  --z-nav: 1000;
+  --z-modal: 2000;
+  --z-overlay: 9000;
+  --z-grain: 9999;
 }
 
 /* ========== DARK THEME ========== */
@@ -111,8 +115,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 28px;
+  width: 36px;
+  height: 36px;
   border: none;
   background: transparent;
   border-radius: 6px;
@@ -146,7 +150,7 @@ body::after {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 9999;
+  z-index: var(--z-grain);
   opacity: 0.025;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   background-repeat: repeat;
@@ -189,7 +193,7 @@ a { text-decoration: none; color: inherit; }
   top: 0;
   left: 0;
   right: 0;
-  z-index: 1000;
+  z-index: var(--z-nav);
   padding: 20px 0;
   transition: all 0.4s ease;
 }
@@ -713,7 +717,7 @@ a { text-decoration: none; color: inherit; }
 /* Farmer Application Modal */
 .farmer-modal-overlay {
   display: none;
-  position: fixed; inset: 0; z-index: 2000;
+  position: fixed; inset: 0; z-index: var(--z-modal);
   background: rgba(10,24,10,0.82);
   backdrop-filter: blur(6px);
   align-items: center; justify-content: center;
@@ -742,7 +746,7 @@ a { text-decoration: none; color: inherit; }
 .farmer-modal-head p { color: rgba(245,240,232,0.55); font-size: 0.85rem; margin-top: 6px; line-height: 1.5; }
 .farmer-modal-close {
   background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 50%; width: 34px; height: 34px; flex-shrink: 0;
+  border-radius: 50%; width: 44px; height: 44px; flex-shrink: 0;
   color: rgba(245,240,232,0.5); font-size: 1.1rem; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   transition: all 0.2s;
@@ -934,6 +938,7 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
   transition: all var(--transition);
   position: relative;
   overflow: hidden;
+  cursor: pointer;
 }
 .farmer-card::before {
   content: '';
@@ -1031,6 +1036,7 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
   overflow: hidden;
   box-shadow: var(--shadow-sm);
   transition: all var(--transition);
+  cursor: pointer;
 }
 .land-card:hover {
   box-shadow: var(--shadow-hover);
@@ -1546,7 +1552,7 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
   gap: 16px;
 }
 .footer-social a {
-  width: 36px; height: 36px;
+  width: 44px; height: 44px;
   border-radius: 50%;
   background: rgba(255,255,255,0.06);
   display: flex;
@@ -1761,7 +1767,7 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
 
 /* ========== START GROWING MODAL ========== */
 .sg-overlay {
-  position: fixed; inset: 0; z-index: 9000;
+  position: fixed; inset: 0; z-index: var(--z-overlay);
   background: rgba(10,20,15,0.72);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
@@ -1783,8 +1789,8 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
 }
 .sg-overlay.open .sg-modal { transform: scale(1) translateY(0); }
 .sg-close {
-  position: absolute; top: 18px; right: 18px; z-index: 10;
-  width: 36px; height: 36px; border-radius: 50%;
+  position: absolute; top: 14px; right: 14px; z-index: 10;
+  width: 44px; height: 44px; border-radius: 50%;
   background: var(--cream-dark); border: none; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   color: var(--text-muted); transition: all 0.2s;
@@ -1965,6 +1971,39 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
   .sg-form-row { grid-template-columns: 1fr; }
   .sg-modal { max-height: 95vh; }
 }
+
+/* ========== ACCESSIBILITY ========== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.15s !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--wheat);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.btn:focus-visible,
+.how-tab:focus-visible,
+.product-cta:focus-visible,
+.newsletter-btn:focus-visible,
+.lease-submit:focus-visible,
+.btn-farmer-apply:focus-visible,
+.sg-submit-btn:focus-visible {
+  outline: 2px solid var(--wheat);
+  outline-offset: 3px;
+}
+
+.nav-links a:focus-visible {
+  outline: 2px solid var(--wheat);
+  outline-offset: 4px;
+  border-radius: 3px;
+}
 </style>
 
 <!-- ═══ OTP Verification Styles ═══ -->
@@ -2142,7 +2181,7 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
         <div class="hero-card-float farmer">
           <div class="float-label">Your Farmer</div>
           <div class="float-farmer">
-            <div class="float-avatar">&#x1F468;&#x200D;&#x1F33E;</div>
+            <div class="float-avatar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7"/></svg></div>
             <div class="float-farmer-info">
               <h5>Venkat Rao</h5>
               <span>Organic Specialist &bull; 12 yrs</span>
@@ -2155,8 +2194,8 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
           <div class="hero-card-label">Growing Now</div>
           <div class="hero-card-title">Hybrid Tomatoes</div>
           <div class="hero-card-meta">
-            <span>&#x1F331; Week 8 of 14</span>
-            <span>&#x1F4CD; Siddipet, Telangana</span>
+            <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="vertical-align:-1px;margin-right:3px;"><path d="M12 22V12"/><path d="M12 12C12 7 17 3 21 4s-2 8-9 8z"/><path d="M12 12C12 7 7 3 3 4s2 8 9 8z"/></svg>Week 8 of 14</span>
+            <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="vertical-align:-1px;margin-right:3px;"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Siddipet, Telangana</span>
           </div>
         </div>
         <div class="hero-card-float progress" style="animation-name: floatCard2;">
@@ -2186,21 +2225,21 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
       <!-- Customer steps (default) -->
       <div class="how-step reveal reveal-delay-1">
         <div class="how-step-num">01</div>
-        <div class="how-step-icon">&#x1F33F;</div>
+        <div class="how-step-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 22V12"/><path d="M12 12C12 7 17 3 21 4s-2 8-9 8z"/><path d="M12 12C12 7 7 3 3 4s2 8 9 8z"/></svg></div>
         <h3>Pick Your Product</h3>
         <p>Browse our catalog of crops — from heirloom tomatoes to organic lavender. Choose what you want grown and how much.</p>
         <span class="how-connector">&#x2192;</span>
       </div>
       <div class="how-step reveal reveal-delay-2">
         <div class="how-step-num">02</div>
-        <div class="how-step-icon">&#x1F468;&#x200D;&#x1F33E;</div>
+        <div class="how-step-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7"/><path d="M8 6c0 0 1 2 4 2s4-2 4-2"/></svg></div>
         <h3>We Match a Farmer</h3>
         <p>Our algorithm pairs you with an expert farmer who specializes in your chosen crop. They grow it on our certified land.</p>
         <span class="how-connector">&#x2192;</span>
       </div>
       <div class="how-step reveal reveal-delay-3">
         <div class="how-step-num">03</div>
-        <div class="how-step-icon">&#x1F4F1;</div>
+        <div class="how-step-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="2.5"/></svg></div>
         <h3>Track &amp; Harvest</h3>
         <p>Watch your crop grow with real-time updates, photos, and data. When it's ready, we deliver your fresh harvest to your door.</p>
       </div>
@@ -2208,7 +2247,8 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
     <div class="how-farmer-cta" id="how-farmer-cta">
       <p>Ready to grow with us? Apply in minutes — verification usually takes 2–3 days.</p>
       <button class="btn-farmer-apply" onclick="openFarmerModal()">
-        🌱 Apply & Get Verified
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        Apply &amp; Get Verified
       </button>
     </div>
   </div>
@@ -2409,7 +2449,7 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
           <span class="dash-card-badge badge-active">3 Active</span>
         </div>
         <div class="crop-progress-item">
-          <div class="crop-icon-sm">&#x1F345;</div>
+          <div class="crop-icon-sm" aria-hidden="true">&#x1F345;</div>
           <div class="crop-progress-info">
             <h5>Hybrid Tomatoes</h5>
             <div class="crop-progress-bar"><div class="bar bar-green" style="width:72%"></div></div>
@@ -2417,7 +2457,7 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
           <span class="crop-percent">72%</span>
         </div>
         <div class="crop-progress-item">
-          <div class="crop-icon-sm">&#x1F336;&#xFE0F;</div>
+          <div class="crop-icon-sm" aria-hidden="true">&#x1F336;&#xFE0F;</div>
           <div class="crop-progress-info">
             <h5>Red Chillies</h5>
             <div class="crop-progress-bar"><div class="bar bar-wheat" style="width:45%"></div></div>
@@ -2425,7 +2465,7 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
           <span class="crop-percent" style="color:var(--wheat-light);">45%</span>
         </div>
         <div class="crop-progress-item">
-          <div class="crop-icon-sm">&#x1F33E;</div>
+          <div class="crop-icon-sm" aria-hidden="true">&#x1F33E;</div>
           <div class="crop-progress-info">
             <h5>Turmeric</h5>
             <div class="crop-progress-bar"><div class="bar bar-terra" style="width:20%"></div></div>
@@ -2441,28 +2481,28 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
           <span class="dash-card-badge badge-warning">Upcoming</span>
         </div>
         <div class="timeline-item">
-          <div class="timeline-dot" style="background:rgba(61,107,79,0.2);">&#x1F345;</div>
+          <div class="timeline-dot" aria-hidden="true" style="background:rgba(61,107,79,0.2);">&#x1F345;</div>
           <div class="timeline-info">
             <h5>Tomato Harvest</h5>
             <span>April 28, 2026 &bull; Siddipet Central</span>
           </div>
         </div>
         <div class="timeline-item">
-          <div class="timeline-dot" style="background:rgba(212,168,75,0.15);">&#x1F33F;</div>
+          <div class="timeline-dot" aria-hidden="true" style="background:rgba(212,168,75,0.15);">&#x1F33F;</div>
           <div class="timeline-info">
             <h5>Chilli First Pick</h5>
             <span>May 15, 2026 &bull; Dubbak Highlands</span>
           </div>
         </div>
         <div class="timeline-item">
-          <div class="timeline-dot" style="background:rgba(177,156,217,0.15);">&#x1F33B;</div>
+          <div class="timeline-dot" aria-hidden="true" style="background:rgba(177,156,217,0.15);">&#x1F33B;</div>
           <div class="timeline-info">
             <h5>Turmeric Harvest</h5>
             <span>June 20, 2026 &bull; Gajwel Green Belt</span>
           </div>
         </div>
         <div class="timeline-item">
-          <div class="timeline-dot" style="background:rgba(122,193,122,0.15);">&#x1F4E6;</div>
+          <div class="timeline-dot" aria-hidden="true" style="background:rgba(122,193,122,0.15);">&#x1F4E6;</div>
           <div class="timeline-info">
             <h5>Full Delivery</h5>
             <span>July 1, 2026 &bull; All crops shipped</span>
@@ -2499,7 +2539,7 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
           <span class="dash-card-title">Farmer Updates</span>
         </div>
         <div class="farmer-update">
-          <div class="update-avatar" style="background:rgba(194,112,62,0.15);">&#x1F468;&#x200D;&#x1F33E;</div>
+          <div class="update-avatar" aria-hidden="true" style="background:rgba(194,112,62,0.15);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--terracotta-light)"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg></div>
           <div class="update-content">
             <h5>Venkat Rao</h5>
             <p>Tomatoes are showing great color. Expecting early harvest if weather holds.</p>
@@ -2507,7 +2547,7 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
           </div>
         </div>
         <div class="farmer-update">
-          <div class="update-avatar" style="background:rgba(168,197,171,0.15);">&#x1F469;&#x200D;&#x1F33E;</div>
+          <div class="update-avatar" aria-hidden="true" style="background:rgba(168,197,171,0.15);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--sage)"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg></div>
           <div class="update-content">
             <h5>Ramesh Reddy</h5>
             <p>Chilli plants flowering well. Expecting strong first pick if rains hold off this week.</p>
@@ -2515,7 +2555,7 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
           </div>
         </div>
         <div class="farmer-update">
-          <div class="update-avatar" style="background:rgba(232,201,125,0.15);">&#x1F9D1;&#x200D;&#x1F33E;</div>
+          <div class="update-avatar" aria-hidden="true" style="background:rgba(232,201,125,0.15);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--wheat)"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg></div>
           <div class="update-content">
             <h5>Lakshmi Devi</h5>
             <p>Turmeric rhizomes planted and sprouting. Canal water supply is steady this season.</p>
@@ -3418,7 +3458,7 @@ document.addEventListener('keydown', function(e) {
     </div>
 
     <div class="farmer-success" id="farmer-success">
-      <div class="farmer-success-icon">🌱</div>
+      <div class="farmer-success-icon" style="font-size:0;"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--sage-light)"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
       <h3>Application Submitted!</h3>
       <p>Thank you for applying to grow with us. Our team will review your profile and reach out within <strong style="color:var(--wheat)">2–3 business days</strong> to complete your verification and get you started.</p>
     </div>
