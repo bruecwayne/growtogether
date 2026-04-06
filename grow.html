@@ -155,16 +155,16 @@ a { text-decoration: none; color: inherit; }
 /* ========== ANIMATIONS ========== */
 .reveal {
   opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(70px) scale(0.94);
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .reveal.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
 }
-.reveal-delay-1 { transition-delay: 0.1s; }
-.reveal-delay-2 { transition-delay: 0.2s; }
-.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-1 { transition-delay: 0.12s; }
+.reveal-delay-2 { transition-delay: 0.22s; }
+.reveal-delay-3 { transition-delay: 0.34s; }
 
 /* ========== NAVIGATION ========== */
 .nav {
@@ -239,7 +239,12 @@ a { text-decoration: none; color: inherit; }
 }
 .page-title em {
   font-family: 'Instrument Serif', serif;
-  color: var(--moss);
+  background: linear-gradient(135deg, var(--moss) 0%, var(--sage) 40%, var(--wheat) 70%, var(--terracotta-light) 100%);
+  background-size: 250% 250%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientText 5s ease-in-out infinite;
 }
 .page-subtitle {
   font-size: 1.05rem;
@@ -505,17 +510,33 @@ a { text-decoration: none; color: inherit; }
   justify-content: center;
   gap: 10px;
   margin-top: 4px;
+  position: relative;
+  overflow: hidden;
+}
+.submit-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -80%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+  transform: skewX(-15deg);
+  animation: shimmer 4s 1s ease infinite;
 }
 .submit-btn:hover {
   background: linear-gradient(135deg, var(--forest-deep), var(--forest));
   box-shadow: 0 8px 30px rgba(26,58,42,0.3);
-  transform: translateY(-2px);
+  transform: translateY(-3px) scale(1.01);
+}
+.submit-btn:active {
+  transform: translateY(-1px) scale(0.99);
 }
 .submit-btn svg {
   transition: transform var(--transition);
 }
 .submit-btn:hover svg {
-  transform: translateX(4px);
+  transform: translateX(5px);
 }
 
 /* ========== SUCCESS STATE ========== */
@@ -596,6 +617,92 @@ a { text-decoration: none; color: inherit; }
 @keyframes fadeSlide {
   from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
+}
+@keyframes gradientText {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+@keyframes shimmer {
+  0% { left: -80%; }
+  60%, 100% { left: 120%; }
+}
+@keyframes ripple {
+  to { transform: scale(4); opacity: 0; }
+}
+@keyframes fieldFocus {
+  0% { transform: scaleX(0); }
+  100% { transform: scaleX(1); }
+}
+
+/* Form field animated underline */
+.form-field {
+  position: relative;
+}
+.form-field::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--moss), var(--wheat));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 0 0 2px 2px;
+  pointer-events: none;
+}
+.form-field:focus-within::after {
+  transform: scaleX(1);
+}
+
+/* Crop card entrance */
+.crop-card {
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
+}
+.crop-card:hover {
+  transform: translateY(-4px) scale(1.01);
+}
+
+/* Spec item bounce-in */
+.spec-item {
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.25s ease;
+}
+.spec-item:hover {
+  transform: translateY(-3px) scale(1.04);
+}
+
+/* Summary row hover */
+.summary-row {
+  transition: color 0.25s ease, transform 0.3s ease;
+}
+.summary-row:hover {
+  transform: translateX(4px);
+}
+.summary-row .summary-total {
+  transition: color 0.3s ease;
+}
+
+/* Order form card polish */
+.order-form-card {
+  transition: box-shadow 0.4s ease;
+}
+.order-form-card:hover {
+  box-shadow: 0 24px 70px rgba(26,58,42,0.14);
+}
+
+/* Ripple style */
+.ripple-el {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.35);
+  transform: scale(0);
+  width: 80px;
+  height: 80px;
+  margin-top: -40px;
+  margin-left: -40px;
+  pointer-events: none;
+  animation: ripple 0.55s ease-out forwards;
 }
 
 /* ========== RESPONSIVE ========== */
@@ -1078,6 +1185,36 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Ripple effect on submit button
+document.querySelectorAll('.submit-btn').forEach(btn => {
+  btn.addEventListener('click', function(e) {
+    const r = this.getBoundingClientRect();
+    const rEl = document.createElement('span');
+    rEl.classList.add('ripple-el');
+    rEl.style.top = (e.clientY - r.top) + 'px';
+    rEl.style.left = (e.clientX - r.left) + 'px';
+    this.appendChild(rEl);
+    setTimeout(() => rEl.remove(), 600);
+  });
+});
+
+// 3D tilt on crop card and order form
+(function initTilt(selector, maxDeg) {
+  document.querySelectorAll(selector).forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      card.style.transform = `perspective(900px) rotateY(${x * maxDeg}deg) rotateX(${-y * maxDeg}deg) scale(1.02)`;
+      card.style.transition = 'transform 0.1s ease';
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+      card.style.transition = 'transform 0.6s cubic-bezier(0.34,1.56,0.64,1)';
+    });
+  });
+})('.crop-card', 6);
 </script>
 
 

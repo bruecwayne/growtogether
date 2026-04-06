@@ -175,17 +175,17 @@ a { text-decoration: none; color: inherit; }
 /* ========== ANIMATION CLASSES ========== */
 .reveal {
   opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(70px) scale(0.94);
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .reveal.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
 }
-.reveal-delay-1 { transition-delay: 0.1s; }
-.reveal-delay-2 { transition-delay: 0.2s; }
-.reveal-delay-3 { transition-delay: 0.3s; }
-.reveal-delay-4 { transition-delay: 0.4s; }
+.reveal-delay-1 { transition-delay: 0.12s; }
+.reveal-delay-2 { transition-delay: 0.22s; }
+.reveal-delay-3 { transition-delay: 0.34s; }
+.reveal-delay-4 { transition-delay: 0.46s; }
 
 /* ========== NAVIGATION ========== */
 .nav {
@@ -2012,6 +2012,161 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
   .sg-modal { max-height: 95vh; }
 }
 
+/* ========== AGGRESSIVE ANIMATIONS ========== */
+
+/* Gradient animated italic text in section titles */
+.section-title em {
+  background: linear-gradient(135deg, var(--moss) 0%, var(--sage) 35%, var(--wheat) 65%, var(--terracotta-light) 100%);
+  background-size: 250% 250%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: gradientText 5s ease-in-out infinite;
+}
+.how-it-works .section-title em,
+.dashboard-section .section-title em {
+  background: linear-gradient(135deg, var(--wheat) 0%, var(--wheat-glow) 40%, var(--sage-light) 70%, var(--wheat-light) 100%);
+  background-size: 250% 250%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradientText 5s ease-in-out infinite;
+}
+@keyframes gradientText {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Shimmer sweep on primary + wheat buttons */
+.btn-primary, .btn-wheat, .product-cta, .btn-farmer-apply {
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary::after, .btn-wheat::after, .product-cta::after, .btn-farmer-apply::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  left: -120%;
+  width: 60%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.22), transparent);
+  transform: skewX(-15deg);
+  animation: shimmer 4s 1.5s ease infinite;
+  pointer-events: none;
+}
+@keyframes shimmer {
+  0%   { left: -120%; }
+  40%, 100% { left: 160%; }
+}
+
+/* Pulse ring on hero badge dot */
+.hero-badge .dot {
+  position: relative;
+}
+.hero-badge .dot::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid var(--wheat);
+  animation: pulseRing 2s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes pulseRing {
+  0%   { transform: scale(1); opacity: 0.9; }
+  100% { transform: scale(3.5); opacity: 0; }
+}
+
+/* Animated how-step number breathing */
+.how-step-num {
+  animation: numBreath 3s ease-in-out infinite alternate;
+}
+@keyframes numBreath {
+  from { color: rgba(212,168,75,0.14); }
+  to   { color: rgba(212,168,75,0.38); }
+}
+
+/* Connector arrow bounce */
+.how-connector {
+  display: inline-block;
+  animation: arrowBounce 1.4s ease-in-out infinite;
+}
+@keyframes arrowBounce {
+  0%, 100% { transform: translateX(0); opacity: 0.4; }
+  50%       { transform: translateX(6px); opacity: 1; }
+}
+
+/* Lease benefit icon spring on hover */
+.lease-benefit-icon {
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.lease-benefit:hover .lease-benefit-icon {
+  transform: rotate(-10deg) scale(1.15);
+}
+
+/* Ripple keyframe */
+@keyframes ripple {
+  to { transform: scale(2.8); opacity: 0; }
+}
+
+/* More aggressive card hovers */
+.land-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 30px 60px rgba(26,58,42,0.2);
+}
+.farmer-card:hover {
+  transform: translateY(-10px) rotate(-0.4deg);
+}
+.product-card:hover .img-bg {
+  transform: scale(1.14);
+}
+
+/* Nav logo spin on hover */
+.nav-logo svg {
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.nav-logo:hover svg { transform: rotate(20deg) scale(1.1); }
+
+/* Section label pulse on hover */
+.section-label {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s;
+}
+.section-label:hover {
+  transform: scale(1.04);
+  background: rgba(61,107,79,0.14);
+}
+.how-it-works .section-label:hover, .dashboard-section .section-label:hover {
+  background: rgba(212,168,75,0.18);
+}
+
+/* Animated CTA section dot grid drift */
+.cta-section::before {
+  animation: dotDrift 12s linear infinite;
+}
+@keyframes dotDrift {
+  0%   { background-position: 0 0; }
+  100% { background-position: 24px 24px; }
+}
+
+/* Hero background orbs — more dramatic */
+@keyframes float {
+  0%   { transform: translate(0, 0) scale(1) rotate(0deg); }
+  33%  { transform: translate(45px, -35px) scale(1.1) rotate(6deg); }
+  66%  { transform: translate(-25px, 20px) scale(0.93) rotate(-4deg); }
+  100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+}
+
+/* Floating hero card animation — more travel */
+@keyframes floatCard {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50%       { transform: translateY(-14px) rotate(-1deg); }
+}
+@keyframes floatCard2 {
+  0%, 100% { transform: translateY(0) rotate(1deg); }
+  50%       { transform: translateY(-10px) rotate(2.5deg); }
+}
+
 /* ========== ACCESSIBILITY ========== */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -3240,6 +3395,89 @@ async function submitStartGrowing(e) {
 // Escape key closes modal
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') closeStartGrowing();
+});
+
+// ===== STAT COUNTER ANIMATION =====
+function animateCount(el, target, suffix) {
+  const dur = 1800;
+  const t0 = performance.now();
+  (function tick(now) {
+    const p = Math.min((now - t0) / dur, 1);
+    const ease = 1 - Math.pow(1 - p, 4); // ease-out quart
+    el.textContent = Math.floor(ease * target) + suffix;
+    if (p < 1) requestAnimationFrame(tick);
+  })(t0);
+}
+
+const counterObs = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    entry.target.querySelectorAll('.hero-stat h4').forEach(el => {
+      const raw = el.textContent.trim();
+      const num = parseInt(raw.replace(/[^\d]/g, ''), 10);
+      const sfx = raw.replace(/[\d]/g, '');
+      if (!isNaN(num)) animateCount(el, num, sfx);
+    });
+    counterObs.unobserve(entry.target);
+  });
+}, { threshold: 0.6 });
+const heroStatsEl = document.querySelector('.hero-stats');
+if (heroStatsEl) counterObs.observe(heroStatsEl);
+
+// ===== 3D TILT EFFECT ON CARDS =====
+function initTilt(selector, maxDeg) {
+  document.querySelectorAll(selector).forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width  - 0.5;
+      const y = (e.clientY - r.top)  / r.height - 0.5;
+      card.style.transform = `perspective(900px) rotateY(${x * maxDeg}deg) rotateX(${-y * maxDeg}deg) scale(1.03)`;
+      card.style.transition = 'transform 0.1s ease';
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+      card.style.transition = 'transform 0.6s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.4s ease';
+    });
+  });
+}
+// Wait for dynamic cards to render
+setTimeout(() => {
+  initTilt('.product-card', 9);
+  initTilt('.farmer-card', 7);
+  initTilt('.testimonial-card', 5);
+  initTilt('.how-step', 5);
+}, 600);
+
+// ===== RIPPLE ON CLICK =====
+document.addEventListener('click', e => {
+  const btn = e.target.closest('.btn, .product-cta, .btn-farmer-apply, .newsletter-btn, .lease-submit, .sg-submit-btn, .btn-farmer-submit, .submit-btn');
+  if (!btn) return;
+  const r = btn.getBoundingClientRect();
+  const sz = Math.max(r.width, r.height) * 1.6;
+  const rip = document.createElement('span');
+  rip.style.cssText = `position:absolute;width:${sz}px;height:${sz}px;left:${e.clientX-r.left-sz/2}px;top:${e.clientY-r.top-sz/2}px;background:rgba(255,255,255,0.28);border-radius:50%;transform:scale(0);animation:ripple 0.55s ease-out forwards;pointer-events:none;`;
+  if (getComputedStyle(btn).position === 'static') btn.style.position = 'relative';
+  btn.appendChild(rip);
+  setTimeout(() => rip.remove(), 600);
+});
+
+// ===== STAGGER TILT REFRESH ON SCROLL REVEAL =====
+// Re-apply tilt after cards animate in
+const tiltRefreshObs = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      setTimeout(() => {
+        initTilt('.product-card', 9);
+        initTilt('.farmer-card', 7);
+        initTilt('.testimonial-card', 5);
+      }, 300);
+      tiltRefreshObs.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.2 });
+['products-grid','farmers-grid','testimonials-grid'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) tiltRefreshObs.observe(el);
 });
 </script>
 
