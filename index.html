@@ -387,18 +387,30 @@ a { text-decoration: none; color: inherit; }
 }
 .hero-stats {
   display: flex;
-  gap: 48px;
+  gap: 0;
+  border: 1.5px solid var(--cream-dark);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--white);
+  box-shadow: var(--shadow-sm);
 }
+.hero-stat {
+  padding: 16px 28px;
+  border-right: 1.5px solid var(--cream-dark);
+  flex: 1;
+  text-align: center;
+}
+.hero-stat:last-child { border-right: none; }
 .hero-stat h4 {
-  font-size: 2rem;
+  font-size: 2.2rem;
   color: var(--forest);
   margin-bottom: 2px;
 }
 .hero-stat span {
-  font-size: 0.82rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
-  font-weight: 500;
-  letter-spacing: 0.04em;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
@@ -548,18 +560,24 @@ a { text-decoration: none; color: inherit; }
 .section-label {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
+  gap: 7px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--sage);
-  margin-bottom: 16px;
+  color: var(--moss);
+  margin-bottom: 20px;
+  background: rgba(61,107,79,0.09);
+  padding: 6px 14px 6px 10px;
+  border-radius: 100px;
+  border: 1px solid rgba(61,107,79,0.18);
 }
 .section-label::before {
   content: '';
-  width: 24px; height: 1.5px;
+  width: 6px; height: 6px;
+  border-radius: 50%;
   background: var(--wheat);
+  flex-shrink: 0;
 }
 .section-title {
   font-size: clamp(2.2rem, 4vw, 3.2rem);
@@ -603,7 +621,8 @@ a { text-decoration: none; color: inherit; }
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--wheat), transparent);
 }
-.how-it-works .section-label { color: var(--wheat-light); }
+.how-it-works .section-label { color: var(--wheat-light); background: rgba(212,168,75,0.1); border-color: rgba(212,168,75,0.28); }
+.how-it-works .section-label::before { background: var(--wheat-glow); }
 .how-it-works .section-title { color: var(--cream); }
 .how-it-works .section-title em { color: var(--wheat-light); }
 .how-it-works .section-desc { color: rgba(245,240,232,0.6); }
@@ -645,15 +664,18 @@ a { text-decoration: none; color: inherit; }
 .how-step {
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.06);
+  border-left: 3px solid transparent;
   border-radius: var(--radius-lg);
-  padding: 40px 32px;
+  padding: 40px 30px;
   position: relative;
   transition: all var(--transition);
 }
 .how-step:hover {
   background: rgba(255,255,255,0.07);
-  transform: translateY(-4px);
-  border-color: rgba(212,168,75,0.2);
+  transform: translateY(-6px);
+  border-color: rgba(212,168,75,0.18);
+  border-left-color: var(--wheat);
+  box-shadow: 0 24px 48px rgba(0,0,0,0.2);
 }
 .how-step-num {
   font-family: 'DM Serif Display', serif;
@@ -663,14 +685,21 @@ a { text-decoration: none; color: inherit; }
   margin-bottom: 20px;
 }
 .how-step-icon {
-  width: 52px; height: 52px;
-  border-radius: 14px;
-  background: rgba(212,168,75,0.12);
+  width: 58px; height: 58px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(212,168,75,0.22), rgba(212,168,75,0.07));
+  border: 1px solid rgba(212,168,75,0.3);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.4rem;
   margin-bottom: 20px;
+  color: var(--wheat);
+  transition: all var(--transition);
+}
+.how-step:hover .how-step-icon {
+  background: linear-gradient(135deg, rgba(212,168,75,0.35), rgba(212,168,75,0.14));
+  border-color: rgba(212,168,75,0.55);
+  color: var(--wheat-glow);
 }
 .how-step h3 {
   color: var(--cream);
@@ -831,8 +860,8 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
   cursor: pointer;
 }
 .product-card:hover {
-  box-shadow: var(--shadow-hover);
-  transform: translateY(-6px);
+  box-shadow: 0 24px 60px rgba(26,58,42,0.16);
+  transform: translateY(-8px);
 }
 .product-img {
   height: 200px;
@@ -901,21 +930,26 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
 }
 .product-cta {
   width: 100%;
-  padding: 11px;
+  padding: 12px;
   border-radius: 10px;
-  background: var(--cream);
-  border: 1.5px solid var(--cream-dark);
+  background: linear-gradient(135deg, var(--forest), var(--moss));
+  border: none;
   font-family: inherit;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--forest);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--cream);
   cursor: pointer;
   transition: all var(--transition);
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
 }
 .product-cta:hover {
-  background: var(--forest);
-  border-color: var(--forest);
-  color: var(--cream);
+  background: linear-gradient(135deg, var(--forest-deep), var(--forest));
+  box-shadow: 0 8px 24px rgba(26,58,42,0.28);
+  transform: translateY(-2px);
 }
 
 /* ========== FARMERS ========== */
@@ -948,10 +982,12 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
   right: 0;
   height: 4px;
   background: linear-gradient(90deg, var(--moss), var(--sage-light));
-  transform: scaleX(0);
-  transition: transform var(--transition);
+  transform: scaleX(0.18);
+  transform-origin: left;
+  opacity: 0.55;
+  transition: transform var(--transition), opacity var(--transition);
 }
-.farmer-card:hover::before { transform: scaleX(1); }
+.farmer-card:hover::before { transform: scaleX(1); opacity: 1; }
 .farmer-card:hover {
   box-shadow: var(--shadow-hover);
   transform: translateY(-4px);
@@ -1062,8 +1098,9 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
   );
 }
 .land-visual .location-pin {
-  font-size: 2.5rem;
   z-index: 2;
+  color: white;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
   animation: bounce 2s ease-in-out infinite;
 }
 @keyframes bounce {
@@ -1137,7 +1174,8 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
   border-radius: 50%;
   background: radial-gradient(circle, rgba(212,168,75,0.06), transparent);
 }
-.dashboard-section .section-label { color: var(--wheat-light); }
+.dashboard-section .section-label { color: var(--wheat-light); background: rgba(212,168,75,0.1); border-color: rgba(212,168,75,0.28); }
+.dashboard-section .section-label::before { background: var(--wheat-glow); }
 .dashboard-section .section-title { color: var(--cream); }
 .dashboard-section .section-title em { color: var(--wheat-light); }
 .dashboard-section .section-desc { color: rgba(245,240,232,0.6); }
@@ -1356,10 +1394,12 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
   box-shadow: var(--shadow-sm);
   transition: all var(--transition);
   position: relative;
+  border-left: 3px solid var(--cream-dark);
 }
 .testimonial-card:hover {
   box-shadow: var(--shadow-hover);
-  transform: translateY(-4px);
+  transform: translateY(-6px);
+  border-left-color: var(--wheat);
 }
 .testimonial-card::before {
   content: '\201C';
@@ -2685,16 +2725,24 @@ window.addEventListener('scroll', () => {
 const tabs = document.querySelectorAll('.how-tab');
 const stepsContainer = document.getElementById('how-steps');
 
+const _IC = {
+  sprout: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 22V12"/><path d="M12 12C12 7 17 3 21 4s-2 8-9 8z"/><path d="M12 12C12 7 7 3 3 4s2 8 9 8z"/></svg>',
+  farmer: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7"/><path d="M8 6c0 0 1 2 4 2s4-2 4-2"/></svg>',
+  phone:  '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="2.5"/></svg>',
+  doc:    '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>',
+  coin:   '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M15 9H10.5a2.5 2.5 0 000 5h3a2.5 2.5 0 010 5H9"/></svg>'
+};
+
 const customerSteps = [
-  { num: '01', icon: '&#x1F33F;', title: 'Pick Your Product', desc: 'Browse our catalog of crops \u2014 from heirloom tomatoes to organic lavender. Choose what you want grown and how much.' },
-  { num: '02', icon: '&#x1F468;&#x200D;&#x1F33E;', title: 'We Match a Farmer', desc: 'Our algorithm pairs you with an expert farmer who specializes in your chosen crop. They grow it on our certified land.' },
-  { num: '03', icon: '&#x1F4F1;', title: 'Track & Harvest', desc: 'Watch your crop grow with real-time updates, photos, and data. When it\u2019s ready, we deliver your fresh harvest to your door.' }
+  { num: '01', icon: _IC.sprout, title: 'Pick Your Product', desc: 'Browse our catalog of crops \u2014 from heirloom tomatoes to organic lavender. Choose what you want grown and how much.' },
+  { num: '02', icon: _IC.farmer, title: 'We Match a Farmer', desc: 'Our algorithm pairs you with an expert farmer who specializes in your chosen crop. They grow it on our certified land.' },
+  { num: '03', icon: _IC.phone,  title: 'Track & Harvest', desc: 'Watch your crop grow with real-time updates, photos, and data. When it\u2019s ready, we deliver your fresh harvest to your door.' }
 ];
 
 const farmerSteps = [
-  { num: '01', icon: '&#x1F4DD;', title: 'Apply & Get Verified', desc: 'Submit your farming experience and specialties. We verify credentials and match you with the right opportunities.' },
-  { num: '02', icon: '&#x1F331;', title: 'Get Matched to Crops', desc: 'Receive crop assignments matched to your expertise. Access our premium land, tools, and seed stock \u2014 everything you need to grow.' },
-  { num: '03', icon: '&#x1F4B0;', title: 'Grow & Earn', desc: 'Cultivate crops, share updates with customers, and earn competitive pay plus bonuses for exceptional harvests.' }
+  { num: '01', icon: _IC.doc,    title: 'Apply & Get Verified', desc: 'Submit your farming experience and specialties. We verify credentials and match you with the right opportunities.' },
+  { num: '02', icon: _IC.sprout, title: 'Get Matched to Crops', desc: 'Receive crop assignments matched to your expertise. Access our premium land, tools, and seed stock \u2014 everything you need to grow.' },
+  { num: '03', icon: _IC.coin,   title: 'Grow & Earn', desc: 'Cultivate crops, share updates with customers, and earn competitive pay plus bonuses for exceptional harvests.' }
 ];
 
 const farmerCta = document.getElementById('how-farmer-cta');
@@ -2832,7 +2880,7 @@ async function submitLeaseForm(form) {
       <div class="land-card reveal ${delays[i % 4]}">
         <div class="land-visual" style="background: linear-gradient(135deg, ${LAND_GRADIENTS_IDX[land.gradient] || LAND_GRADIENTS_IDX.green}), url('${land.imageUrl}'); background-size: cover; background-position: center;">
           <div class="topo-pattern"></div>
-          <span class="location-pin">&#x1F4CD;</span>
+          <span class="location-pin"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3" fill="currentColor" opacity="0.4"/></svg></span>
           <span class="land-status ${statusClass[land.status] || 'status-available'}">${statusLabel[land.status] || 'Available'}</span>
         </div>
         <div class="land-body">

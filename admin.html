@@ -151,12 +151,13 @@ a { text-decoration: none; color: inherit; }
 .sidebar {
   display: flex;
   flex-direction: column;
-  background: var(--forest-deep);
+  background: linear-gradient(180deg, var(--forest-deep) 0%, #0a1c12 100%);
   padding: 32px 20px 24px;
   position: sticky;
   top: 0;
   height: 100vh;
   overflow-y: auto;
+  border-right: 1px solid rgba(212,168,75,0.06);
 }
 .sidebar-logo {
   display: flex;
@@ -198,14 +199,17 @@ a { text-decoration: none; color: inherit; }
   color: rgba(245,240,232,0.5);
   transition: all var(--transition);
   cursor: pointer;
+  border-left: 2px solid transparent;
 }
 .sidebar-link:hover {
   color: var(--cream);
-  background: rgba(255,255,255,0.05);
+  background: rgba(255,255,255,0.06);
+  border-left-color: rgba(212,168,75,0.4);
 }
 .sidebar-link.active {
   color: var(--cream);
-  background: rgba(212,168,75,0.12);
+  background: rgba(212,168,75,0.14);
+  border-left-color: var(--wheat);
 }
 .sidebar-link.active svg { color: var(--wheat); }
 .sidebar-link svg { width: 20px; height: 20px; flex-shrink: 0; }
@@ -324,11 +328,17 @@ a { text-decoration: none; color: inherit; }
   box-shadow: var(--shadow-sm);
   transition: all var(--transition);
   cursor: default;
+  border-top: 3px solid var(--cream-dark);
 }
 .stat-card:hover {
   box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  border-top-color: var(--wheat);
 }
+.stat-card:nth-child(1) { border-top-color: var(--moss); }
+.stat-card:nth-child(2) { border-top-color: var(--wheat); }
+.stat-card:nth-child(3) { border-top-color: var(--terracotta); }
+.stat-card:nth-child(4) { border-top-color: var(--sage); }
 .stat-label {
   font-size: 0.75rem;
   font-weight: 600;
@@ -629,11 +639,12 @@ a { text-decoration: none; color: inherit; }
   vertical-align: middle;
 }
 .enquiry-table tbody tr {
-  transition: background var(--transition);
+  transition: background var(--transition), box-shadow var(--transition);
   cursor: pointer;
 }
 .enquiry-table tbody tr:hover {
   background: var(--cream-warm);
+  box-shadow: inset 3px 0 0 var(--wheat);
 }
 .enquiry-table tbody tr:last-child td {
   border-bottom: none;
