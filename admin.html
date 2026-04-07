@@ -2002,6 +2002,32 @@ a { text-decoration: none; color: inherit; }
         </div>
       </div>
     </div>
+
+    <!-- Quick Site Settings Bar -->
+    <div class="site-settings-bar">
+      <div class="site-settings-card">
+        <div class="site-settings-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.64A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          WhatsApp Number
+        </div>
+        <div class="site-settings-row">
+          <input type="text" id="ss-whatsapp" class="site-settings-input" placeholder="+91 98765 43210" maxlength="20">
+          <button class="site-settings-save" onclick="saveSiteSettingWhatsapp()">Save</button>
+        </div>
+        <div class="site-settings-hint">Used on contact &amp; enquiry buttons</div>
+
+        <div class="site-settings-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Contact Email
+        </div>
+        <div class="site-settings-row">
+          <input type="email" id="ss-email" class="site-settings-input" placeholder="hello@growtogether.in" maxlength="100">
+          <button class="site-settings-save" onclick="saveSiteSettingEmail()">Save</button>
+        </div>
+        <div class="site-settings-hint">Shown in footer and enquiry replies</div>
+      </div>
+    </div>
+
     <div class="settings-content">
 
       <!-- Hero Badge -->
@@ -3542,6 +3568,50 @@ async function saveHeroBadge() {
   setTimeout(() => { btn.textContent = 'Save'; btn.style.background = ''; }, 2500);
 }
 
+// ========== GENERAL SITE SETTINGS ==========
+async function loadSiteSettings() {
+  const waInput = document.getElementById('ss-whatsapp');
+  if (waInput) {
+    const val = await ParseService.getSetting('whatsapp_number');
+    if (val) { waInput.value = val; localStorage.setItem('gt_whatsapp', val); }
+    else { const local = localStorage.getItem('gt_whatsapp'); if (local) waInput.value = local; }
+  }
+  const emailInput = document.getElementById('ss-email');
+  if (emailInput) {
+    const val = await ParseService.getSetting('contact_email');
+    if (val) { emailInput.value = val; localStorage.setItem('gt_contact_email', val); }
+    else { const local = localStorage.getItem('gt_contact_email'); if (local) emailInput.value = local; }
+  }
+}
+
+async function saveSiteSettingWhatsapp() {
+  const input = document.getElementById('ss-whatsapp');
+  const text = input.value.trim();
+  if (!text) return;
+  const btn = document.querySelector('[onclick="saveSiteSettingWhatsapp()"]');
+  btn.textContent = 'Saving…'; btn.disabled = true;
+  const result = await ParseService.setSetting('whatsapp_number', text);
+  localStorage.setItem('gt_whatsapp', text);
+  btn.textContent = result.success ? 'Saved!' : 'Saved (offline)';
+  btn.style.background = result.success ? 'var(--status-approved)' : 'var(--status-pending)';
+  btn.disabled = false;
+  setTimeout(() => { btn.textContent = 'Save'; btn.style.background = ''; }, 2500);
+}
+
+async function saveSiteSettingEmail() {
+  const input = document.getElementById('ss-email');
+  const text = input.value.trim();
+  if (!text) return;
+  const btn = document.querySelector('[onclick="saveSiteSettingEmail()"]');
+  btn.textContent = 'Saving…'; btn.disabled = true;
+  const result = await ParseService.setSetting('contact_email', text);
+  localStorage.setItem('gt_contact_email', text);
+  btn.textContent = result.success ? 'Saved!' : 'Saved (offline)';
+  btn.style.background = result.success ? 'var(--status-approved)' : 'var(--status-pending)';
+  btn.disabled = false;
+  setTimeout(() => { btn.textContent = 'Save'; btn.style.background = ''; }, 2500);
+}
+
 // ========== FARMERS ==========
 const FARMER_GRADIENTS_ADMIN = {
   orange: 'rgba(212,149,106,0.3), rgba(194,112,62,0.3)',
@@ -3894,6 +3964,7 @@ function initTestimonials() {
 // ========== INIT ==========
 checkAuth();
 loadHeroBadge();
+loadSiteSettings();
 initProducts();
 initLands();
 initTestimonials();
