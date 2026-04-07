@@ -2779,8 +2779,10 @@ document.querySelector('.sidebar-link[data-panel="settings"]').addEventListener(
 });
 
 function showPanel(name) {
-  document.getElementById('enquiries-panel').style.display = name === 'enquiries' ? '' : 'none';
-  document.getElementById('settings-panel').style.display = name === 'settings' ? '' : 'none';
+  const eq = document.getElementById('enquiries-panel');
+  const st = document.getElementById('settings-panel');
+  eq.classList.toggle('d-none', name !== 'enquiries');
+  st.classList.toggle('d-none', name !== 'settings');
 }
 
 // ========== FILTER BUTTONS ==========
