@@ -3051,7 +3051,10 @@ function getProducts() {
   if (!saved) { localStorage.setItem('gt_products', JSON.stringify(DEFAULT_PRODUCTS)); return DEFAULT_PRODUCTS; }
   return JSON.parse(saved);
 }
-function saveProducts(products) { localStorage.setItem('gt_products', JSON.stringify(products)); }
+function saveProducts(products) {
+  localStorage.setItem('gt_products', JSON.stringify(products));
+  ParseService.setContent('products', products);
+}
 
 function renderProductAdmin() {
   const products = getProducts();
@@ -3249,6 +3252,7 @@ function getLands() {
 
 function saveLands(lands) {
   localStorage.setItem('gt_lands', JSON.stringify(lands));
+  ParseService.setContent('lands', lands);
 }
 
 function renderLandAdmin() {
@@ -3641,7 +3645,10 @@ function getFarmers() {
   if (!saved) { localStorage.setItem('gt_farmers', JSON.stringify(DEFAULT_FARMERS_ADMIN)); return JSON.parse(JSON.stringify(DEFAULT_FARMERS_ADMIN)); }
   return JSON.parse(saved);
 }
-function saveFarmers(data) { localStorage.setItem('gt_farmers', JSON.stringify(data)); }
+function saveFarmers(data) {
+  localStorage.setItem('gt_farmers', JSON.stringify(data));
+  ParseService.setContent('farmers', data);
+}
 
 function renderFarmerAdmin() {
   const data = getFarmers();
@@ -3827,7 +3834,10 @@ function getTestimonials() {
   if (!saved) { localStorage.setItem('gt_testimonials', JSON.stringify(DEFAULT_TESTIMONIALS_ADMIN)); return JSON.parse(JSON.stringify(DEFAULT_TESTIMONIALS_ADMIN)); }
   return JSON.parse(saved);
 }
-function saveTestimonials(data) { localStorage.setItem('gt_testimonials', JSON.stringify(data)); }
+function saveTestimonials(data) {
+  localStorage.setItem('gt_testimonials', JSON.stringify(data));
+  ParseService.setContent('testimonials', data);
+}
 
 function renderTestimonialsAdmin() {
   const data = getTestimonials();
@@ -3963,6 +3973,39 @@ function initTestimonials() {
   renderTestimonialsAdmin();
 }
 
+// ========== PARSE SYNC ==========
+async function syncFromParse() {
+  const [products, lands, farmers, testimonials] = await Promise.all([
+    ParseService.getContent('products'),
+    ParseService.getContent('lands'),
+    ParseService.getContent('farmers'),
+    ParseService.getContent('testimonials')
+  ]);
+  if (products) {
+    localStorage.setItem('gt_products', JSON.stringify(products));
+    renderProductAdmin();
+  }
+  if (lands) {
+    localStorage.setItem('gt_lands', JSON.stringify(lands));
+    renderLandAdmin();
+  }
+  if (farmers) {
+    localStorage.setItem('gt_farmers', JSON.stringify(farmers));
+    document.getElementById('farmer-section-label').value = farmers.sectionLabel || '';
+    document.getElementById('farmer-section-title').value = farmers.sectionTitle || '';
+    document.getElementById('farmer-section-desc').value  = farmers.sectionDesc  || '';
+    document.getElementById('farmer-become-url').value    = farmers.becomeUrl    || '';
+    renderFarmerAdmin();
+  }
+  if (testimonials) {
+    localStorage.setItem('gt_testimonials', JSON.stringify(testimonials));
+    document.getElementById('tm-section-label').value = testimonials.sectionLabel || '';
+    document.getElementById('tm-section-title').value = testimonials.sectionTitle || '';
+    document.getElementById('tm-section-desc').value  = testimonials.sectionDesc  || '';
+    renderTestimonialsAdmin();
+  }
+}
+
 // ========== INIT ==========
 checkAuth();
 loadHeroBadge();
@@ -3972,6 +4015,7 @@ initLands();
 initTestimonials();
 initFarmers();
 restoreSectionStates();
+syncFromParse();
 
 // ===== STAT COUNTER ANIMATION =====
 function animateCount(el, target, prefix, suffix) {

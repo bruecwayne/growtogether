@@ -41,6 +41,28 @@ const ParseService = {
     }
   },
 
+  // ─── SITE CONTENT (products / lands / farmers / testimonials) ─────
+
+  async getContent(key) {
+    try {
+      const value = await this.getSetting('content_' + key);
+      if (value) return JSON.parse(value);
+      return null;
+    } catch (error) {
+      console.error('Error getting content:', error);
+      return null;
+    }
+  },
+
+  async setContent(key, data) {
+    try {
+      return await this.setSetting('content_' + key, JSON.stringify(data));
+    } catch (error) {
+      console.error('Error setting content:', error);
+      return { success: false, error };
+    }
+  },
+
   // ─── CREATE ────────────────────────────────────────────
 
   async createEnquiry(data) {
