@@ -176,11 +176,23 @@ a { text-decoration: none; color: inherit; }
 .reveal {
   opacity: 0;
   transform: translateY(70px) scale(0.94);
-  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.reveal.visible {
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-120px) scale(0.92);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal-right {
+  opacity: 0;
+  transform: translateX(120px) scale(0.92);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.visible,
+.reveal-left.visible,
+.reveal-right.visible {
   opacity: 1;
-  transform: translateY(0) scale(1);
+  transform: translate(0) scale(1);
 }
 .reveal-delay-1 { transition-delay: 0.12s; }
 .reveal-delay-2 { transition-delay: 0.22s; }
@@ -2374,17 +2386,17 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
   <div class="container">
     <div class="hero-content">
       <div class="hero-text">
-        <div class="hero-badge reveal">
+        <div class="hero-badge reveal-left">
           <span class="dot"></span>
           <span id="hero-badge-text">Now accepting spring crops</span>
         </div>
-        <h1 class="reveal reveal-delay-1">We have the land.<br>You choose <em>what grows.</em></h1>
-        <p class="hero-desc reveal reveal-delay-2">Pick a crop, and we'll match you with a skilled farmer to grow it on our certified organic land. From seed to harvest, track every step of your custom-grown produce.</p>
-        <div class="hero-ctas reveal reveal-delay-3">
+        <h1 class="reveal-left reveal-delay-1">We have the land.<br>You choose <em>what grows.</em></h1>
+        <p class="hero-desc reveal-left reveal-delay-2">Pick a crop, and we'll match you with a skilled farmer to grow it on our certified organic land. From seed to harvest, track every step of your custom-grown produce.</p>
+        <div class="hero-ctas reveal-left reveal-delay-3">
           <a href="#products" class="btn btn-primary btn-lg">Start Growing</a>
           <a href="#how" class="btn btn-secondary btn-lg">How It Works</a>
         </div>
-        <div class="hero-stats reveal reveal-delay-4">
+        <div class="hero-stats reveal-left reveal-delay-4">
           <div class="hero-stat">
             <h4>850+</h4>
             <span>Acres Available</span>
@@ -2399,7 +2411,7 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
           </div>
         </div>
       </div>
-      <div class="hero-visual reveal">
+      <div class="hero-visual reveal-right">
         <div class="hero-card-float farmer">
           <div class="float-label">Your Farmer</div>
           <div class="float-farmer">
@@ -2432,33 +2444,33 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
 <!-- How It Works -->
 <section class="section how-it-works" id="how">
   <div class="container">
-    <div class="section-header reveal">
+    <div class="section-header reveal-right">
       <div class="section-label">The Process</div>
       <h2 class="section-title">Farm-fresh, <em>simplified.</em></h2>
       <p class="section-desc">Whether you want to grow your own produce or earn as a farmer, we make it effortless.</p>
     </div>
-    <div class="how-tabs reveal">
+    <div class="how-tabs reveal-left">
       <button class="how-tab active" data-tab="customer">For Customers</button>
       <button class="how-tab" data-tab="farmer">For Farmers</button>
       <button class="how-tab how-tab-landowner" data-tab="landowner">For Landowners</button>
     </div>
     <div class="how-steps" id="how-steps">
       <!-- Customer steps (default) -->
-      <div class="how-step reveal reveal-delay-1">
+      <div class="how-step reveal-left reveal-delay-1">
         <div class="how-step-num">01</div>
         <div class="how-step-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 22V12"/><path d="M12 12C12 7 17 3 21 4s-2 8-9 8z"/><path d="M12 12C12 7 7 3 3 4s2 8 9 8z"/></svg></div>
         <h3>Pick Your Product</h3>
         <p>Browse our catalog of crops — from heirloom tomatoes to organic lavender. Choose what you want grown and how much.</p>
         <span class="how-connector">&#x2192;</span>
       </div>
-      <div class="how-step reveal reveal-delay-2">
+      <div class="how-step reveal-right reveal-delay-2">
         <div class="how-step-num">02</div>
         <div class="how-step-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-7 8-7s8 3 8 7"/><path d="M8 6c0 0 1 2 4 2s4-2 4-2"/></svg></div>
         <h3>We Match a Farmer</h3>
         <p>Our algorithm pairs you with an expert farmer who specializes in your chosen crop. They grow it on our certified land.</p>
         <span class="how-connector">&#x2192;</span>
       </div>
-      <div class="how-step reveal reveal-delay-3">
+      <div class="how-step reveal-left reveal-delay-3">
         <div class="how-step-num">03</div>
         <div class="how-step-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="2.5"/></svg></div>
         <h3>Track &amp; Harvest</h3>
@@ -2478,7 +2490,7 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
 <!-- Products -->
 <section class="section products" id="products">
   <div class="container">
-    <div class="section-header section-header-center reveal">
+    <div class="section-header section-header-center reveal-left">
       <div class="section-label">What to Grow</div>
       <h2 class="section-title">Browse <em>products</em></h2>
       <p class="section-desc">Select from dozens of crops suited to the current season. Each one carefully matched to our best-performing land.</p>
@@ -2491,7 +2503,7 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
 <!-- Featured Farmers -->
 <section class="section" id="farmers">
   <div class="container">
-    <div class="section-header farmers-header reveal">
+    <div class="section-header farmers-header reveal-right">
       <div>
         <div class="section-label" id="farmers-section-label">Our Experts</div>
         <h2 class="section-title" id="farmers-section-title">Meet the <em>farmers</em></h2>
@@ -2506,7 +2518,7 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
 <!-- Our Land -->
 <section class="section land-section" id="land">
   <div class="container">
-    <div class="section-header section-header-center reveal">
+    <div class="section-header section-header-center reveal-left">
       <div class="section-label">Where We Grow</div>
       <h2 class="section-title">Our <em>land</em></h2>
       <p class="section-desc">Premium agricultural plots across Siddipet district, with rich soil and reliable irrigation from the Kaleshwaram project.</p>
@@ -2519,7 +2531,7 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
 <!-- Lease Your Land -->
 <section class="section lease-section" id="lease">
   <div class="container">
-    <div class="section-header section-header-center reveal">
+    <div class="section-header section-header-center reveal-right">
       <div class="section-label">For Landowners</div>
       <h2 class="section-title">Lease your <em>land to us.</em></h2>
       <p class="section-desc">Turn idle land into steady income. We handle the farming, you earn returns — no effort required.</p>
@@ -2527,7 +2539,7 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
 
     <div class="lease-grid">
       <!-- Benefits -->
-      <div class="lease-benefits reveal">
+      <div class="lease-benefits reveal-left">
         <div class="lease-benefit">
           <div class="lease-benefit-icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
@@ -2582,7 +2594,7 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
       </div>
 
       <!-- Inquiry Form -->
-      <div class="lease-form-card reveal reveal-delay-1">
+      <div class="lease-form-card reveal-right reveal-delay-1">
         <h3>Submit Your Land Details</h3>
         <p class="form-subtitle">Our team will visit and assess your land within 7 working days.</p>
         <form class="lease-form" id="lease-form" onsubmit="event.preventDefault(); submitLeaseForm(this);">
@@ -2656,12 +2668,12 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
 <!-- Dashboard Preview -->
 <section class="section dashboard-section" id="dashboard">
   <div class="container">
-    <div class="section-header section-header-center reveal">
+    <div class="section-header section-header-center reveal-right">
       <div class="section-label">Your Dashboard</div>
       <h2 class="section-title">Track <em>every leaf.</em></h2>
       <p class="section-desc">Real-time insights into your crops, your farmer, and your investment — all in one place.</p>
     </div>
-    <div class="dashboard-mock reveal">
+    <div class="dashboard-mock reveal-left">
 
       <!-- Crop Progress -->
       <div class="dash-card">
@@ -2792,7 +2804,7 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
 <!-- Testimonials -->
 <section class="section testimonials" id="testimonials">
   <div class="container">
-    <div class="section-header section-header-center reveal">
+    <div class="section-header section-header-center reveal-left">
       <div class="section-label" id="testimonials-section-label">Stories</div>
       <h2 class="section-title" id="testimonials-section-title">Rooted in <em>trust.</em></h2>
       <p class="section-desc" id="testimonials-section-desc">Hear from the customers and farmers who make GrowTogether a thriving community.</p>
@@ -2804,7 +2816,7 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
 <!-- CTA Section -->
 <section class="section cta-section">
   <div class="container">
-    <div class="cta-content reveal">
+    <div class="cta-content reveal-right">
       <h2>Ready to grow <em>something?</em></h2>
       <p>Join thousands of customers and farmers building a more connected food system, one harvest at a time.</p>
       <div class="cta-buttons">
@@ -2894,7 +2906,7 @@ const observer = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => observer.observe(el));
 
 // Navbar scroll effect
 const nav = document.getElementById('nav');
@@ -2941,7 +2953,7 @@ tabs.forEach(tab => {
     const isFarmer = tab.dataset.tab === 'farmer';
     const steps = isFarmer ? farmerSteps : customerSteps;
     stepsContainer.innerHTML = steps.map((step, i) => `
-      <div class="how-step reveal visible" style="animation: fadeSlide 0.5s ${i * 0.1}s both;">
+      <div class="how-step ${i % 2 === 0 ? 'reveal-left' : 'reveal-right'} visible" style="animation: fadeSlide 0.5s ${i * 0.1}s both;">
         <div class="how-step-num">${step.num}</div>
         <div class="how-step-icon">${step.icon}</div>
         <h3>${step.title}</h3>
@@ -3054,11 +3066,12 @@ async function submitLeaseForm(form) {
       localStorage.setItem('gt_lands', JSON.stringify(lands));
     }
     const delays = ['', 'reveal-delay-1', 'reveal-delay-2', 'reveal-delay-3'];
+    const dirs = ['reveal-left', 'reveal-right'];
     const visible = lands.filter(l => l.visible !== false);
     const statusLabel = { available: 'Available', limited: 'Limited', full: 'Fully Booked' };
     const statusClass = { available: 'status-available', limited: 'status-limited', full: 'status-full' };
     grid.innerHTML = visible.map((land, i) => `
-      <div class="land-card reveal ${delays[i % 4]}">
+      <div class="land-card ${dirs[i % 2]} ${delays[i % 4]}">
         <div class="land-visual reactive-anim-wrapper" data-gradient="${land.gradient}" data-image="${land.imageUrl}">
           <div class="topo-pattern"></div>
           <span class="location-pin"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3" fill="currentColor" opacity="0.4"/></svg></span>
@@ -3077,7 +3090,7 @@ async function submitLeaseForm(form) {
     `).join('');
     // Observe newly rendered land cards for scroll-reveal animation
     if (typeof observer !== 'undefined') {
-      grid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+      grid.querySelectorAll('.reveal-left, .reveal-right').forEach(el => observer.observe(el));
     }
   })();
 
@@ -3098,10 +3111,11 @@ async function submitLeaseForm(form) {
   let products = JSON.parse(localStorage.getItem('gt_products') || 'null');
   if (!products) { products = defaultProducts; localStorage.setItem('gt_products', JSON.stringify(products)); }
   const delays = ['', 'reveal-delay-1', 'reveal-delay-2', 'reveal-delay-3'];
+  const dirs = ['reveal-left', 'reveal-right'];
   const tagClass = { popular: 'tag-popular', organic: 'tag-organic', new: 'tag-new' };
   const tagLabel = { popular: 'Popular', organic: 'Organic', new: 'New' };
   grid.innerHTML = products.filter(p => p.visible !== false).map((p, i) => `
-    <div class="product-card reveal ${delays[i % 4]}" data-product-id="${p.id}">
+    <div class="product-card ${dirs[i % 2]} ${delays[i % 4]}" data-product-id="${p.id}">
       <div class="product-img">
         <div class="img-bg reactive-anim-wrapper" data-gradient="forest" data-image="${p.imageUrl}"></div>
         <span class="product-tag ${tagClass[p.tag] || 'tag-popular'}">${tagLabel[p.tag] || 'Popular'}</span>
@@ -3128,7 +3142,7 @@ async function submitLeaseForm(form) {
   });
   // Observe newly rendered product cards for scroll-reveal animation
   if (typeof observer !== 'undefined') {
-    grid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    grid.querySelectorAll('.reveal-left, .reveal-right').forEach(el => observer.observe(el));
   }
 })();
 
@@ -3171,13 +3185,14 @@ async function submitLeaseForm(form) {
   const grid = document.getElementById('farmers-grid');
   if (!grid) return;
   const delays = ['', 'reveal-delay-1', 'reveal-delay-2', 'reveal-delay-3'];
+  const dirs = ['reveal-left', 'reveal-right'];
   const visible = (data.items || []).filter(f => f.visible !== false);
   grid.innerHTML = visible.map((f, i) => {
     const grad = FARMER_GRADIENTS[f.gradient] || FARMER_GRADIENTS.orange;
     const tags = (f.crops || '').split(',').map(c => c.trim()).filter(Boolean)
       .map(c => `<span class="farmer-crop-tag">${c}</span>`).join('');
     return `
-    <div class="farmer-card reveal ${delays[i % 4]}">
+    <div class="farmer-card ${dirs[i % 2]} ${delays[i % 4]}">
       <div class="farmer-avatar reactive-anim-wrapper" data-gradient="${f.gradient}" data-image="${f.imageUrl}"></div>
       <div class="farmer-name">${f.name}</div>
       <div class="farmer-specialty">${f.specialty}</div>
@@ -3190,7 +3205,7 @@ async function submitLeaseForm(form) {
     </div>`;
   }).join('');
   if (typeof observer !== 'undefined') {
-    grid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    grid.querySelectorAll('.reveal-left, .reveal-right').forEach(el => observer.observe(el));
   }
 })();
 
@@ -3228,9 +3243,10 @@ async function submitLeaseForm(form) {
   const grid = document.getElementById('testimonials-grid');
   if (!grid) return;
   const delays = ['', 'reveal-delay-1', 'reveal-delay-2', 'reveal-delay-3'];
+  const dirs = ['reveal-left', 'reveal-right'];
   const visible = (data.items || []).filter(t => t.visible !== false);
   grid.innerHTML = visible.map((t, i) => `
-    <div class="testimonial-card reveal ${delays[i % 4]}">
+    <div class="testimonial-card ${dirs[i % 2]} ${delays[i % 4]}">
       <span class="testimonial-type type-${t.type}">${t.type === 'farmer' ? 'Farmer' : 'Customer'}</span>
       <p class="testimonial-text">${t.text}</p>
       <div class="testimonial-author">
@@ -3243,7 +3259,7 @@ async function submitLeaseForm(form) {
     </div>
   `).join('');
   if (typeof observer !== 'undefined') {
-    grid.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    grid.querySelectorAll('.reveal-left, .reveal-right').forEach(el => observer.observe(el));
   }
 })();
 
