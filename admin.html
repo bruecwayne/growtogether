@@ -1544,17 +1544,120 @@ a { text-decoration: none; color: inherit; }
   border: none; border-top: 1px solid var(--cream-dark); margin: 4px 0;
 }
 
+/* ========== MOBILE ADMIN SIDEBAR TOGGLE ========== */
+.admin-sidebar-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background: var(--forest);
+  color: var(--cream);
+  border-radius: 10px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  flex-shrink: 0;
+}
+.admin-sidebar-toggle svg { width: 20px; height: 20px; }
+.admin-sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15,36,25,0.5);
+  z-index: 399;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+.admin-sidebar-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
 /* ========== RESPONSIVE ========== */
 @media (max-width: 1024px) {
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 768px) {
-  .content-header { padding: 20px 24px; flex-wrap: wrap; gap: 10px; }
-  .stats-grid { padding: 20px 24px; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .filters-bar { padding: 0 24px 16px; flex-wrap: wrap; }
-  .table-container { padding: 0 24px 24px; overflow-x: auto; }
+  /* Sidebar becomes slide-out drawer */
+  .admin-layout { grid-template-columns: 1fr; }
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100vh;
+    height: 100dvh;
+    z-index: 400;
+    transform: translateX(-100%);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .sidebar.open {
+    transform: translateX(0);
+  }
+  .admin-sidebar-toggle { display: flex; }
+  .admin-sidebar-overlay { display: block; pointer-events: none; }
+  .admin-sidebar-overlay.active { pointer-events: all; }
+
+  /* Content adjustments */
+  .content-header { padding: 16px 20px; flex-wrap: wrap; gap: 10px; }
+  .content-header h1 { font-size: 1.2rem; }
+  .header-actions { width: 100%; justify-content: flex-end; }
+  .header-date { font-size: 0.75rem; padding: 6px 12px; }
+
+  /* Stats */
+  .stats-grid { padding: 16px 20px; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .stat-card { padding: 18px; }
+  .stat-value { font-size: 1.5rem; }
+
+  /* Filters */
+  .filters-bar { padding: 0 20px 16px; flex-wrap: wrap; gap: 8px; }
+  .search-box { max-width: none; width: 100%; }
+  .filter-btn { padding: 8px 14px; font-size: 0.78rem; }
+
+  /* Table */
+  .table-container { padding: 0 20px 24px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .enquiry-table { min-width: 700px; }
-  .modal { margin: 20px; }
+
+  /* Modals */
+  .modal-overlay { padding: 16px; }
+  .modal { margin: 0; max-height: 95vh; max-height: 95dvh; }
+  .modal-header { padding: 22px 20px 0; }
+  .modal-body { padding: 18px 20px 22px; }
+  .modal-footer { padding: 0 20px 22px; }
+  .modal-row { grid-template-columns: 1fr; }
+
+  /* Settings */
+  .settings-content { padding: 16px 20px; }
+  .settings-section-body { padding: 16px 20px; }
+  .settings-row { flex-direction: column; align-items: stretch; gap: 8px; }
+  .settings-input { max-width: none; }
+  .site-settings-bar { padding: 0 20px 16px; }
+  .site-settings-card { flex-direction: column; align-items: stretch; gap: 12px; }
+  .site-settings-row { flex-direction: column; gap: 8px; }
+  .site-settings-input { max-width: none; }
+
+  /* Product admin */
+  .product-form-grid { grid-template-columns: 1fr; }
+  .product-admin-item { flex-wrap: wrap; padding: 12px 20px; gap: 10px; }
+
+  /* Login */
+  .login-card { padding: 36px 28px; margin: 16px; }
+
+  /* pwd modal */
+  .pwd-overlay { padding: 16px; }
+  .pwd-modal-header { padding: 22px 20px 0; }
+  .pwd-modal-body { padding: 18px 20px 22px; }
+}
+@media (max-width: 420px) {
+  .stats-grid { grid-template-columns: 1fr; padding: 12px 16px; }
+  .content-header { padding: 14px 16px; }
+  .filters-bar { padding: 0 16px 12px; }
+  .table-container { padding: 0 16px 20px; }
+  .settings-content { padding: 12px 16px; }
+  .login-card { padding: 28px 20px; }
 }
 
 /* ========== AGGRESSIVE ANIMATIONS ========== */
@@ -1686,8 +1789,10 @@ a { text-decoration: none; color: inherit; }
 </div>
 
 <div class="admin-layout" id="admin-layout" class="d-none">
+  <!-- Mobile Sidebar Overlay -->
+  <div class="admin-sidebar-overlay" id="admin-sidebar-overlay"></div>
   <!-- Sidebar -->
-  <aside class="sidebar">
+  <aside class="sidebar" id="admin-sidebar">
     <a href="index.html" class="sidebar-logo">
       <svg viewBox="0 0 32 32" fill="none">
         <circle cx="16" cy="16" r="15" fill="#1a3a2a" stroke="#d4a84b" stroke-width="1"/>
@@ -1765,6 +1870,9 @@ a { text-decoration: none; color: inherit; }
   <!-- ENQUIRIES PANEL -->
   <div id="enquiries-panel">
     <div class="content-header">
+      <button class="admin-sidebar-toggle" id="admin-sidebar-toggle" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
       <h1>Enquiry <em>Dashboard</em></h1>
       <div class="header-actions">
         <div class="theme-toggle">
@@ -1882,6 +1990,9 @@ a { text-decoration: none; color: inherit; }
   <!-- SETTINGS PANEL -->
   <div id="settings-panel" class="d-none">
     <div class="content-header">
+      <button class="admin-sidebar-toggle" id="admin-settings-sidebar-toggle" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
       <h1>Site <em>Settings</em></h1>
       <div class="header-actions">
         <div class="theme-toggle">
@@ -3826,5 +3937,56 @@ document.addEventListener('click', e => {
 </script>
 
 <script src="js/reactive-animations.js"></script>
+
+<script>
+// ===== MOBILE ADMIN SIDEBAR =====
+(function initAdminSidebar() {
+  const toggles = document.querySelectorAll('.admin-sidebar-toggle');
+  const sidebar = document.getElementById('admin-sidebar');
+  const overlay = document.getElementById('admin-sidebar-overlay');
+  
+  if (!sidebar || !overlay) return;
+
+  function openSidebar() {
+    sidebar.classList.add('open');
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeSidebar() {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  toggles.forEach(toggle => {
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openSidebar();
+    });
+  });
+
+  overlay.addEventListener('click', closeSidebar);
+
+  // Close sidebar when a link is clicked (on mobile)
+  sidebar.querySelectorAll('.sidebar-link, .sidebar-logo').forEach(link => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth <= 768) closeSidebar();
+    });
+  });
+
+  // Close on Escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && sidebar.classList.contains('open')) closeSidebar();
+  });
+
+  // Handle Resize
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 768 && sidebar.classList.contains('open')) {
+      closeSidebar();
+    }
+  });
+})();
+</script>
 </body>
 </html>

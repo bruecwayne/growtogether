@@ -260,6 +260,81 @@ a { text-decoration: none; color: inherit; }
 .nav-links .btn-primary::after { display: none; }
 .nav-links .btn-primary:hover { color: var(--white); }
 
+/* ========== HAMBURGER MENU BUTTON ========== */
+.nav-hamburger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  z-index: calc(var(--z-nav) + 10);
+  -webkit-tap-highlight-color: transparent;
+}
+.nav-hamburger-line {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--text-dark);
+  border-radius: 2px;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+.nav-hamburger-line::before,
+.nav-hamburger-line::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--text-dark);
+  border-radius: 2px;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.nav-hamburger-line::before { top: -7px; }
+.nav-hamburger-line::after { bottom: -7px; }
+/* Active state — X shape */
+.nav-hamburger.active .nav-hamburger-line {
+  background: transparent;
+}
+.nav-hamburger.active .nav-hamburger-line::before {
+  top: 0;
+  transform: rotate(45deg);
+  background: var(--text-dark);
+}
+.nav-hamburger.active .nav-hamburger-line::after {
+  bottom: 0;
+  transform: rotate(-45deg);
+  background: var(--text-dark);
+}
+[data-theme="dark"] .nav-hamburger-line,
+[data-theme="dark"] .nav-hamburger-line::before,
+[data-theme="dark"] .nav-hamburger-line::after {
+  background: var(--text-dark);
+}
+[data-theme="dark"] .nav-hamburger.active .nav-hamburger-line {
+  background: transparent;
+}
+
+/* ========== MOBILE DRAWER OVERLAY ========== */
+.mobile-menu-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 36, 25, 0.5);
+  z-index: calc(var(--z-nav) - 1);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+.mobile-menu-overlay.active {
+  opacity: 1;
+}
+
 .btn {
   display: inline-flex;
   align-items: center;
@@ -1802,20 +1877,171 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
   .footer-top { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 768px) {
-  .container { padding: 0 24px; }
-  .section { padding: 80px 0; }
-  .nav-links { display: none; }
-  .how-steps { grid-template-columns: 1fr; }
-  .products-grid { grid-template-columns: 1fr; }
-  .farmers-grid { grid-template-columns: 1fr; }
-  .testimonials-grid { grid-template-columns: 1fr; }
+  .container { padding: 0 20px; }
+  .section { padding: 72px 0; }
+
+  /* ── Hamburger visible ── */
+  .nav-hamburger { display: flex; }
+  .mobile-menu-overlay { display: block; pointer-events: none; }
+  .mobile-menu-overlay.active { pointer-events: all; }
+
+  /* ── Mobile Nav Drawer ── */
+  .nav-links {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: min(320px, 85vw);
+    height: 100vh;
+    height: 100dvh;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    background: var(--cream-warm);
+    padding: 100px 32px 40px;
+    box-shadow: -8px 0 40px rgba(0,0,0,0.15);
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: var(--z-nav);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .nav-links.open {
+    transform: translateX(0);
+  }
+  [data-theme="dark"] .nav-links {
+    background: #1a1c1e;
+  }
+  .nav-links li {
+    border-bottom: 1px solid var(--cream-dark);
+  }
+  .nav-links li:last-child {
+    border-bottom: none;
+    margin-top: 16px;
+  }
+  .nav-links a {
+    display: block;
+    padding: 16px 0;
+    font-size: 1rem;
+  }
+  .nav-links a::after { display: none; }
+  .nav-links .btn-primary {
+    text-align: center;
+    border-radius: 12px;
+    padding: 14px 24px;
+  }
+  .nav-links .theme-toggle {
+    margin: 16px 0 0;
+    align-self: flex-start;
+  }
+
+  /* ── Hero Mobile ── */
+  .hero { min-height: auto; }
+  .hero-content { padding: 110px 0 64px; }
+  .hero h1 { font-size: clamp(2.2rem, 8vw, 3rem); }
+  .hero-desc { font-size: 1rem; margin-bottom: 28px; }
+  .hero-ctas { flex-direction: column; gap: 12px; align-items: stretch; }
+  .hero-ctas .btn { justify-content: center; }
+  .hero-stats {
+    flex-direction: column;
+    gap: 0;
+    border-radius: 14px;
+  }
+  .hero-stat {
+    border-right: none;
+    border-bottom: 1.5px solid var(--cream-dark);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .hero-stat:last-child { border-bottom: none; }
+  .hero-stat h4 { font-size: 1.6rem; margin-bottom: 0; }
+  .hero-stat span { font-size: 0.72rem; }
+
+  /* ── Section headers ── */
+  .section-header { margin-bottom: 40px; }
+  .section-title { font-size: clamp(1.8rem, 6vw, 2.4rem); }
+  .section-desc { font-size: 1rem; }
+
+  /* ── How it works ── */
+  .how-steps { grid-template-columns: 1fr; gap: 20px; }
+  .how-tabs {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .how-tabs::-webkit-scrollbar { display: none; }
+  .how-tab { padding: 10px 20px; font-size: 0.85rem; white-space: nowrap; }
+  .how-step { padding: 28px 22px; }
+  .how-step-num { font-size: 2.5rem; margin-bottom: 12px; }
+  .how-connector { display: none; }
+
+  /* ── Products ── */
+  .products-grid { grid-template-columns: 1fr; gap: 20px; }
+
+  /* ── Farmers ── */
+  .farmers-grid { grid-template-columns: 1fr; gap: 20px; }
+  .farmers-header { flex-direction: column; gap: 20px; align-items: flex-start; }
+  .farmer-card { padding: 24px 20px; }
+
+  /* ── Testimonials ── */
+  .testimonials-grid { grid-template-columns: 1fr; gap: 20px; }
+  .testimonial-card { padding: 24px 20px; }
+
+  /* ── Lease section ── */
   .lease-form-row { grid-template-columns: 1fr; }
-  .lease-stats { flex-direction: column; gap: 16px; }
-  .hero-stats { gap: 32px; }
-  .cta-buttons { flex-direction: column; align-items: center; }
-  .footer-top { grid-template-columns: 1fr; }
-  .footer-bottom { flex-direction: column; gap: 16px; }
-  .farmers-header { flex-direction: column; gap: 24px; align-items: flex-start; }
+  .lease-stats { flex-direction: column; gap: 16px; text-align: center; }
+  .lease-form-card { padding: 28px 20px; }
+  .lease-benefit { padding: 16px 18px; }
+
+  /* ── CTA section ── */
+  .cta-buttons { flex-direction: column; align-items: stretch; }
+  .cta-buttons .btn { justify-content: center; }
+
+  /* ── Dashboard ── */
+  .dashboard-mock { padding: 20px; gap: 16px; grid-template-columns: 1fr; }
+  .dash-card { padding: 20px; }
+
+  /* ── Footer ── */
+  .footer { padding: 56px 0 32px; }
+  .footer-top { grid-template-columns: 1fr; gap: 32px; }
+  .footer-brand { max-width: none; }
+  .newsletter-form { flex-direction: column; gap: 10px; }
+  .newsletter-input { width: 100%; }
+  .newsletter-btn { width: 100%; text-align: center; }
+  .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+  .footer-social { justify-content: center; }
+
+  /* ── Farmer modal ── */
+  .farmer-modal { padding: 28px 20px; max-height: 95vh; max-height: 95dvh; }
+  .f-row { grid-template-columns: 1fr; }
+  .crop-check-grid { grid-template-columns: 1fr 1fr; }
+  .radio-row { flex-direction: column; }
+
+  /* ── Tame animations on mobile ── */
+  .reveal { transform: translateY(40px) scale(0.97); }
+  .reveal-left { transform: translateX(-50px) scale(0.97); }
+  .reveal-right { transform: translateX(50px) scale(0.97); }
+}
+
+/* ── Extra small phones ── */
+@media (max-width: 420px) {
+  .container { padding: 0 16px; }
+  .section { padding: 56px 0; }
+  .hero-content { padding: 100px 0 48px; }
+  .hero h1 { font-size: 2rem; }
+  .hero-badge { font-size: 0.72rem; padding: 6px 14px; margin-bottom: 20px; }
+  .hero-desc { font-size: 0.92rem; }
+  .section-title { font-size: 1.65rem; }
+  .how-step { padding: 24px 18px; }
+  .crop-check-grid { grid-template-columns: 1fr; }
+  .product-body { padding: 16px 18px 20px; }
+  .btn-lg { padding: 14px 28px; font-size: 0.92rem; }
+  .lease-stats { padding: 20px; }
+  .lease-stat-value { font-size: 1.3rem; }
+  .cta-section h2 { font-size: 1.65rem; }
+  .cta-section p { font-size: 0.95rem; }
 }
 
 /* ========== START GROWING MODAL ========== */
@@ -2361,7 +2587,7 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
         </svg>
         GrowTogether
       </a>
-      <ul class="nav-links">
+      <ul class="nav-links" id="nav-links">
         <li><a href="#how">How It Works</a></li>
         <li><a href="#products">Products</a></li>
         <li><a href="#farmers">Farmers</a></li>
@@ -2377,9 +2603,13 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
           </div>
         </li>
       </ul>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false">
+        <span class="nav-hamburger-line"></span>
+      </button>
     </div>
   </div>
 </nav>
+<div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
 
 <!-- Hero Section -->
 <section class="hero">
@@ -2913,6 +3143,57 @@ const nav = document.getElementById('nav');
 window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', window.scrollY > 60);
 });
+
+// ===== MOBILE HAMBURGER MENU =====
+(function initMobileMenu() {
+  const hamburger = document.getElementById('nav-hamburger');
+  const navLinks = document.getElementById('nav-links');
+  const overlay = document.getElementById('mobile-menu-overlay');
+  if (!hamburger || !navLinks) return;
+
+  function openMenu() {
+    hamburger.classList.add('active');
+    hamburger.setAttribute('aria-expanded', 'true');
+    navLinks.classList.add('open');
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMenu() {
+    hamburger.classList.remove('active');
+    hamburger.setAttribute('aria-expanded', 'false');
+    navLinks.classList.remove('open');
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  hamburger.addEventListener('click', () => {
+    if (navLinks.classList.contains('open')) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  });
+
+  overlay.addEventListener('click', closeMenu);
+
+  // Close menu when a nav link is clicked
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth <= 768) closeMenu();
+    });
+  });
+
+  // Close menu on resize if screen becomes large
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) closeMenu();
+  });
+
+  // Close on Escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && navLinks.classList.contains('open')) closeMenu();
+  });
+})();
 
 // How It Works tabs
 const tabs = document.querySelectorAll('.how-tab');
