@@ -3093,7 +3093,7 @@ function deleteProduct(id) {
 function switchProductImgTab(tab) {
   document.querySelectorAll('.pf-img-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
   document.getElementById('pf-img-tab-url').style.display = tab === 'url' ? '' : 'none';
-  document.getElementById('pf-img-tab-upload').style.display = tab === 'upload' ? '' : 'none';
+  document.getElementById('pf-img-tab-upload').classList.toggle('d-none', tab !== 'upload');
   if (tab === 'url') document.getElementById('pf-image-data').value = '';
 }
 
@@ -3144,7 +3144,7 @@ function initProductDropzone() {
 
 function openProductForm(id) {
   const wrap = document.getElementById('product-form-wrap');
-  wrap.style.display = '';
+  wrap.classList.remove('d-none');
   clearProductImageUpload();
   if (id) {
     const p = getProducts().find(p => p.id === id);
@@ -3184,7 +3184,7 @@ function openProductForm(id) {
 }
 
 function closeProductForm() {
-  document.getElementById('product-form-wrap').style.display = 'none';
+  document.getElementById('product-form-wrap').classList.add('d-none');
 }
 
 function saveProductForm() {
@@ -3295,7 +3295,7 @@ function deleteLand(id) {
 function switchImgTab(tab) {
   document.querySelectorAll('.img-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
   document.getElementById('img-tab-url').style.display = tab === 'url' ? '' : 'none';
-  document.getElementById('img-tab-upload').style.display = tab === 'upload' ? '' : 'none';
+  document.getElementById('img-tab-upload').classList.toggle('d-none', tab !== 'upload');
   if (tab === 'url') document.getElementById('lf-image-data').value = '';
 }
 
@@ -3349,7 +3349,7 @@ function initImgDropzone() {
 function switchFarmerImgTab(tab) {
   document.querySelectorAll('.ff-img-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
   document.getElementById('ff-img-tab-url').style.display = tab === 'url' ? '' : 'none';
-  document.getElementById('ff-img-tab-upload').style.display = tab === 'upload' ? '' : 'none';
+  document.getElementById('ff-img-tab-upload').classList.toggle('d-none', tab !== 'upload');
   if (tab === 'url') document.getElementById('ff-image-data').value = '';
 }
 
@@ -3403,7 +3403,7 @@ function initFarmerDropzone() {
 function switchTmImgTab(tab) {
   document.querySelectorAll('.tmf-img-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
   document.getElementById('tmf-img-tab-url').style.display = tab === 'url' ? '' : 'none';
-  document.getElementById('tmf-img-tab-upload').style.display = tab === 'upload' ? '' : 'none';
+  document.getElementById('tmf-img-tab-upload').classList.toggle('d-none', tab !== 'upload');
   if (tab === 'url') document.getElementById('tmf-image-data').value = '';
 }
 
@@ -3455,7 +3455,7 @@ function initTmDropzone() {
 
 function openLandForm(id) {
   const wrap = document.getElementById('land-form-wrap');
-  wrap.style.display = '';
+  wrap.classList.remove('d-none');
   clearImageUpload();
   if (id) {
     const land = getLands().find(l => l.id === id);
@@ -3497,7 +3497,7 @@ function openLandForm(id) {
 }
 
 function closeLandForm() {
-  document.getElementById('land-form-wrap').style.display = 'none';
+  document.getElementById('land-form-wrap').classList.add('d-none');
 }
 
 function saveLandForm() {
@@ -3710,14 +3710,14 @@ function openFarmerForm(id) {
     document.getElementById('ff-crops').value = '';
     document.getElementById('ff-image').value = '';
   }
-  wrap.style.display = '';
+  wrap.classList.remove('d-none');
   wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   initFarmerDropzone();
 }
 
 function closeFarmerForm() {
   clearFarmerImageUpload();
-  document.getElementById('farmer-form-wrap').style.display = 'none';
+  document.getElementById('farmer-form-wrap').classList.add('d-none');
 }
 
 function saveFarmerForm() {
@@ -3893,14 +3893,14 @@ function openTestimonialForm(id) {
     document.getElementById('tmf-text').value = '';
     document.getElementById('tmf-image').value = '';
   }
-  wrap.style.display = '';
+  wrap.classList.remove('d-none');
   wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   initTmDropzone();
 }
 
 function closeTestimonialForm() {
   clearTmImageUpload();
-  document.getElementById('tm-form-wrap').style.display = 'none';
+  document.getElementById('tm-form-wrap').classList.add('d-none');
 }
 
 function saveTestimonialForm() {
