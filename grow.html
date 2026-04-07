@@ -176,8 +176,8 @@ a { text-decoration: none; color: inherit; }
   padding: 20px 0;
   transition: all 0.4s ease;
   background: rgba(245, 240, 232, 0.92);
-  backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
   box-shadow: 0 1px 0 rgba(26,58,42,0.08);
 }
 .nav-inner {
@@ -739,6 +739,13 @@ a { text-decoration: none; color: inherit; }
   outline: 2px solid var(--wheat);
   outline-offset: 3px;
 }
+
+/* Auto-extracted inline styles */
+.inline-display-flex-align-i { display:flex;align-items:center;gap:16px; }
+.inline-position-relative { position: relative; }
+.inline-color-var--terracott { color:var(--terracotta);font-size:11px;font-weight:600;margin-left:2px; }
+.inline-color-var--text-mute { color:var(--text-muted);font-size:11px;font-weight:400; }
+.inline-text-align-right { text-align: right; }
 </style>
 
 <!-- ═══ OTP Verification Styles ═══ -->
@@ -850,7 +857,7 @@ a { text-decoration: none; color: inherit; }
         </svg>
         GrowTogether
       </a>
-      <div style="display:flex;align-items:center;gap:16px;">
+      <div class="inline-display-flex-align-i">
         <div class="theme-toggle">
           <button class="theme-btn" data-theme="light" title="Light"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></button>
           <button class="theme-btn" data-theme="dark" title="Dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></button>
@@ -914,7 +921,7 @@ a { text-decoration: none; color: inherit; }
       </div>
 
       <!-- Right: Order Form -->
-      <div class="order-form-card reveal reveal-delay-2" style="position: relative;">
+      <div class="order-form-card reveal reveal-delay-2 inline-position-relative">
         <div class="form-header">
           <h3>Place Your Growing Order</h3>
           <p>Our team will confirm availability and connect you with a farmer within 24 hours.</p>
@@ -926,7 +933,7 @@ a { text-decoration: none; color: inherit; }
               <input type="text" name="name" placeholder="e.g. Rajesh Kumar" required>
             </div>
             <div class="form-field">
-              <label>Phone Number <span class="required">*</span> <span style="color:var(--terracotta);font-size:11px;font-weight:600;margin-left:2px;">OTP required</span></label>
+              <label>Phone Number <span class="required">*</span> <span class="inline-color-var--terracott">OTP required</span></label>
               <div class="otp-group" data-type="phone" data-required="true">
                 <div class="otp-input-row">
                   <input type="tel" name="phone" data-otp-target="identifier" placeholder="e.g. 9876543210" required>
@@ -943,7 +950,7 @@ a { text-decoration: none; color: inherit; }
             </div>
           </div>
           <div class="form-field">
-            <label>Email Address <span style="color:var(--text-muted);font-size:11px;font-weight:400;">(verify if provided)</span></label>
+            <label>Email Address <span class="inline-color-var--text-mute">(verify if provided)</span></label>
             <div class="otp-group" data-type="email" data-required="false">
               <div class="otp-input-row">
                 <input type="email" name="email" data-otp-target="identifier" placeholder="e.g. rajesh@example.com">
@@ -964,7 +971,7 @@ a { text-decoration: none; color: inherit; }
           <div class="form-row">
             <div class="form-field">
               <label>Preferred Land <span class="required">*</span></label>
-              <select name="preferredLand" required>
+              <select name="preferredLand" title="Preferred Land" required>
                 <option value="" disabled selected>Select location</option>
                 <option>Siddipet Central Farm — 220 acres</option>
                 <option>Dubbak Highlands — 180 acres</option>
@@ -984,7 +991,7 @@ a { text-decoration: none; color: inherit; }
             </div>
             <div class="form-field">
               <label>Preferred Season</label>
-              <select name="preferredSeason">
+              <select name="preferredSeason" title="Preferred Season">
                 <option value="" disabled selected>Select season</option>
                 <option>Kharif (June–Oct)</option>
                 <option>Rabi (Nov–Mar)</option>
@@ -1002,7 +1009,7 @@ a { text-decoration: none; color: inherit; }
               <div class="pricing-label">Estimated Investment</div>
               <div class="pricing-note">Based on selected crop &times; acres</div>
             </div>
-            <div style="text-align: right;">
+            <div class="inline-text-align-right">
               <div class="pricing-value" id="estimated-price">--</div>
             </div>
           </div>
@@ -1113,10 +1120,9 @@ document.getElementById('crop-desc').textContent = cropData.desc;
 document.getElementById('crop-time').textContent = cropData.time;
 document.getElementById('crop-price').textContent = cropData.price ? '₹' + cropData.price.toLocaleString('en-IN') : '--';
 document.getElementById('crop-yield').textContent = cropData.yield;
-document.getElementById('crop-img').style.background =
-  'linear-gradient(to top, rgba(15,36,25,0.5) 0%, transparent 60%), url(\'' + cropData.img + '\')';
-document.getElementById('crop-img').style.backgroundSize = 'cover';
-document.getElementById('crop-img').style.backgroundPosition = 'center';
+document.getElementById('crop-img').classList.add('reactive-anim-wrapper');
+document.getElementById('crop-img').setAttribute('data-gradient', 'moss');
+document.getElementById('crop-img').setAttribute('data-image', cropData.img);
 document.title = 'Start Growing ' + cropName + ' — GrowTogether';
 
 // Varieties
@@ -1218,5 +1224,6 @@ document.querySelectorAll('.submit-btn').forEach(btn => {
 </script>
 
 
+<script src="js/reactive-animations.js"></script>
 </body>
 </html>

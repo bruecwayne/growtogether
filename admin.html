@@ -807,6 +807,7 @@ a { text-decoration: none; color: inherit; }
   position: fixed;
   inset: 0;
   background: rgba(15,36,25,0.5);
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   z-index: 500;
   align-items: center;
@@ -1024,6 +1025,7 @@ a { text-decoration: none; color: inherit; }
   position: fixed;
   inset: 0;
   background: rgba(15,36,25,0.5);
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
   z-index: 600;
   align-items: center;
@@ -1112,6 +1114,7 @@ a { text-decoration: none; color: inherit; }
   color: var(--text-muted);
   border-bottom: 1px solid var(--cream-dark);
   cursor: pointer;
+  -webkit-user-select: none;
   user-select: none;
   transition: background var(--transition);
 }
@@ -1150,7 +1153,7 @@ a { text-decoration: none; color: inherit; }
   max-height: 6000px;
   transition: max-height 0.35s ease;
 }
-.section-collapse-inner { /* wrapper only */ }
+
 .settings-section.collapsed .section-collapse-body { max-height: 0; }
 .settings-section-body {
   padding: 20px 24px;
@@ -1484,7 +1487,7 @@ a { text-decoration: none; color: inherit; }
 .tm-admin-role { font-size: 0.78rem; color: var(--text-muted); margin-top: 1px; }
 .tm-admin-snippet {
   font-size: 0.78rem; color: var(--text-muted); margin-top: 4px;
-  overflow: hidden; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical;
+  overflow: hidden; display: -webkit-box; -webkit-line-clamp: 1; line-clamp: 1; -webkit-box-orient: vertical;
 }
 .tm-admin-type {
   font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
@@ -1625,6 +1628,29 @@ a { text-decoration: none; color: inherit; }
   outline: 2px solid var(--wheat);
   outline-offset: 3px;
 }
+
+/* Auto-extracted inline styles */
+.d-none { display:none; }
+.mb-12 { margin-bottom:12px; }
+.text-muted-light { color:rgba(245,240,232,0.3); }
+.bg-terracotta { background:var(--terracotta); }
+.stat-icon-1 { background: rgba(122,158,126,0.12); color: var(--moss); }
+.stat-icon-2 { background: rgba(212,168,75,0.12); color: var(--wheat); }
+.stat-icon-3 { background: rgba(74,158,110,0.12); color: var(--status-approved); }
+.stat-icon-4 { background: rgba(194,112,62,0.12); color: var(--terracotta); }
+.stat-icon-5 { background: rgba(212,168,75,0.12); color: #b87c2a; }
+.w-full-box { width:100%;box-sizing:border-box; }
+.hint-text-light { font-weight:400;opacity:0.5;font-size:0.75rem; }
+.table-loading { text-align:center;padding:40px;opacity:0.6; }
+.opacity-60 { opacity:0.6 }
+.relative { position:relative; }
+.bg-status-pending { background:var(--status-pending) }
+.bg-status-reviewed { background:var(--status-reviewed) }
+.bg-status-approved { background:var(--status-approved) }
+.bg-status-rejected { background:var(--status-rejected) }
+.text-invest-amount { color:var(--forest); font-family:'DM Serif Display',serif; }
+.empty-list-msg { padding:20px 24px;color:var(--text-muted);font-size:0.88rem; }
+.empty-list-msg-sm { padding:20px 24px;color:var(--text-muted);font-size:0.85rem; }
 </style>
 </head>
 <body>
@@ -1659,7 +1685,7 @@ a { text-decoration: none; color: inherit; }
   </div>
 </div>
 
-<div class="admin-layout" id="admin-layout" style="display:none;">
+<div class="admin-layout" id="admin-layout" class="d-none">
   <!-- Sidebar -->
   <aside class="sidebar">
     <a href="index.html" class="sidebar-logo">
@@ -1719,15 +1745,15 @@ a { text-decoration: none; color: inherit; }
     </nav>
 
     <div class="sidebar-footer">
-      <a href="index.html" style="margin-bottom:12px;">
+      <a href="index.html" class="mb-12">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
         Back to Website
       </a>
-      <a href="#" onclick="openChangePassword(event)" style="margin-bottom:12px;">
+      <a href="#" onclick="openChangePassword(event)" class="mb-12">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/><circle cx="12" cy="16" r="1"/></svg>
         Change Password
       </a>
-      <a href="#" onclick="handleLogout(event)" style="color:rgba(245,240,232,0.3);">
+      <a href="#" onclick="handleLogout(event)" class="text-muted-light">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16,17 21,12 16,7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
         Logout
       </a>
@@ -1747,7 +1773,7 @@ a { text-decoration: none; color: inherit; }
           <button class="theme-btn" data-theme="auto" title="Auto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></button>
         </div>
         <span class="header-date" id="current-date"></span>
-        <button class="btn-export" onclick="exportPDF()" style="background:var(--terracotta);">
+        <button class="btn-export" onclick="exportPDF()" class="bg-terracotta">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
           Export PDF
         </button>
@@ -1762,7 +1788,7 @@ a { text-decoration: none; color: inherit; }
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-label">
-          <div class="stat-icon" style="background: rgba(122,158,126,0.12); color: var(--moss);">
+          <div class="stat-icon stat-icon-1">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4-4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
           </div>
           Total Enquiries
@@ -1772,7 +1798,7 @@ a { text-decoration: none; color: inherit; }
       </div>
       <div class="stat-card">
         <div class="stat-label">
-          <div class="stat-icon" style="background: rgba(212,168,75,0.12); color: var(--wheat);">
+          <div class="stat-icon stat-icon-2">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
           </div>
           Pending Review
@@ -1782,7 +1808,7 @@ a { text-decoration: none; color: inherit; }
       </div>
       <div class="stat-card">
         <div class="stat-label">
-          <div class="stat-icon" style="background: rgba(74,158,110,0.12); color: var(--status-approved);">
+          <div class="stat-icon stat-icon-3">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22c-4-2-8-6-8-11a8 8 0 0116 0c0 5-4 9-8 11z"/><circle cx="12" cy="11" r="3"/></svg>
           </div>
           Growing Orders
@@ -1792,7 +1818,7 @@ a { text-decoration: none; color: inherit; }
       </div>
       <div class="stat-card">
         <div class="stat-label">
-          <div class="stat-icon" style="background: rgba(194,112,62,0.12); color: var(--terracotta);">
+          <div class="stat-icon stat-icon-4">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
           </div>
           Lease Enquiries
@@ -1802,7 +1828,7 @@ a { text-decoration: none; color: inherit; }
       </div>
       <div class="stat-card">
         <div class="stat-label">
-          <div class="stat-icon" style="background: rgba(212,168,75,0.12); color: #b87c2a;">
+          <div class="stat-icon stat-icon-5">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
           </div>
           Farmer Applications
@@ -1843,7 +1869,7 @@ a { text-decoration: none; color: inherit; }
       </table>
 
       <!-- Empty State -->
-      <div class="empty-state" id="empty-state" style="display: none;">
+      <div class="empty-state" id="empty-state" class="d-none">
         <div class="empty-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10,9 9,9 8,9"/></svg>
         </div>
@@ -1854,7 +1880,7 @@ a { text-decoration: none; color: inherit; }
   </div>
 
   <!-- SETTINGS PANEL -->
-  <div id="settings-panel" style="display:none;">
+  <div id="settings-panel" class="d-none">
     <div class="content-header">
       <h1>Site <em>Settings</em></h1>
       <div class="header-actions">
@@ -1901,7 +1927,7 @@ a { text-decoration: none; color: inherit; }
         </div>
         <div class="section-collapse-body"><div class="section-collapse-inner">
         <div id="product-admin-list" class="product-admin-list"></div>
-        <div id="product-form-wrap" class="product-form-wrap" style="display:none;">
+        <div id="product-form-wrap" class="product-form-wrap d-none">
           <div class="product-form-title" id="product-form-title">Add New Product</div>
           <input type="hidden" id="pf-edit-id">
           <div class="product-form-grid">
@@ -1940,15 +1966,15 @@ a { text-decoration: none; color: inherit; }
                 <button type="button" class="img-tab pf-img-tab" data-tab="upload" onclick="switchProductImgTab('upload')">Upload from Device</button>
               </div>
               <div id="pf-img-tab-url">
-                <input type="text" id="pf-image" placeholder="https://images.pexels.com/..." style="width:100%;box-sizing:border-box;">
+                <input type="text" id="pf-image" placeholder="https://images.pexels.com/..." class="w-full-box">
               </div>
-              <div id="pf-img-tab-upload" style="display:none;">
+              <div id="pf-img-tab-upload" class="d-none">
                 <div class="img-upload-area" id="pf-upload-area" onclick="document.getElementById('pf-image-file').click()">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>
                   Click to browse or drag &amp; drop an image
                   <div class="img-upload-hint">JPG, PNG, WEBP — stored locally</div>
                 </div>
-                <input type="file" id="pf-image-file" accept="image/*" style="display:none;" onchange="handleProductImageUpload(this)">
+                <input type="file" id="pf-image-file" accept="image/*" class="d-none" onchange="handleProductImageUpload(this)">
                 <div class="img-preview-wrap" id="pf-preview-wrap">
                   <img id="pf-preview" src="" alt="Preview">
                   <div class="img-preview-info">Image ready to save</div>
@@ -1978,7 +2004,7 @@ a { text-decoration: none; color: inherit; }
         </div>
         <div class="section-collapse-body"><div class="section-collapse-inner">
         <div id="land-admin-list" class="land-admin-list"></div>
-        <div id="land-form-wrap" class="land-form-wrap" style="display:none;">
+        <div id="land-form-wrap" class="land-form-wrap d-none">
           <div class="land-form-title" id="land-form-title">Add New Land</div>
           <input type="hidden" id="land-edit-id">
           <div class="land-form-grid">
@@ -2027,15 +2053,15 @@ a { text-decoration: none; color: inherit; }
                 <button type="button" class="img-tab" data-tab="upload" onclick="switchImgTab('upload')">Upload from Device</button>
               </div>
               <div id="img-tab-url">
-                <input type="text" id="lf-image" placeholder="https://images.pexels.com/..." style="width:100%;box-sizing:border-box;">
+                <input type="text" id="lf-image" placeholder="https://images.pexels.com/..." class="w-full-box">
               </div>
-              <div id="img-tab-upload" style="display:none;">
+              <div id="img-tab-upload" class="d-none">
                 <div class="img-upload-area" id="img-upload-area" onclick="document.getElementById('lf-image-file').click()">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>
                   Click to browse or drag &amp; drop an image
                   <div class="img-upload-hint">JPG, PNG, WEBP — stored locally</div>
                 </div>
-                <input type="file" id="lf-image-file" accept="image/*" style="display:none;" onchange="handleImageUpload(this)">
+                <input type="file" id="lf-image-file" accept="image/*" class="d-none" onchange="handleImageUpload(this)">
                 <div class="img-preview-wrap" id="img-preview-wrap">
                   <img id="img-preview" src="" alt="Preview">
                   <div class="img-preview-info">Image ready to save</div>
@@ -2094,7 +2120,7 @@ a { text-decoration: none; color: inherit; }
         <div id="farmer-admin-list" class="farmer-admin-list"></div>
 
         <!-- Add / Edit form -->
-        <div id="farmer-form-wrap" class="farmer-form-wrap" style="display:none;">
+        <div id="farmer-form-wrap" class="farmer-form-wrap d-none">
           <div class="farmer-form-title" id="farmer-form-title">Add Farmer</div>
           <input type="hidden" id="ff-edit-id">
           <div class="farmer-form-grid">
@@ -2140,15 +2166,15 @@ a { text-decoration: none; color: inherit; }
                 <button type="button" class="img-tab ff-img-tab" data-tab="upload" onclick="switchFarmerImgTab('upload')">Upload from Device</button>
               </div>
               <div id="ff-img-tab-url">
-                <input type="text" id="ff-image" placeholder="https://images.pexels.com/..." style="width:100%;box-sizing:border-box;">
+                <input type="text" id="ff-image" placeholder="https://images.pexels.com/..." class="w-full-box">
               </div>
-              <div id="ff-img-tab-upload" style="display:none;">
+              <div id="ff-img-tab-upload" class="d-none">
                 <div class="img-upload-area" id="ff-upload-area" onclick="document.getElementById('ff-image-file').click()">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>
                   Click to browse or drag &amp; drop an image
                   <div class="img-upload-hint">JPG, PNG, WEBP — stored locally</div>
                 </div>
-                <input type="file" id="ff-image-file" accept="image/*" style="display:none;" onchange="handleFarmerImageUpload(this)">
+                <input type="file" id="ff-image-file" accept="image/*" class="d-none" onchange="handleFarmerImageUpload(this)">
                 <div class="img-preview-wrap" id="ff-preview-wrap">
                   <img id="ff-preview" src="" alt="Preview">
                   <div class="img-preview-info">Image ready to save</div>
@@ -2203,7 +2229,7 @@ a { text-decoration: none; color: inherit; }
         <div id="tm-admin-list" class="tm-admin-list"></div>
 
         <!-- Add / Edit form -->
-        <div id="tm-form-wrap" class="tm-form-wrap" style="display:none;">
+        <div id="tm-form-wrap" class="tm-form-wrap d-none">
           <div class="tm-form-title" id="tm-form-title">Add Testimonial</div>
           <input type="hidden" id="tmf-edit-id">
           <div class="tm-form-grid">
@@ -2237,21 +2263,21 @@ a { text-decoration: none; color: inherit; }
               </select>
             </div>
             <div class="tm-form-field full-width">
-              <label>Author Photo <span style="font-weight:400;opacity:0.5;font-size:0.75rem;">(optional — replaces emoji avatar)</span></label>
+              <label>Author Photo <span class="hint-text-light">(optional — replaces emoji avatar)</span></label>
               <div class="img-source-tabs">
                 <button type="button" class="img-tab tmf-img-tab active" data-tab="url" onclick="switchTmImgTab('url')">From URL</button>
                 <button type="button" class="img-tab tmf-img-tab" data-tab="upload" onclick="switchTmImgTab('upload')">Upload from Device</button>
               </div>
               <div id="tmf-img-tab-url">
-                <input type="text" id="tmf-image" placeholder="https://images.pexels.com/..." style="width:100%;box-sizing:border-box;">
+                <input type="text" id="tmf-image" placeholder="https://images.pexels.com/..." class="w-full-box">
               </div>
-              <div id="tmf-img-tab-upload" style="display:none;">
+              <div id="tmf-img-tab-upload" class="d-none">
                 <div class="img-upload-area" id="tmf-upload-area" onclick="document.getElementById('tmf-image-file').click()">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>
                   Click to browse or drag &amp; drop an image
                   <div class="img-upload-hint">JPG, PNG, WEBP — stored locally</div>
                 </div>
-                <input type="file" id="tmf-image-file" accept="image/*" style="display:none;" onchange="handleTmImageUpload(this)">
+                <input type="file" id="tmf-image-file" accept="image/*" class="d-none" onchange="handleTmImageUpload(this)">
                 <div class="img-preview-wrap" id="tmf-preview-wrap">
                   <img id="tmf-preview" src="" alt="Preview">
                   <div class="img-preview-info">Image ready to save</div>
@@ -2363,7 +2389,7 @@ function showDashboard() {
   document.getElementById('login-screen').classList.add('hidden');
   document.getElementById('admin-layout').style.display = 'grid';
   // Load data
-  document.getElementById('table-body').innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;opacity:0.6;">Loading enquiries from server...</td></tr>';
+  document.getElementById('table-body').innerHTML = '<tr><td colspan="7" class="table-loading">Loading enquiries from server...</td></tr>';
   fetchAndRender();
 }
 
@@ -2572,15 +2598,15 @@ function render() {
       <td class="cell-crop">${cropOrLand}</td>
       <td class="cell-acres">${acres}</td>
       <td class="cell-amount">${amount}</td>
-      <td class="cell-date">${dateStr}<br><span style="opacity:0.6">${timeStr}</span></td>
+      <td class="cell-date">${dateStr}<br><span class="opacity-60">${timeStr}</span></td>
       <td>
-        <div style="position:relative;">
+        <div class="relative">
           <span class="status-badge status-${e.status}" onclick="event.stopPropagation(); toggleStatusDropdown('${e.id}', this)">${e.status}</span>
           <div class="status-dropdown" id="dropdown-${e.id}">
-            <div class="status-option" onclick="event.stopPropagation(); updateEnquiryStatus('${e.id}','pending')"><span class="dot" style="background:var(--status-pending)"></span>Pending</div>
-            <div class="status-option" onclick="event.stopPropagation(); updateEnquiryStatus('${e.id}','reviewed')"><span class="dot" style="background:var(--status-reviewed)"></span>Reviewed</div>
-            <div class="status-option" onclick="event.stopPropagation(); updateEnquiryStatus('${e.id}','approved')"><span class="dot" style="background:var(--status-approved)"></span>Approved</div>
-            <div class="status-option" onclick="event.stopPropagation(); updateEnquiryStatus('${e.id}','rejected')"><span class="dot" style="background:var(--status-rejected)"></span>Rejected</div>
+            <div class="status-option" onclick="event.stopPropagation(); updateEnquiryStatus('${e.id}','pending')"><span class="dot bg-status-pending"></span>Pending</div>
+            <div class="status-option" onclick="event.stopPropagation(); updateEnquiryStatus('${e.id}','reviewed')"><span class="dot bg-status-reviewed"></span>Reviewed</div>
+            <div class="status-option" onclick="event.stopPropagation(); updateEnquiryStatus('${e.id}','approved')"><span class="dot bg-status-approved"></span>Approved</div>
+            <div class="status-option" onclick="event.stopPropagation(); updateEnquiryStatus('${e.id}','rejected')"><span class="dot bg-status-rejected"></span>Rejected</div>
           </div>
         </div>
       </td>
@@ -2671,7 +2697,7 @@ function openModal(id) {
       </div>
       <div class="modal-row">
         <div class="modal-field"><div class="modal-field-label">Preferred Variety</div><div class="modal-field-value">${e.preferredVariety || '--'}</div></div>
-        <div class="modal-field"><div class="modal-field-label">Estimated Investment</div><div class="modal-field-value" style="color:var(--forest); font-family:'DM Serif Display',serif;">${e.estimatedInvestment ? '\u20b9' + Number(e.estimatedInvestment).toLocaleString('en-IN') : '--'}</div></div>
+        <div class="modal-field"><div class="modal-field-label">Estimated Investment</div><div class="modal-field-value text-invest-amount">${e.estimatedInvestment ? '\u20b9' + Number(e.estimatedInvestment).toLocaleString('en-IN') : '--'}</div></div>
       </div>
       ${e.notes ? `<div class="modal-divider"></div><div class="modal-field"><div class="modal-field-label">Additional Notes</div><div class="modal-field-value">${e.notes}</div></div>` : ''}
       <div class="modal-divider"></div>
@@ -2892,11 +2918,11 @@ function renderProductAdmin() {
   const products = getProducts();
   const list = document.getElementById('product-admin-list');
   if (!list) return;
-  if (!products.length) { list.innerHTML = '<div style="padding:20px 24px;color:var(--text-muted);font-size:0.88rem;">No products added yet.</div>'; return; }
+  if (!products.length) { list.innerHTML = '<div class="empty-list-msg">No products added yet.</div>'; return; }
   const tagLabel = { popular: 'Popular', organic: 'Organic', new: 'New' };
   list.innerHTML = products.map(p => `
     <div class="product-admin-item">
-      <div class="product-admin-thumb" style="background: linear-gradient(135deg, ${p.gradient}), url('${p.imageUrl}'); background-size: cover; background-position: center;"></div>
+      <div class="product-admin-thumb reactive-anim-wrapper" data-gradient="earth" data-image="${p.imageUrl}"></div>
       <div class="product-admin-info">
         <div class="product-admin-name">${p.name}</div>
         <div class="product-admin-meta">${p.growTime} &bull; ${p.perAcre} &bull; ${p.yield}</div>
@@ -3090,13 +3116,13 @@ function renderLandAdmin() {
   const lands = getLands();
   const list = document.getElementById('land-admin-list');
   if (!lands.length) {
-    list.innerHTML = '<div style="padding:20px 24px;color:var(--text-muted);font-size:0.88rem;">No lands added yet.</div>';
+    list.innerHTML = '<div class="empty-list-msg">No lands added yet.</div>';
     return;
   }
   const statusLabel = { available: 'Available', limited: 'Limited', full: 'Fully Booked' };
   list.innerHTML = lands.map(land => `
     <div class="land-admin-item">
-      <div class="land-admin-thumb" style="background: linear-gradient(135deg, ${LAND_GRADIENTS[land.gradient] || LAND_GRADIENTS.green}), url('${land.imageUrl}'); background-size: cover; background-position: center;"></div>
+      <div class="land-admin-thumb reactive-anim-wrapper" data-gradient="${land.gradient}" data-image="${land.imageUrl}"></div>
       <div class="land-admin-info">
         <div class="land-admin-name">${land.name}</div>
         <div class="land-admin-location">${land.location}</div>
@@ -3439,14 +3465,14 @@ function renderFarmerAdmin() {
   const list = document.getElementById('farmer-admin-list');
   if (!list) return;
   if (!data.items || data.items.length === 0) {
-    list.innerHTML = '<div style="padding:20px 24px;color:var(--text-muted);font-size:0.85rem;">No farmers yet. Click + Add Farmer to get started.</div>';
+    list.innerHTML = '<div class="empty-list-msg-sm">No farmers yet. Click + Add Farmer to get started.</div>';
     return;
   }
   list.innerHTML = data.items.map(f => {
     const grad = FARMER_GRADIENTS_ADMIN[f.gradient] || FARMER_GRADIENTS_ADMIN.orange;
     return `
     <div class="farmer-admin-item" data-id="${f.id}">
-      <div class="farmer-admin-thumb" style="background: linear-gradient(135deg, ${grad}), url('${f.imageUrl}'); background-size: cover; background-position: center;"></div>
+      <div class="farmer-admin-thumb reactive-anim-wrapper" data-gradient="${f.gradient}" data-image="${f.imageUrl}"></div>
       <div class="farmer-admin-info">
         <div class="farmer-admin-name">${f.name}</div>
         <div class="farmer-admin-specialty">${f.specialty}</div>
@@ -3625,7 +3651,7 @@ function renderTestimonialsAdmin() {
   const list = document.getElementById('tm-admin-list');
   if (!list) return;
   if (!data.items || data.items.length === 0) {
-    list.innerHTML = '<div style="padding:20px 24px;color:var(--text-muted);font-size:0.85rem;">No testimonials yet. Click + Add Testimonial to get started.</div>';
+    list.innerHTML = '<div class="empty-list-msg-sm">No testimonials yet. Click + Add Testimonial to get started.</div>';
     return;
   }
   list.innerHTML = data.items.map(t => `
@@ -3799,5 +3825,6 @@ document.addEventListener('click', e => {
 });
 </script>
 
+<script src="js/reactive-animations.js"></script>
 </body>
 </html>

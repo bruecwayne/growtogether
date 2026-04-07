@@ -199,8 +199,8 @@ a { text-decoration: none; color: inherit; }
 }
 .nav.scrolled {
   background: rgba(245, 240, 232, 0.92);
-  backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
   padding: 14px 0;
   box-shadow: 0 1px 0 rgba(26,58,42,0.08);
 }
@@ -748,6 +748,7 @@ a { text-decoration: none; color: inherit; }
   display: none;
   position: fixed; inset: 0; z-index: var(--z-modal);
   background: rgba(10,24,10,0.82);
+  -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
   align-items: center; justify-content: center;
   padding: 20px;
@@ -1809,8 +1810,8 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
 .sg-overlay {
   position: fixed; inset: 0; z-index: var(--z-overlay);
   background: rgba(10,20,15,0.72);
-  backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
   display: flex; align-items: center; justify-content: center;
   padding: 24px;
   opacity: 0; pointer-events: none;
@@ -2199,6 +2200,32 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
   outline-offset: 4px;
   border-radius: 3px;
 }
+
+/* Auto-extracted inline styles */
+.inline-vertical-align--1px- { vertical-align:-1px;margin-right:3px; }
+.inline-animation-name-float { animation-name: floatCard2; }
+.inline-color-var--terracott { color:var(--terracotta);font-size:11px;font-weight:600;margin-left:4px; }
+.inline-width-72 { width:72% }
+.inline-width-45 { width:45% }
+.inline-color-var--wheat-lig { color:var(--wheat-light); }
+.inline-width-20 { width:20% }
+.inline-background-rgba61107 { background:rgba(61,107,79,0.2); }
+.inline-background-rgba21216 { background:rgba(212,168,75,0.15); }
+.inline-background-rgba17715 { background:rgba(177,156,217,0.15); }
+.inline-background-rgba12219 { background:rgba(122,193,122,0.15); }
+.inline-width-55-background- { width:55%;background:var(--moss); }
+.inline-width-30-background- { width:30%;background:var(--wheat); }
+.inline-width-15-background- { width:15%;background:var(--terracotta); }
+.inline-background-rgba19411 { background:rgba(194,112,62,0.15); }
+.inline-background-rgba16819 { background:rgba(168,197,171,0.15); }
+.inline-color-var--sage { color:var(--sage) }
+.inline-background-rgba23220 { background:rgba(232,201,125,0.15); }
+.inline-color-var--wheat { color:var(--wheat) }
+.inline-border-15pxsolidrgba { border: 1.5px solid rgba(245,240,232,0.3); color: var(--cream); }
+.inline-color-var--text-mute { color:var(--text-muted);font-size:11px;font-weight:400; }
+.inline-flex-1-min-width-0 { flex:1;min-width:0; }
+.inline-font-size-0 { font-size:0; }
+.inline-color-var--sage-ligh { color:var(--sage-light) }
 </style>
 
 <!-- ═══ OTP Verification Styles ═══ -->
@@ -2384,16 +2411,15 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
           </div>
         </div>
         <div class="hero-card-main">
-          <div class="hero-card-img" style="background: linear-gradient(135deg, rgba(122,158,126,0.3), rgba(61,107,79,0.4)), url('https://images.pexels.com/photos/2132057/pexels-photo-2132057.jpeg?auto=compress&cs=tinysrgb&w=500&h=350&fit=crop'); background-size: cover; background-position: center;">
-          </div>
+          <div class="hero-card-img reactive-anim-wrapper" data-gradient="moss" data-image="https://images.pexels.com/photos/2132057/pexels-photo-2132057.jpeg?auto=compress&cs=tinysrgb&w=500&h=350&fit=crop"></div>
           <div class="hero-card-label">Growing Now</div>
           <div class="hero-card-title">Hybrid Tomatoes</div>
           <div class="hero-card-meta">
-            <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="vertical-align:-1px;margin-right:3px;"><path d="M12 22V12"/><path d="M12 12C12 7 17 3 21 4s-2 8-9 8z"/><path d="M12 12C12 7 7 3 3 4s2 8 9 8z"/></svg>Week 8 of 14</span>
-            <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="vertical-align:-1px;margin-right:3px;"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Siddipet, Telangana</span>
+            <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="inline-vertical-align--1px-"><path d="M12 22V12"/><path d="M12 12C12 7 17 3 21 4s-2 8-9 8z"/><path d="M12 12C12 7 7 3 3 4s2 8 9 8z"/></svg>Week 8 of 14</span>
+            <span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="inline-vertical-align--1px-"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Siddipet, Telangana</span>
           </div>
         </div>
-        <div class="hero-card-float progress" style="animation-name: floatCard2;">
+        <div class="hero-card-float progress inline-animation-name-float">
           <div class="float-label">Growth Progress</div>
           <div class="progress-bar-mini"><div class="fill"></div></div>
           <div class="progress-text">72% Complete</div>
@@ -2566,7 +2592,7 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
               <input type="text" name="name" placeholder="e.g. Ramesh Reddy" required>
             </div>
             <div class="lease-field">
-              <label>Phone Number <span style="color:var(--terracotta);font-size:11px;font-weight:600;margin-left:4px;">OTP required</span></label>
+              <label>Phone Number <span class="inline-color-var--terracott">OTP required</span></label>
               <div class="otp-group" data-type="phone" data-required="true">
                 <div class="otp-input-row">
                   <input type="tel" name="phone" data-otp-target="identifier" placeholder="e.g. 9876543210" required>
@@ -2595,7 +2621,7 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
           <div class="lease-form-row">
             <div class="lease-field">
               <label>Soil Type</label>
-              <select name="soilType" required>
+              <select name="soilType" title="Soil Type" required>
                 <option value="" disabled selected>Select soil type</option>
                 <option>Black Cotton</option>
                 <option>Red Loamy</option>
@@ -2606,7 +2632,7 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
             </div>
             <div class="lease-field">
               <label>Irrigation Source</label>
-              <select name="irrigationSource" required>
+              <select name="irrigationSource" title="Irrigation Source" required>
                 <option value="" disabled selected>Select source</option>
                 <option>Canal (KLIP)</option>
                 <option>Borewell</option>
@@ -2647,7 +2673,7 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
           <div class="crop-icon-sm" aria-hidden="true">&#x1F345;</div>
           <div class="crop-progress-info">
             <h5>Hybrid Tomatoes</h5>
-            <div class="crop-progress-bar"><div class="bar bar-green" style="width:72%"></div></div>
+            <div class="crop-progress-bar"><div class="bar bar-green inline-width-72"></div></div>
           </div>
           <span class="crop-percent">72%</span>
         </div>
@@ -2655,17 +2681,17 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
           <div class="crop-icon-sm" aria-hidden="true">&#x1F336;&#xFE0F;</div>
           <div class="crop-progress-info">
             <h5>Red Chillies</h5>
-            <div class="crop-progress-bar"><div class="bar bar-wheat" style="width:45%"></div></div>
+            <div class="crop-progress-bar"><div class="bar bar-wheat inline-width-45"></div></div>
           </div>
-          <span class="crop-percent" style="color:var(--wheat-light);">45%</span>
+          <span class="crop-percent inline-color-var--wheat-lig">45%</span>
         </div>
         <div class="crop-progress-item">
           <div class="crop-icon-sm" aria-hidden="true">&#x1F33E;</div>
           <div class="crop-progress-info">
             <h5>Turmeric</h5>
-            <div class="crop-progress-bar"><div class="bar bar-terra" style="width:20%"></div></div>
+            <div class="crop-progress-bar"><div class="bar bar-terra inline-width-20"></div></div>
           </div>
-          <span class="crop-percent" style="color:var(--terracotta-light);">20%</span>
+          <span class="crop-percent inline-color-var--terracott">20%</span>
         </div>
       </div>
 
@@ -2676,28 +2702,28 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
           <span class="dash-card-badge badge-warning">Upcoming</span>
         </div>
         <div class="timeline-item">
-          <div class="timeline-dot" aria-hidden="true" style="background:rgba(61,107,79,0.2);">&#x1F345;</div>
+          <div class="timeline-dot" aria-hidden="true" class="inline-background-rgba61107">&#x1F345;</div>
           <div class="timeline-info">
             <h5>Tomato Harvest</h5>
             <span>April 28, 2026 &bull; Siddipet Central</span>
           </div>
         </div>
         <div class="timeline-item">
-          <div class="timeline-dot" aria-hidden="true" style="background:rgba(212,168,75,0.15);">&#x1F33F;</div>
+          <div class="timeline-dot" aria-hidden="true" class="inline-background-rgba21216">&#x1F33F;</div>
           <div class="timeline-info">
             <h5>Chilli First Pick</h5>
             <span>May 15, 2026 &bull; Dubbak Highlands</span>
           </div>
         </div>
         <div class="timeline-item">
-          <div class="timeline-dot" aria-hidden="true" style="background:rgba(177,156,217,0.15);">&#x1F33B;</div>
+          <div class="timeline-dot" aria-hidden="true" class="inline-background-rgba17715">&#x1F33B;</div>
           <div class="timeline-info">
             <h5>Turmeric Harvest</h5>
             <span>June 20, 2026 &bull; Gajwel Green Belt</span>
           </div>
         </div>
         <div class="timeline-item">
-          <div class="timeline-dot" aria-hidden="true" style="background:rgba(122,193,122,0.15);">&#x1F4E6;</div>
+          <div class="timeline-dot" aria-hidden="true" class="inline-background-rgba12219">&#x1F4E6;</div>
           <div class="timeline-info">
             <h5>Full Delivery</h5>
             <span>July 1, 2026 &bull; All crops shipped</span>
@@ -2715,15 +2741,15 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
         <div class="spend-bars">
           <div class="spend-bar-row">
             <span class="spend-bar-label">Tomatoes</span>
-            <div class="spend-bar-track"><div class="fill" style="width:55%;background:var(--moss);"></div></div>
+            <div class="spend-bar-track"><div class="fill inline-width-55-background-"></div></div>
           </div>
           <div class="spend-bar-row">
             <span class="spend-bar-label">Chillies</span>
-            <div class="spend-bar-track"><div class="fill" style="width:30%;background:var(--wheat);"></div></div>
+            <div class="spend-bar-track"><div class="fill inline-width-30-background-"></div></div>
           </div>
           <div class="spend-bar-row">
             <span class="spend-bar-label">Turmeric</span>
-            <div class="spend-bar-track"><div class="fill" style="width:15%;background:var(--terracotta);"></div></div>
+            <div class="spend-bar-track"><div class="fill inline-width-15-background-"></div></div>
           </div>
         </div>
       </div>
@@ -2734,7 +2760,7 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
           <span class="dash-card-title">Farmer Updates</span>
         </div>
         <div class="farmer-update">
-          <div class="update-avatar" aria-hidden="true" style="background:rgba(194,112,62,0.15);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--terracotta-light)"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg></div>
+          <div class="update-avatar" aria-hidden="true" class="inline-background-rgba19411"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="inline-color-var--terracott"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg></div>
           <div class="update-content">
             <h5>Venkat Rao</h5>
             <p>Tomatoes are showing great color. Expecting early harvest if weather holds.</p>
@@ -2742,7 +2768,7 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
           </div>
         </div>
         <div class="farmer-update">
-          <div class="update-avatar" aria-hidden="true" style="background:rgba(168,197,171,0.15);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--sage)"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg></div>
+          <div class="update-avatar" aria-hidden="true" class="inline-background-rgba16819"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="inline-color-var--sage"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg></div>
           <div class="update-content">
             <h5>Ramesh Reddy</h5>
             <p>Chilli plants flowering well. Expecting strong first pick if rains hold off this week.</p>
@@ -2750,7 +2776,7 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
           </div>
         </div>
         <div class="farmer-update">
-          <div class="update-avatar" aria-hidden="true" style="background:rgba(232,201,125,0.15);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--wheat)"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg></div>
+          <div class="update-avatar" aria-hidden="true" class="inline-background-rgba23220"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="inline-color-var--wheat"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg></div>
           <div class="update-content">
             <h5>Lakshmi Devi</h5>
             <p>Turmeric rhizomes planted and sprouting. Canal water supply is steady this season.</p>
@@ -2783,7 +2809,7 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
       <p>Join thousands of customers and farmers building a more connected food system, one harvest at a time.</p>
       <div class="cta-buttons">
         <button onclick="openStartGrowing()" class="btn btn-wheat btn-lg">Start Growing Today</button>
-        <a href="#" class="btn btn-lg" style="border: 1.5px solid rgba(245,240,232,0.3); color: var(--cream);">Apply as a Farmer</a>
+        <a href="#" class="btn btn-lg inline-border-15pxsolidrgba">Apply as a Farmer</a>
       </div>
     </div>
   </div>
@@ -3033,7 +3059,7 @@ async function submitLeaseForm(form) {
     const statusClass = { available: 'status-available', limited: 'status-limited', full: 'status-full' };
     grid.innerHTML = visible.map((land, i) => `
       <div class="land-card reveal ${delays[i % 4]}">
-        <div class="land-visual" style="background: linear-gradient(135deg, ${LAND_GRADIENTS_IDX[land.gradient] || LAND_GRADIENTS_IDX.green}), url('${land.imageUrl}'); background-size: cover; background-position: center;">
+        <div class="land-visual reactive-anim-wrapper" data-gradient="${land.gradient}" data-image="${land.imageUrl}">
           <div class="topo-pattern"></div>
           <span class="location-pin"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3" fill="currentColor" opacity="0.4"/></svg></span>
           <span class="land-status ${statusClass[land.status] || 'status-available'}">${statusLabel[land.status] || 'Available'}</span>
@@ -3077,7 +3103,7 @@ async function submitLeaseForm(form) {
   grid.innerHTML = products.filter(p => p.visible !== false).map((p, i) => `
     <div class="product-card reveal ${delays[i % 4]}" data-product-id="${p.id}">
       <div class="product-img">
-        <div class="img-bg" style="background: linear-gradient(135deg, ${p.gradient}), url('${p.imageUrl}'); background-size: cover; background-position: center;"></div>
+        <div class="img-bg reactive-anim-wrapper" data-gradient="forest" data-image="${p.imageUrl}"></div>
         <span class="product-tag ${tagClass[p.tag] || 'tag-popular'}">${tagLabel[p.tag] || 'Popular'}</span>
       </div>
       <div class="product-body">
@@ -3152,7 +3178,7 @@ async function submitLeaseForm(form) {
       .map(c => `<span class="farmer-crop-tag">${c}</span>`).join('');
     return `
     <div class="farmer-card reveal ${delays[i % 4]}">
-      <div class="farmer-avatar" style="background: linear-gradient(135deg, ${grad}), url('${f.imageUrl}'); background-size: cover; background-position: center;"></div>
+      <div class="farmer-avatar reactive-anim-wrapper" data-gradient="${f.gradient}" data-image="${f.imageUrl}"></div>
       <div class="farmer-name">${f.name}</div>
       <div class="farmer-specialty">${f.specialty}</div>
       <div class="farmer-meta">
@@ -3540,7 +3566,7 @@ const tiltRefreshObs = new IntersectionObserver(entries => {
               <input type="text" name="name" placeholder="e.g. Rajesh Kumar" required>
             </div>
             <div class="sg-field">
-              <label>Phone Number <span class="req">*</span> <span style="color:var(--terracotta);font-size:11px;font-weight:600;margin-left:2px;">OTP required</span></label>
+              <label>Phone Number <span class="req">*</span> <span class="inline-color-var--terracott">OTP required</span></label>
               <div class="otp-group" data-type="phone" data-required="true">
                 <div class="otp-input-row">
                   <input type="tel" name="phone" data-otp-target="identifier" placeholder="e.g. 9876543210" required>
@@ -3557,7 +3583,7 @@ const tiltRefreshObs = new IntersectionObserver(entries => {
             </div>
           </div>
           <div class="sg-field">
-            <label>Email Address <span style="color:var(--text-muted);font-size:11px;font-weight:400;">(verify if provided)</span></label>
+            <label>Email Address <span class="inline-color-var--text-mute">(verify if provided)</span></label>
             <div class="otp-group" data-type="email" data-required="false" id="sg-email-otp-group">
               <div class="otp-input-row">
                 <input type="email" name="email" data-otp-target="identifier" placeholder="e.g. rajesh@example.com">
@@ -3576,7 +3602,7 @@ const tiltRefreshObs = new IntersectionObserver(entries => {
           <div class="sg-form-row">
             <div class="sg-field">
               <label>Preferred Land <span class="req">*</span></label>
-              <select name="preferredLand" id="sg-land-select" required>
+              <select name="preferredLand" id="sg-land-select" title="Preferred Land" required>
                 <option value="" disabled selected>Select location</option>
               </select>
             </div>
@@ -3588,7 +3614,7 @@ const tiltRefreshObs = new IntersectionObserver(entries => {
           <div class="sg-form-row">
             <div class="sg-field">
               <label>Preferred Season</label>
-              <select name="preferredSeason">
+              <select name="preferredSeason" title="Preferred Season">
                 <option value="" disabled selected>Select season</option>
                 <option>Kharif (June–Oct)</option>
                 <option>Rabi (Nov–Mar)</option>
@@ -3647,10 +3673,10 @@ const tiltRefreshObs = new IntersectionObserver(entries => {
             <input type="text" class="f-ctrl" name="fullName" placeholder="e.g. Venkat Rao" required>
           </div>
           <div class="f-field">
-            <label class="f-label">Phone Number * <span style="color:var(--terracotta);font-size:11px;font-weight:600;margin-left:4px;">OTP required</span></label>
+            <label class="f-label">Phone Number * <span class="inline-color-var--terracott">OTP required</span></label>
             <div class="otp-group" data-type="phone" data-required="true">
               <div class="otp-input-row">
-                <input type="tel" class="f-ctrl" name="phone" data-otp-target="identifier" placeholder="+91 9XXXXXXXXX" required style="flex:1;min-width:0;">
+                <input type="tel" class="f-ctrl" name="phone" data-otp-target="identifier" placeholder="+91 9XXXXXXXXX" required class="inline-flex-1-min-width-0">
                 <button type="button" class="otp-send-btn">Send OTP</button>
                 <span class="otp-verified-badge">✓ Verified</span>
               </div>
@@ -3744,12 +3770,13 @@ const tiltRefreshObs = new IntersectionObserver(entries => {
     </div>
 
     <div class="farmer-success" id="farmer-success">
-      <div class="farmer-success-icon" style="font-size:0;"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="color:var(--sage-light)"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+      <div class="farmer-success-icon inline-font-size-0"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" class="inline-color-var--sage-ligh"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
       <h3>Application Submitted!</h3>
-      <p>Thank you for applying to grow with us. Our team will review your profile and reach out within <strong style="color:var(--wheat)">2–3 business days</strong> to complete your verification and get you started.</p>
+      <p>Thank you for applying to grow with us. Our team will review your profile and reach out within <strong class="inline-color-var--wheat">2–3 business days</strong> to complete your verification and get you started.</p>
     </div>
   </div>
 </div>
 
+<script src="js/reactive-animations.js"></script>
 </body>
 </html>
