@@ -1,0 +1,530 @@
+/* =========================================================
+   Liquid Glass — GrowTogether
+   Apple iOS 26-inspired translucent material system.
+   Layered on top of existing styles via specific overrides.
+   ========================================================= */
+
+/* ── Glass system tokens ─────────────────────────────────── */
+:root {
+  /* Light glass — for elements sitting on dark/forest backgrounds */
+  --lg-on-dark-bg:        rgba(255, 255, 255, 0.09);
+  --lg-on-dark-bg-hover:  rgba(255, 255, 255, 0.15);
+  --lg-on-dark-border:    rgba(255, 255, 255, 0.16);
+  --lg-on-dark-specular:  rgba(255, 255, 255, 0.40);
+  --lg-on-dark-blur:      blur(28px) saturate(180%);
+
+  /* Forest glass — for elements sitting on cream/light backgrounds */
+  --lg-on-light-bg:       rgba(255, 255, 255, 0.58);
+  --lg-on-light-bg-hover: rgba(255, 255, 255, 0.78);
+  --lg-on-light-border:   rgba(255, 255, 255, 0.80);
+  --lg-on-light-specular: rgba(255, 255, 255, 0.95);
+  --lg-on-light-blur:     blur(20px) saturate(160%);
+
+  /* Wheat/gold glass — accent elements */
+  --lg-wheat-bg:          rgba(212, 168, 75, 0.88);
+  --lg-wheat-border:      rgba(255, 225, 130, 0.40);
+  --lg-wheat-specular:    rgba(255, 235, 160, 0.60);
+
+  /* Nav glass */
+  --lg-nav-bg:            rgba(10, 22, 14, 0.68);
+  --lg-nav-scrolled-bg:   rgba(8, 18, 11, 0.82);
+}
+
+/* ── Navigation bar ──────────────────────────────────────── */
+/* Always glass — fits the dark hero section */
+.nav {
+  background: var(--lg-nav-bg) !important;
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
+  backdrop-filter: blur(32px) saturate(200%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.05),
+    0 8px 40px rgba(0, 0, 0, 0.20);
+}
+.nav.scrolled {
+  background: var(--lg-nav-scrolled-bg) !important;
+  -webkit-backdrop-filter: blur(36px) saturate(220%) !important;
+  backdrop-filter: blur(36px) saturate(220%) !important;
+  border-bottom-color: rgba(255, 255, 255, 0.09);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.07),
+    0 12px 48px rgba(0, 0, 0, 0.28) !important;
+}
+/* Nav logo + links — always light on dark glass (use literal, --cream is dark in dark mode) */
+.nav-logo,
+[data-theme="dark"] .nav-logo { color: #f5f0e8 !important; }
+.nav-logo svg path, .nav-logo svg circle, .nav-logo svg rect { fill: currentColor; }
+.nav-link,
+[data-theme="dark"] .nav-link { color: rgba(245, 240, 232, 0.88) !important; }
+.nav-link:hover,
+[data-theme="dark"] .nav-link:hover { color: #d4a84b !important; }
+
+/* ── Hero stat pills ─────────────────────────────────────── */
+/* They sit on the dark forest hero */
+.hero-stats {
+  background: var(--lg-on-dark-bg) !important;
+  -webkit-backdrop-filter: var(--lg-on-dark-blur);
+  backdrop-filter: var(--lg-on-dark-blur);
+  border: 1px solid var(--lg-on-dark-border) !important;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.18),
+    inset 0 1.5px 0 var(--lg-on-dark-specular) !important;
+}
+.stat-item { background: transparent !important; border: none !important; }
+
+/* ── Hero floating cards ─────────────────────────────────── */
+.hero-card-main {
+  background: rgba(255, 255, 255, 0.10) !important;
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  backdrop-filter: blur(32px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.20) !important;
+  box-shadow:
+    0 24px 72px rgba(0, 0, 0, 0.28),
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.10) !important;
+  color: var(--cream) !important;
+}
+.hero-card-main .card-title,
+.hero-card-main .card-meta,
+.hero-card-main .card-label { color: rgba(245, 240, 232, 0.90) !important; }
+
+.hero-card-float {
+  background: rgba(255, 255, 255, 0.10) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.22),
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.40),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.08) !important;
+  color: var(--cream) !important;
+}
+.hero-card-float * { color: rgba(245, 240, 232, 0.88) !important; }
+
+/* ── Step cards (on dark forest background) ──────────────── */
+.step-card, .how-step {
+  background: var(--lg-on-dark-bg) !important;
+  -webkit-backdrop-filter: var(--lg-on-dark-blur);
+  backdrop-filter: var(--lg-on-dark-blur);
+  border: 1px solid var(--lg-on-dark-border) !important;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.18),
+    inset 0 1.5px 0 var(--lg-on-dark-specular) !important;
+  position: relative;
+  overflow: hidden;
+}
+.step-card::after, .how-step::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    138deg,
+    rgba(255, 255, 255, 0.10) 0%,
+    transparent 40%,
+    transparent 70%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+.step-card > *, .how-step > * { position: relative; z-index: 1; }
+
+/* ── Product cards (on cream background) ─────────────────── */
+.product-card {
+  background: var(--lg-on-light-bg) !important;
+  -webkit-backdrop-filter: var(--lg-on-light-blur);
+  backdrop-filter: var(--lg-on-light-blur);
+  border: 1px solid var(--lg-on-light-border) !important;
+  box-shadow:
+    0 8px 32px rgba(26, 58, 42, 0.08),
+    inset 0 1.5px 0 var(--lg-on-light-specular) !important;
+  position: relative;
+  overflow: hidden;
+}
+.product-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.18) 0%,
+    transparent 38%,
+    transparent 68%,
+    rgba(255, 255, 255, 0.06) 100%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+.product-card > * { position: relative; z-index: 1; }
+.product-card:hover {
+  background: var(--lg-on-light-bg-hover) !important;
+  box-shadow:
+    0 24px 64px rgba(26, 58, 42, 0.14),
+    inset 0 1.5px 0 var(--lg-on-light-specular) !important;
+}
+
+/* ── Farmer cards (on cream background) ──────────────────── */
+.farmer-card {
+  background: var(--lg-on-light-bg) !important;
+  -webkit-backdrop-filter: var(--lg-on-light-blur);
+  backdrop-filter: var(--lg-on-light-blur);
+  border: 1px solid var(--lg-on-light-border) !important;
+  box-shadow:
+    0 8px 32px rgba(26, 58, 42, 0.07),
+    inset 0 1.5px 0 var(--lg-on-light-specular) !important;
+}
+.farmer-card:hover {
+  background: var(--lg-on-light-bg-hover) !important;
+  box-shadow:
+    0 20px 56px rgba(26, 58, 42, 0.13),
+    inset 0 1.5px 0 var(--lg-on-light-specular) !important;
+}
+
+/* ── Land cards (on cream background) ────────────────────── */
+.land-card {
+  background: var(--lg-on-light-bg) !important;
+  -webkit-backdrop-filter: var(--lg-on-light-blur);
+  backdrop-filter: var(--lg-on-light-blur);
+  border: 1px solid var(--lg-on-light-border) !important;
+  box-shadow:
+    0 8px 32px rgba(26, 58, 42, 0.07),
+    inset 0 1.5px 0 var(--lg-on-light-specular) !important;
+}
+.land-card:hover {
+  background: var(--lg-on-light-bg-hover) !important;
+  box-shadow:
+    0 20px 56px rgba(26, 58, 42, 0.13),
+    inset 0 1.5px 0 var(--lg-on-light-specular) !important;
+}
+
+/* ── Testimonial cards (on cream background) ─────────────── */
+.testimonial-card {
+  background: var(--lg-on-light-bg) !important;
+  -webkit-backdrop-filter: var(--lg-on-light-blur);
+  backdrop-filter: var(--lg-on-light-blur);
+  border: 1px solid var(--lg-on-light-border) !important;
+  border-left: 3px solid var(--cream-dark) !important;
+  box-shadow:
+    0 8px 32px rgba(26, 58, 42, 0.07),
+    inset 0 1.5px 0 var(--lg-on-light-specular) !important;
+}
+.testimonial-card:hover {
+  background: var(--lg-on-light-bg-hover) !important;
+  border-left-color: var(--wheat) !important;
+  box-shadow:
+    0 20px 56px rgba(26, 58, 42, 0.13),
+    inset 0 1.5px 0 var(--lg-on-light-specular) !important;
+}
+
+/* ── Dashboard cards (on dark background) ────────────────── */
+.dashboard-card, .progress-card, .stat-pill {
+  background: var(--lg-on-dark-bg) !important;
+  -webkit-backdrop-filter: var(--lg-on-dark-blur);
+  backdrop-filter: var(--lg-on-dark-blur);
+  border: 1px solid var(--lg-on-dark-border) !important;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.18),
+    inset 0 1.5px 0 var(--lg-on-dark-specular) !important;
+}
+
+/* ── Lease form card ─────────────────────────────────────── */
+.lease-form-card {
+  background: var(--lg-on-light-bg) !important;
+  -webkit-backdrop-filter: var(--lg-on-light-blur);
+  backdrop-filter: var(--lg-on-light-blur);
+  border: 1px solid var(--lg-on-light-border) !important;
+  box-shadow:
+    0 12px 48px rgba(26, 58, 42, 0.10),
+    inset 0 1.5px 0 var(--lg-on-light-specular) !important;
+}
+
+/* ── Primary button (forest green glass) ─────────────────── */
+.btn-primary {
+  background: rgba(26, 58, 42, 0.88) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  backdrop-filter: blur(12px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  box-shadow:
+    0 4px 20px rgba(26, 58, 42, 0.35),
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.22),
+    inset 0 -1.5px 0 rgba(0, 0, 0, 0.14) !important;
+}
+.btn-primary:hover {
+  background: rgba(15, 36, 25, 0.92) !important;
+  box-shadow:
+    0 8px 28px rgba(26, 58, 42, 0.42),
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.28),
+    inset 0 -1.5px 0 rgba(0, 0, 0, 0.18) !important;
+}
+
+/* ── Wheat button (gold glass) ───────────────────────────── */
+.btn-wheat {
+  background: var(--lg-wheat-bg) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  backdrop-filter: blur(12px) saturate(160%);
+  border: 1px solid var(--lg-wheat-border) !important;
+  box-shadow:
+    0 4px 20px rgba(212, 168, 75, 0.28),
+    inset 0 1.5px 0 var(--lg-wheat-specular),
+    inset 0 -1.5px 0 rgba(0, 0, 0, 0.08) !important;
+}
+.btn-wheat:hover {
+  background: rgba(212, 168, 75, 0.95) !important;
+  box-shadow:
+    0 8px 28px rgba(212, 168, 75, 0.38),
+    inset 0 1.5px 0 var(--lg-wheat-specular),
+    inset 0 -1.5px 0 rgba(0, 0, 0, 0.10) !important;
+}
+
+/* ── Start Growing modal (bottom sheet) ──────────────────── */
+.sg-overlay {
+  -webkit-backdrop-filter: blur(8px) saturate(150%);
+  backdrop-filter: blur(8px) saturate(150%);
+  background: rgba(6, 14, 9, 0.65) !important;
+}
+.sg-modal {
+  -webkit-backdrop-filter: blur(40px) saturate(200%);
+  backdrop-filter: blur(40px) saturate(200%);
+  background: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 -8px 64px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+  overflow: hidden;
+}
+.sg-crop-panel {
+  background: rgba(10, 22, 14, 0.88) !important;
+}
+.sg-form-panel {
+  background: rgba(250, 246, 238, 0.88) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  backdrop-filter: blur(24px) saturate(160%);
+  border-top: 1px solid rgba(255, 255, 255, 0.70);
+}
+.sg-drag-handle {
+  background: rgba(10, 22, 14, 0.88) !important;
+}
+.sg-submit-btn {
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  box-shadow:
+    0 4px 20px rgba(26, 58, 42, 0.35),
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.22),
+    inset 0 -1.5px 0 rgba(0, 0, 0, 0.14) !important;
+}
+
+/* ── Farmer application modal ────────────────────────────── */
+.farmer-modal {
+  background: rgba(12, 28, 18, 0.90) !important;
+  -webkit-backdrop-filter: blur(40px) saturate(200%);
+  backdrop-filter: blur(40px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.10) !important;
+  box-shadow:
+    0 32px 96px rgba(0, 0, 0, 0.40),
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.14) !important;
+}
+.farmer-modal-overlay {
+  -webkit-backdrop-filter: blur(8px) saturate(150%);
+  backdrop-filter: blur(8px) saturate(150%);
+  background: rgba(6, 14, 9, 0.65) !important;
+}
+
+/* ── Form inputs (glass inset effect) ────────────────────── */
+.sg-field input,
+.sg-field select,
+.sg-field textarea,
+.f-ctrl,
+.lease-field input,
+.lease-field select,
+.lease-field textarea {
+  background: rgba(255, 255, 255, 0.60) !important;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.70) !important;
+  box-shadow:
+    inset 0 1px 3px rgba(26, 58, 42, 0.06),
+    0 1px 0 rgba(255, 255, 255, 0.80) !important;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+.sg-field input:focus,
+.sg-field select:focus,
+.sg-field textarea:focus,
+.f-ctrl:focus {
+  background: rgba(255, 255, 255, 0.82) !important;
+  border-color: rgba(212, 168, 75, 0.55) !important;
+  box-shadow:
+    0 0 0 3px rgba(212, 168, 75, 0.14),
+    inset 0 1px 3px rgba(26, 58, 42, 0.04),
+    0 1px 0 rgba(255, 255, 255, 0.90) !important;
+}
+
+/* ── OTP buttons (glass secondary) ──────────────────────── */
+.otp-send-btn {
+  background: rgba(61, 107, 79, 0.10) !important;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(61, 107, 79, 0.25) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.40),
+    0 2px 8px rgba(61, 107, 79, 0.08) !important;
+}
+.otp-send-btn:hover:not(:disabled) {
+  background: rgba(61, 107, 79, 0.85) !important;
+  border-color: rgba(61, 107, 79, 0.60) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    0 4px 16px rgba(61, 107, 79, 0.25) !important;
+}
+.otp-confirm-btn {
+  background: var(--lg-wheat-bg) !important;
+  border: 1px solid var(--lg-wheat-border) !important;
+  box-shadow:
+    inset 0 1.5px 0 var(--lg-wheat-specular),
+    0 2px 8px rgba(212, 168, 75, 0.18) !important;
+}
+
+/* ── Admin sidebar ────────────────────────────────────────── */
+.sidebar {
+  background: rgba(8, 18, 11, 0.82) !important;
+  -webkit-backdrop-filter: blur(36px) saturate(200%);
+  backdrop-filter: blur(36px) saturate(200%);
+  border-right: 1px solid rgba(255, 255, 255, 0.06) !important;
+  box-shadow: 2px 0 32px rgba(0, 0, 0, 0.22) !important;
+}
+
+/* ── Admin content header ────────────────────────────────── */
+.content-header {
+  background: rgba(255, 255, 255, 0.72) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  backdrop-filter: blur(20px) saturate(160%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.80) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.90),
+    0 4px 24px rgba(26, 58, 42, 0.06) !important;
+}
+
+/* ── Admin stat cards ────────────────────────────────────── */
+.stat-card {
+  background: rgba(255, 255, 255, 0.62) !important;
+  -webkit-backdrop-filter: var(--lg-on-light-blur);
+  backdrop-filter: var(--lg-on-light-blur);
+  border: 1px solid rgba(255, 255, 255, 0.78) !important;
+  box-shadow:
+    0 8px 32px rgba(26, 58, 42, 0.07),
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.95) !important;
+}
+.stat-card:hover {
+  background: rgba(255, 255, 255, 0.82) !important;
+  box-shadow:
+    0 16px 48px rgba(26, 58, 42, 0.11),
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.95) !important;
+}
+
+/* ── Admin modal / panels ─────────────────────────────────── */
+.admin-modal, .settings-panel, .detail-modal {
+  background: rgba(250, 246, 238, 0.90) !important;
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  backdrop-filter: blur(32px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.72) !important;
+  box-shadow:
+    0 32px 96px rgba(26, 58, 42, 0.18),
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.90) !important;
+}
+
+/* ── Grow page — order form card ─────────────────────────── */
+.order-form-card, .grow-form-card, .grow-form-wrap {
+  background: rgba(255, 255, 255, 0.65) !important;
+  -webkit-backdrop-filter: var(--lg-on-light-blur);
+  backdrop-filter: var(--lg-on-light-blur);
+  border: 1px solid rgba(255, 255, 255, 0.82) !important;
+  box-shadow:
+    0 12px 48px rgba(26, 58, 42, 0.10),
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.95) !important;
+}
+
+/* ── product-cta button ──────────────────────────────────── */
+.product-cta {
+  background: rgba(26, 58, 42, 0.88) !important;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  box-shadow:
+    0 4px 16px rgba(26, 58, 42, 0.28),
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.20),
+    inset 0 -1.5px 0 rgba(0, 0, 0, 0.12) !important;
+}
+.product-cta:hover {
+  background: rgba(61, 107, 79, 0.92) !important;
+  box-shadow:
+    0 6px 24px rgba(26, 58, 42, 0.32),
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.26),
+    inset 0 -1.5px 0 rgba(0, 0, 0, 0.14) !important;
+}
+
+/* ── Variety tags / badge pills ──────────────────────────── */
+.sg-variety-tag, .crop-tag, .badge-pill {
+  background: rgba(255, 255, 255, 0.09) !important;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.30);
+}
+
+/* ── Sg pricing box ──────────────────────────────────────── */
+.sg-pricing {
+  background: rgba(255, 255, 255, 0.50) !important;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px dashed rgba(212, 168, 75, 0.35) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.80);
+}
+
+/* ── Dark mode adjustments ───────────────────────────────── */
+[data-theme="dark"] .product-card,
+[data-theme="dark"] .farmer-card,
+[data-theme="dark"] .land-card,
+[data-theme="dark"] .testimonial-card,
+[data-theme="dark"] .lease-form-card,
+[data-theme="dark"] .order-form-card {
+  background: rgba(30, 36, 32, 0.70) !important;
+  border-color: rgba(255, 255, 255, 0.10) !important;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.25),
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.14) !important;
+}
+[data-theme="dark"] .sg-form-panel {
+  background: rgba(20, 30, 22, 0.90) !important;
+  border-top-color: rgba(255, 255, 255, 0.10) !important;
+}
+[data-theme="dark"] .sg-field input,
+[data-theme="dark"] .sg-field select,
+[data-theme="dark"] .sg-field textarea {
+  background: rgba(40, 55, 44, 0.60) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: var(--cream) !important;
+}
+[data-theme="dark"] .stat-card,
+[data-theme="dark"] .content-header {
+  background: rgba(30, 36, 32, 0.72) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+[data-theme="dark"] .admin-modal,
+[data-theme="dark"] .settings-panel,
+[data-theme="dark"] .detail-modal {
+  background: rgba(16, 28, 18, 0.92) !important;
+  border-color: rgba(255, 255, 255, 0.09) !important;
+}
+[data-theme="dark"] .sg-pricing {
+  background: rgba(40, 55, 44, 0.50) !important;
+}
+
+/* ── Reduced motion — no blur (battery/accessibility) ───── */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+}
