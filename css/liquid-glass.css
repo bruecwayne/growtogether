@@ -25,9 +25,9 @@
   --lg-wheat-border:      rgba(255, 225, 130, 0.40);
   --lg-wheat-specular:    rgba(255, 235, 160, 0.60);
 
-  /* Nav glass */
-  --lg-nav-bg:            rgba(10, 22, 14, 0.68);
-  --lg-nav-scrolled-bg:   rgba(8, 18, 11, 0.82);
+  /* Nav glass — high enough opacity to stay dark over any section */
+  --lg-nav-bg:            rgba(10, 22, 14, 0.90);
+  --lg-nav-scrolled-bg:   rgba(8, 18, 11, 0.94);
 }
 
 /* ── Navigation bar ──────────────────────────────────────── */
