@@ -53,7 +53,7 @@
 /* Nav logo + links — always light on dark glass (use literal, --cream is dark in dark mode) */
 .nav-logo,
 [data-theme="dark"] .nav-logo { color: #f5f0e8 !important; }
-.nav-logo svg path, .nav-logo svg circle, .nav-logo svg rect { fill: currentColor; }
+/* Do NOT override SVG fills — they are hardcoded intentionally */
 .nav-link,
 [data-theme="dark"] .nav-link { color: rgba(245, 240, 232, 0.88) !important; }
 .nav-link:hover,
