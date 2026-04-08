@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build": "mkdir -p www && cp *.html www/ && cp -r js www/"
+    "build": "mkdir -p www && cp *.html www/ && cp -r js www/ && cp -r css www/"
   },
   "dependencies": {
     "@capacitor/cli": "^8.3.0",

@@ -1,5 +1,33 @@
 {
   "appId": "com.build.growtogether",
   "appName": "GrowTogether",
-  "webDir": "www"
+  "webDir": "www",
+  "ios": {
+    "contentInset": "automatic",
+    "backgroundColor": "#1a3a2a",
+    "allowsLinkPreview": false,
+    "scrollEnabled": true,
+    "limitsNavigationsToAppBoundDomains": false
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1500,
+      "launchAutoHide": false,
+      "fadeOutDuration": 400,
+      "backgroundColor": "#1a3a2a",
+      "showSpinner": false,
+      "iosSpinnerStyle": "small",
+      "spinnerColor": "#d4a84b"
+    },
+    "Keyboard": {
+      "resize": "body",
+      "style": "DARK",
+      "resizeOnFullScreen": true
+    },
+    "StatusBar": {
+      "style": "DARK",
+      "backgroundColor": "#1a3a2a",
+      "overlaysWebView": true
+    }
+  }
 }

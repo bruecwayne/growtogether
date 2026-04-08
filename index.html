@@ -6,6 +6,7 @@
 <title>GrowTogether — Land. Farmers. Your Harvest.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/ios-native.css">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -2243,12 +2244,103 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
 [data-theme="dark"] .sg-success { background: var(--white); }
 [data-theme="dark"] .sg-pricing { background: var(--cream); }
 /* Responsive */
+/* ── iOS Bottom-sheet form (mobile) ── */
 @media (max-width: 760px) {
+  /* Anchor overlay to bottom of screen */
+  .sg-overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  /* Slide up from bottom instead of scale-in from center */
+  .sg-modal {
+    border-radius: 24px 24px 0 0;
+    max-height: 92vh;
+    width: 100%;
+    transform: translateY(110%);
+    transition: transform 0.42s cubic-bezier(0.32, 0.72, 0, 1);
+    padding-bottom: env(safe-area-inset-bottom, 16px);
+  }
+  .sg-overlay.open .sg-modal {
+    transform: translateY(0);
+  }
+
+  /* Drag handle — pill at top of sheet */
+  .sg-drag-handle {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0 6px;
+    position: sticky;
+    top: 0;
+    background: var(--forest-deep);
+    z-index: 6;
+    border-radius: 24px 24px 0 0;
+    flex-shrink: 0;
+  }
+  .sg-drag-handle::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.28);
+  }
+
+  /* Close button — subtler positioning for sheet */
+  .sg-close {
+    top: 6px;
+    right: 14px;
+    background: rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.7);
+  }
+  .sg-close:hover { background: rgba(255,255,255,0.25); color: #fff; }
+
+  /* Stack panels vertically */
   .sg-grid { grid-template-columns: 1fr; }
-  .sg-crop-panel { border-radius: 20px 20px 0 0; }
-  .sg-form-panel { border-radius: 0 0 20px 20px; padding: 28px 24px; }
+
+  /* Compact crop panel: just image + specs, hide verbose text */
+  .sg-crop-panel {
+    border-radius: 0;
+    padding-bottom: 0;
+  }
+  .sg-crop-img { height: 130px; }
+  .sg-crop-body { padding: 14px 20px 16px; }
+  .sg-crop-desc { display: none; }
+  .sg-guarantee { display: none; }
+  .sg-varieties { display: none; }
+  .sg-crop-specs { margin-bottom: 0; }
+  .sg-crop-name { font-size: 1.25rem; }
+
+  /* Form panel */
+  .sg-form-panel {
+    border-radius: 0;
+    padding: 20px 18px 20px;
+  }
   .sg-form-row { grid-template-columns: 1fr; }
-  .sg-modal { max-height: 95vh; }
+  .sg-form-header { margin-bottom: 14px; }
+  .sg-form-header h3 { font-size: 1.1rem; }
+  .sg-form-header p { font-size: 0.82rem; }
+  .sg-form { gap: 14px; }
+
+  /* Inputs: 16px to prevent iOS auto-zoom */
+  .sg-field input,
+  .sg-field select,
+  .sg-field textarea {
+    font-size: 16px;
+    padding: 13px 14px;
+  }
+  .sg-field textarea { min-height: 72px; }
+
+  /* Submit button — prominent, easy to tap */
+  .sg-submit-btn {
+    padding: 16px;
+    font-size: 1rem;
+    border-radius: 14px;
+    margin-top: 8px;
+  }
+
+  /* Success panel */
+  .sg-success { border-radius: 0; }
 }
 
 /* ========== AGGRESSIVE ANIMATIONS ========== */
@@ -2557,6 +2649,47 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
   font-size: 11px;
   color: var(--text-muted);
   margin-top: 2px;
+}
+/* ── OTP mobile layout ── */
+@media (max-width: 760px) {
+  .otp-input-row {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .otp-input-row input[data-otp-target="identifier"] {
+    width: 100%;
+    flex-basis: 100%;
+  }
+  .otp-send-btn {
+    width: 100%;
+    height: 44px;
+    font-size: 15px;
+    border-radius: 10px;
+  }
+  .otp-verified-badge {
+    font-size: 13px;
+    padding: 6px 14px;
+  }
+  .otp-verify-row {
+    flex-wrap: nowrap;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .otp-code-input {
+    flex: 1;
+    width: auto !important;
+    min-width: 0;
+    font-size: 18px !important;
+    padding: 11px 10px;
+    text-align: center;
+  }
+  .otp-confirm-btn {
+    height: 46px;
+    padding: 0 18px;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .otp-msg { font-size: 13px; margin-top: 6px; }
 }
 [data-otp-submit]:disabled {
   opacity: 0.5 !important;
@@ -3819,6 +3952,8 @@ const tiltRefreshObs = new IntersectionObserver(entries => {
 <div class="sg-overlay" id="sg-overlay" onclick="handleSgOverlayClick(event)">
   <div class="sg-modal" role="dialog" aria-modal="true" aria-label="Start Growing">
 
+    <div class="sg-drag-handle" aria-hidden="true"></div>
+
     <button class="sg-close" onclick="closeStartGrowing()" aria-label="Close">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
     </button>
@@ -4075,5 +4210,6 @@ const tiltRefreshObs = new IntersectionObserver(entries => {
 </div>
 
 <script src="js/reactive-animations.js"></script>
+<script src="js/ios-native.js"></script>
 </body>
 </html>

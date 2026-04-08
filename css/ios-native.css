@@ -1,0 +1,160 @@
+/* =========================================================
+   iOS Native Feel — GrowTogether
+   Applied on top of existing styles for Capacitor iOS app.
+   ========================================================= */
+
+/* --- Font rendering ------------------------------------ */
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* --- Remove tap flash on all interactive elements ------ */
+a, button, [role="button"],
+input, select, textarea, label,
+.btn, .nav-link, .card, .product-card, .farmer-card,
+.step-card, .testimonial-card, .land-card,
+.theme-btn, .hamburger, .mobile-menu-overlay,
+.sidebar-link, .tab-btn, .filter-btn, .action-btn,
+.submit-btn, .cta-btn, .otp-btn, .verify-btn {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* --- Faster tap response (removes 300ms delay) --------- */
+a, button, [role="button"], .btn,
+input[type="submit"], input[type="button"],
+label, select, .card, .nav-link,
+.sidebar-link, .tab-btn, .filter-btn {
+  touch-action: manipulation;
+}
+
+/* --- Prevent input zoom on iOS (must be >= 16px) ------- */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="number"],
+input[type="password"],
+input[type="search"],
+select,
+textarea {
+  font-size: 16px !important;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* --- Momentum / native-feel scrolling ------------------ */
+body,
+.admin-layout,
+.main-content,
+.enquiry-list,
+.sidebar,
+.modal-body,
+.grow-page {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* --- Prevent full-page overscroll bounce --------------- */
+body {
+  overscroll-behavior-y: none;
+}
+
+/* Restore scroll bounce inside scroll containers */
+.main-content,
+.enquiry-list,
+.modal-body {
+  overscroll-behavior-y: auto;
+}
+
+/* --- Safe area — nav bar -------------------------------- */
+.nav {
+  padding-top: max(0.75rem, env(safe-area-inset-top));
+}
+
+/* --- Safe area — fixed bottom elements ----------------- */
+.footer,
+.footer-bar {
+  padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+}
+
+/* --- Touch target minimums (Apple HIG: 44×44pt) -------- */
+.btn, button,
+.nav-link, .sidebar-link,
+.tab-btn, .filter-btn, .action-btn,
+.hamburger, .theme-btn {
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- Native-feel press state --------------------------- */
+.btn:active,
+button:active,
+.card:active,
+.nav-link:active,
+.sidebar-link:active,
+.tab-btn:active,
+.filter-btn:active {
+  opacity: 0.75;
+  transform: scale(0.97);
+  transition: opacity 0.08s ease, transform 0.08s ease;
+}
+
+/* --- Prevent callout on long-press (images, etc.) ------ */
+img, video, canvas {
+  -webkit-touch-callout: none;
+}
+
+/* --- Prevent UI element text selection ----------------- */
+.nav, .nav-link, .btn, button,
+.sidebar, .sidebar-link,
+.tab-btn, .filter-btn, .badge,
+.step-number, .stat-label, .label,
+.hamburger, .theme-btn, .logo {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Allow selection in content / form areas */
+p, h1, h2, h3, h4, h5, h6,
+.card-body, .product-desc, .testimonial-text,
+input, textarea {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* --- Smooth scroll for in-page anchors ----------------- */
+html {
+  scroll-behavior: smooth;
+}
+
+/* --- Keyboard-safe viewport height -------------------- */
+/* JS sets --real-vh; fall back to dvh or 1vh */
+.hero, .full-height {
+  min-height: calc(var(--real-vh, 1dvh) * 100);
+}
+
+/* --- Mobile menu: safe area at bottom of overlay ------- */
+.mobile-menu-overlay {
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+
+/* --- Input focus ring (visible but not jarring) -------- */
+input:focus, select:focus, textarea:focus {
+  outline: 2px solid var(--moss, #3d6b4f);
+  outline-offset: 2px;
+}
+
+/* --- Notch-aware admin sidebar top padding ------------- */
+.sidebar {
+  padding-top: max(1rem, env(safe-area-inset-top));
+}
+
+/* --- Disable rubber-band on fixed headers -------------- */
+.nav[style*="position: fixed"],
+.nav.sticky {
+  top: env(safe-area-inset-top, 0);
+}
