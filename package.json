@@ -1,5 +1,12 @@
 {
+  "scripts": {
+    "build": "mkdir -p www && cp *.html www/ && cp -r js www/"
+  },
   "dependencies": {
+    "@capacitor/cli": "^8.3.0",
+    "@capacitor/core": "^8.3.0",
+    "@capacitor/ios": "^8.3.0",
+    "native-run": "^2.0.3",
     "puppeteer": "^24.40.0"
   }
 }

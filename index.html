@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>GrowTogether — Land. Farmers. Your Harvest.</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -206,14 +206,14 @@ a { text-decoration: none; color: inherit; }
   left: 0;
   right: 0;
   z-index: var(--z-nav);
-  padding: 20px 0;
+  padding: calc(20px + env(safe-area-inset-top, 0px)) 0 20px 0;
   transition: all 0.4s ease;
 }
 .nav.scrolled {
   background: rgba(245, 240, 232, 0.92);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
-  padding: 14px 0;
+  padding: calc(14px + env(safe-area-inset-top, 0px)) 0 14px 0;
   box-shadow: 0 1px 0 rgba(26,58,42,0.08);
 }
 .nav-inner {
@@ -418,7 +418,7 @@ a { text-decoration: none; color: inherit; }
 .hero-content {
   position: relative;
   z-index: 2;
-  padding: 140px 0 100px;
+  padding: calc(140px + env(safe-area-inset-top, 0px)) 0 100px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 80px;
@@ -1936,7 +1936,7 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
 
   /* ── Hero Mobile ── */
   .hero { min-height: auto; }
-  .hero-content { padding: 110px 0 64px; }
+  .hero-content { padding: calc(110px + env(safe-area-inset-top, 0px)) 0 64px; }
   .hero h1 { font-size: clamp(2.2rem, 8vw, 3rem); }
   .hero-desc { font-size: 1rem; margin-bottom: 28px; }
   .hero-ctas { flex-direction: column; gap: 12px; align-items: stretch; }
@@ -2029,7 +2029,7 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
 @media (max-width: 420px) {
   .container { padding: 0 16px; }
   .section { padding: 56px 0; }
-  .hero-content { padding: 100px 0 48px; }
+  .hero-content { padding: calc(100px + env(safe-area-inset-top, 0px)) 0 48px; }
   .hero h1 { font-size: 2rem; }
   .hero-badge { font-size: 0.72rem; padding: 6px 14px; margin-bottom: 20px; }
   .hero-desc { font-size: 0.92rem; }
