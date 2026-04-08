@@ -748,6 +748,56 @@ a { text-decoration: none; color: inherit; }
   .submit-btn { padding: 14px 24px; font-size: 0.92rem; }
 }
 
+/* ========== SUCCESS STEPS ========== */
+.success-steps {
+  list-style: none;
+  margin: 20px 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  text-align: left;
+  width: 100%;
+  max-width: 360px;
+}
+.success-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 16px;
+  background: var(--cream-warm);
+  border-radius: var(--radius);
+  border: 1px solid var(--cream-dark);
+  animation: fadeSlide 0.5s both;
+}
+.success-step:nth-child(1) { animation-delay: 0.35s; }
+.success-step:nth-child(2) { animation-delay: 0.5s; }
+.success-step:nth-child(3) { animation-delay: 0.65s; }
+.success-step-icon { font-size: 1.3rem; flex-shrink: 0; line-height: 1; margin-top: 1px; }
+.success-step div { display: flex; flex-direction: column; gap: 2px; }
+.success-step strong { font-size: 0.88rem; color: var(--text-dark); font-weight: 600; }
+.success-step span { font-size: 0.82rem; color: var(--text-muted); line-height: 1.45; }
+
+/* ========== INLINE VALIDATION ========== */
+.form-field .field-error {
+  font-size: 0.78rem;
+  color: #c0392b;
+  margin-top: 4px;
+  display: none;
+  align-items: center;
+  gap: 4px;
+}
+.form-field .field-error.show { display: flex; }
+.form-field input.invalid,
+.form-field select.invalid,
+.form-field textarea.invalid {
+  border-color: rgba(192,57,43,0.5) !important;
+  box-shadow: 0 0 0 3px rgba(192,57,43,0.1) !important;
+}
+.form-field input.valid,
+.form-field select.valid {
+  border-color: rgba(61,107,79,0.5) !important;
+}
+
 /* ========== ACCESSIBILITY ========== */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -960,14 +1010,15 @@ a { text-decoration: none; color: inherit; }
         <form class="order-form" id="grow-form">
           <div class="form-row">
             <div class="form-field">
-              <label>Full Name <span class="required">*</span></label>
-              <input type="text" name="name" placeholder="e.g. Rajesh Kumar" required>
+              <label for="grow-name">Full Name <span class="required" aria-hidden="true">*</span></label>
+              <input id="grow-name" type="text" name="name" placeholder="e.g. Rajesh Kumar" required aria-required="true" autocomplete="name">
+              <span class="field-error" role="alert">Please enter your full name</span>
             </div>
             <div class="form-field">
-              <label>Phone Number <span class="required">*</span> <span class="inline-color-var--terracott">OTP required</span></label>
+              <label for="grow-phone">Phone Number <span class="required" aria-hidden="true">*</span> <span class="inline-color-var--terracott">OTP required</span></label>
               <div class="otp-group" data-type="phone" data-required="true">
                 <div class="otp-input-row">
-                  <input type="tel" name="phone" data-otp-target="identifier" placeholder="e.g. 9876543210" required>
+                  <input id="grow-phone" type="tel" name="phone" data-otp-target="identifier" placeholder="e.g. 9876543210" required aria-required="true" autocomplete="tel">
                   <button type="button" class="otp-send-btn">Send OTP</button>
                   <span class="otp-verified-badge">✓ Verified</span>
                 </div>
@@ -1052,15 +1103,38 @@ a { text-decoration: none; color: inherit; }
         </form>
 
         <!-- Success Overlay -->
-        <div class="success-overlay" id="success-overlay">
+        <div class="success-overlay" id="success-overlay" role="status" aria-live="polite">
           <div class="success-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
           </div>
           <h3>Request Submitted!</h3>
-          <p>Your growing request has been submitted! Our team will contact you within 24 hours to confirm your order and assign a farmer.</p>
+          <p>Your growing request is in. Here's what happens next:</p>
+          <ol class="success-steps" aria-label="Next steps">
+            <li class="success-step">
+              <span class="success-step-icon" aria-hidden="true">📞</span>
+              <div>
+                <strong>Within 24 hours</strong>
+                <span>Our team calls to confirm crop, land &amp; farmer availability</span>
+              </div>
+            </li>
+            <li class="success-step">
+              <span class="success-step-icon" aria-hidden="true">🤝</span>
+              <div>
+                <strong>Farmer matched</strong>
+                <span>We pair you with a specialist and share their profile</span>
+              </div>
+            </li>
+            <li class="success-step">
+              <span class="success-step-icon" aria-hidden="true">🌱</span>
+              <div>
+                <strong>Planting begins</strong>
+                <span>You get weekly photo updates from your farmer via WhatsApp</span>
+              </div>
+            </li>
+          </ol>
           <a href="index.html" class="back-home">
             Back to Home
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
         </div>
       </div>
@@ -1257,5 +1331,65 @@ document.querySelectorAll('.submit-btn').forEach(btn => {
 
 <script src="js/reactive-animations.js"></script>
 <script src="js/ios-native.js"></script>
+
+<script>
+// ─── Inline validation ───────────────────────────────────────
+(function initInlineValidation() {
+  const form = document.getElementById('grow-form');
+  if (!form) return;
+
+  const rules = {
+    name:  { min: 2, msg: 'Please enter your full name (at least 2 characters)' },
+    phone: { pattern: /^[6-9]\d{9}$/, msg: 'Enter a valid 10-digit Indian mobile number' },
+    acres: { min: 1, max: 50, msg: 'Acres must be between 1 and 50' }
+  };
+
+  function showError(field, msg) {
+    field.classList.add('invalid');
+    field.classList.remove('valid');
+    const err = field.closest('.form-field')?.querySelector('.field-error');
+    if (err) { err.textContent = msg; err.classList.add('show'); }
+  }
+
+  function clearError(field) {
+    field.classList.remove('invalid');
+    field.classList.add('valid');
+    const err = field.closest('.form-field')?.querySelector('.field-error');
+    if (err) err.classList.remove('show');
+  }
+
+  function validateField(field) {
+    const rule = rules[field.name];
+    if (!rule) return true;
+    const val = field.value.trim();
+
+    if (!val && field.required) {
+      showError(field, rule.msg); return false;
+    }
+    if (rule.pattern && val && !rule.pattern.test(val)) {
+      showError(field, rule.msg); return false;
+    }
+    if (rule.min !== undefined && field.type === 'text' && val.length < rule.min) {
+      showError(field, rule.msg); return false;
+    }
+    if (field.type === 'number') {
+      const num = parseFloat(val);
+      if (val && (isNaN(num) || (rule.min && num < rule.min) || (rule.max && num > rule.max))) {
+        showError(field, rule.msg); return false;
+      }
+    }
+    if (val) clearError(field);
+    return true;
+  }
+
+  // Validate on blur
+  form.querySelectorAll('input[name="name"], input[name="phone"], input[name="acres"]').forEach(field => {
+    field.addEventListener('blur', () => validateField(field));
+    field.addEventListener('input', () => {
+      if (field.classList.contains('invalid')) validateField(field);
+    });
+  });
+})();
+</script>
 </body>
 </html>

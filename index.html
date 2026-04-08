@@ -2706,6 +2706,13 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
 </head>
 <body>
 
+<!-- Offline / error banner -->
+<div class="offline-banner" id="offline-banner" role="alert" aria-live="polite" aria-atomic="true">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16" stroke-width="3"/></svg>
+  Working offline — some data may be cached
+  <button onclick="document.getElementById('offline-banner').classList.remove('show')" aria-label="Dismiss" style="background:none;border:none;color:inherit;cursor:pointer;margin-left:10px;font-size:1rem;opacity:0.7;padding:0 4px;">&times;</button>
+</div>
+
 <!-- Navigation -->
 <nav class="nav" id="nav">
   <div class="container">
@@ -2722,6 +2729,9 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
         GrowTogether
       </a>
       <ul class="nav-links" id="nav-links">
+        <button class="nav-close-btn" id="nav-close-btn" aria-label="Close menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
         <li><a href="#how">How It Works</a></li>
         <li><a href="#products">Products</a></li>
         <li><a href="#farmers">Farmers</a></li>
@@ -2758,19 +2768,21 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
         <p class="hero-desc reveal-left reveal-delay-2">Pick a crop, and we'll match you with a skilled farmer to grow it on our certified organic land. From seed to harvest, track every step of your custom-grown produce.</p>
         <div class="hero-ctas reveal-left reveal-delay-3">
           <a href="#products" class="btn btn-primary btn-lg">Start Growing</a>
-          <a href="#how" class="btn btn-secondary btn-lg">How It Works</a>
+          <a href="#how" class="hero-learn-more">How It Works
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+          </a>
         </div>
-        <div class="hero-stats reveal-left reveal-delay-4">
-          <div class="hero-stat">
-            <h4>850+</h4>
+        <div class="hero-stats reveal-left reveal-delay-4" role="list" aria-label="Platform statistics">
+          <div class="hero-stat" role="listitem" aria-label="850 plus acres available">
+            <h4 data-count-target="850" data-count-suffix="+">850+</h4>
             <span>Acres Available</span>
           </div>
-          <div class="hero-stat">
-            <h4>180</h4>
+          <div class="hero-stat" role="listitem" aria-label="180 expert farmers">
+            <h4 data-count-target="180">180</h4>
             <span>Expert Farmers</span>
           </div>
-          <div class="hero-stat">
-            <h4>96%</h4>
+          <div class="hero-stat" role="listitem" aria-label="96 percent harvest success rate">
+            <h4 data-count-target="96" data-count-suffix="%">96%</h4>
             <span>Harvest Success</span>
           </div>
         </div>
@@ -2964,11 +2976,11 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
         <form class="lease-form" id="lease-form" onsubmit="event.preventDefault(); submitLeaseForm(this);">
           <div class="lease-form-row">
             <div class="lease-field">
-              <label>Full Name</label>
-              <input type="text" name="name" placeholder="e.g. Ramesh Reddy" required>
+              <label for="lease-name">Full Name</label>
+              <input id="lease-name" type="text" name="name" placeholder="e.g. Ramesh Reddy" required aria-required="true">
             </div>
             <div class="lease-field">
-              <label>Phone Number <span class="inline-color-var--terracott">OTP required</span></label>
+              <label for="lease-phone">Phone Number <span class="inline-color-var--terracott">OTP required</span></label>
               <div class="otp-group" data-type="phone" data-required="true">
                 <div class="otp-input-row">
                   <input type="tel" name="phone" data-otp-target="identifier" placeholder="e.g. 9876543210" required>
@@ -3174,6 +3186,7 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
       <p class="section-desc" id="testimonials-section-desc">Hear from the customers and farmers who make GrowTogether a thriving community.</p>
     </div>
     <div class="testimonials-grid" id="testimonials-grid"></div>
+    <div class="testimonial-dots" id="testimonial-dots" aria-label="Testimonial navigation" role="tablist"></div>
   </div>
 </section>
 
@@ -4211,7 +4224,257 @@ const tiltRefreshObs = new IntersectionObserver(entries => {
   </div>
 </div>
 
+<!-- ═══ Improvement styles ═══ -->
+<style>
+/* ── Hero learn-more text link ── */
+.hero-learn-more {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.95rem; font-weight: 600;
+  color: var(--text-muted);
+  transition: color var(--transition), gap var(--transition);
+  padding: 4px 0;
+  border-bottom: 1.5px solid transparent;
+}
+.hero-learn-more:hover { color: var(--moss); gap: 10px; border-bottom-color: var(--moss); }
+.hero-learn-more svg { transition: transform var(--transition); }
+.hero-learn-more:hover svg { transform: translateY(3px); }
+
+/* ── Offline banner ── */
+.offline-banner {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 9998;
+  background: rgba(194,112,62,0.96);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  color: #fff; text-align: center; padding: 10px 20px;
+  font-size: 0.85rem; font-weight: 500;
+  transform: translateY(-100%); transition: transform 0.4s ease;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.offline-banner.show { transform: translateY(0); }
+
+/* ── WhatsApp floating button ── */
+.wa-float {
+  position: fixed; bottom: 28px; right: 28px; z-index: 8999;
+  width: 56px; height: 56px; border-radius: 50%;
+  background: #25d366; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+  text-decoration: none;
+}
+.wa-float:hover { transform: scale(1.12); box-shadow: 0 8px 32px rgba(37,211,102,0.55); }
+.wa-float svg { width: 28px; height: 28px; }
+.wa-float-tooltip {
+  position: absolute; right: calc(100% + 12px); top: 50%;
+  transform: translateY(-50%) translateX(8px);
+  background: rgba(15,36,25,0.92); color: #f5f0e8;
+  font-size: 0.82rem; font-weight: 500; padding: 6px 12px;
+  border-radius: 8px; white-space: nowrap; pointer-events: none;
+  opacity: 0; transition: all 0.25s ease;
+}
+.wa-float:hover .wa-float-tooltip { opacity: 1; transform: translateY(-50%) translateX(0); }
+@media (max-width: 768px) {
+  .wa-float { bottom: 20px; right: 16px; width: 52px; height: 52px; }
+  .wa-float-tooltip { display: none; }
+}
+
+/* ── Mobile nav explicit close button ── */
+.nav-close-btn {
+  display: none; position: absolute; top: 18px; right: 18px;
+  width: 44px; height: 44px; background: var(--cream-dark);
+  border: none; border-radius: 50%; cursor: pointer;
+  align-items: center; justify-content: center;
+  color: var(--text-body); transition: all 0.2s; flex-shrink: 0;
+}
+.nav-close-btn:hover { background: var(--forest); color: var(--cream); }
+.nav-close-btn svg { width: 18px; height: 18px; pointer-events: none; }
+@media (max-width: 768px) {
+  .nav-close-btn { display: flex; }
+  .nav-links { position: relative; }
+}
+
+/* ── Testimonial carousel dots (mobile) ── */
+.testimonial-dots {
+  display: none; justify-content: center; gap: 8px; margin-top: 24px;
+}
+.testimonial-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--cream-dark); border: none; padding: 0; cursor: pointer;
+  transition: all 0.3s ease; flex-shrink: 0;
+}
+.testimonial-dot.active { width: 24px; border-radius: 4px; background: var(--wheat); }
+@media (max-width: 768px) {
+  .testimonials-grid {
+    display: flex !important; overflow-x: scroll; scroll-snap-type: x mandatory;
+    scroll-behavior: smooth; gap: 16px;
+    -webkit-overflow-scrolling: touch; scrollbar-width: none; padding-bottom: 4px;
+  }
+  .testimonials-grid::-webkit-scrollbar { display: none; }
+  .testimonials-grid .testimonial-card {
+    min-width: calc(100vw - 56px); flex-shrink: 0; scroll-snap-align: center;
+  }
+  .testimonial-dots { display: flex; }
+}
+
+/* ── Section rhythm: subtle gold dividers above dark sections ── */
+.how-it-works { border-top: 1px solid rgba(212,168,75,0.25); }
+.dashboard-section { border-top: 1px solid rgba(212,168,75,0.18); }
+.cta-section { border-top: 1px solid rgba(212,168,75,0.15); }
+
+/* ── Stat count-up flash ── */
+.hero-stat h4.counting { color: var(--wheat); }
+
+/* ── Focus visible on glass buttons (previously missing explicit style) ── */
+.btn:focus-visible,
+.how-tab:focus-visible,
+.product-cta:focus-visible,
+.newsletter-btn:focus-visible,
+.lease-submit:focus-visible,
+.btn-farmer-apply:focus-visible,
+.sg-submit-btn:focus-visible,
+.wa-float:focus-visible,
+.nav-close-btn:focus-visible,
+.testimonial-dot:focus-visible {
+  outline: 2px solid var(--wheat);
+  outline-offset: 3px;
+}
+</style>
+
+<!-- ═══ Improvement scripts ═══ -->
+<script>
+// ─── Nav close button wiring ───────────────────────────────────
+(function() {
+  const closeBtn = document.getElementById('nav-close-btn');
+  if (!closeBtn) return;
+  closeBtn.addEventListener('click', function() {
+    // Re-use the existing closeMenu function defined earlier in the page
+    const hamburger = document.getElementById('nav-hamburger');
+    const navLinks  = document.getElementById('nav-links');
+    const overlay   = document.getElementById('mobile-menu-overlay');
+    if (hamburger) hamburger.classList.remove('active');
+    if (hamburger) hamburger.setAttribute('aria-expanded', 'false');
+    if (navLinks)  navLinks.classList.remove('open');
+    if (overlay)   overlay.classList.remove('active');
+    document.body.style.overflow = '';
+  });
+})();
+
+// ─── Stat count-up animation ──────────────────────────────────
+(function initCountUp() {
+  const stats = document.querySelectorAll('[data-count-target]');
+  if (!stats.length) return;
+
+  function countUp(el) {
+    const target = parseInt(el.dataset.countTarget, 10);
+    const suffix = el.dataset.countSuffix || '';
+    const duration = 1400;
+    const start = performance.now();
+    el.classList.add('counting');
+
+    function step(now) {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      // Ease-out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const value = Math.round(eased * target);
+      el.textContent = value + suffix;
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        el.textContent = target + suffix;
+        el.classList.remove('counting');
+      }
+    }
+    requestAnimationFrame(step);
+  }
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        countUp(entry.target);
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  stats.forEach(el => obs.observe(el));
+})();
+
+// ─── Testimonial carousel dots ────────────────────────────────
+(function initTestimonialDots() {
+  const grid  = document.getElementById('testimonials-grid');
+  const dotsEl = document.getElementById('testimonial-dots');
+  if (!grid || !dotsEl) return;
+
+  function buildDots() {
+    const cards = grid.querySelectorAll('.testimonial-card');
+    dotsEl.innerHTML = '';
+    cards.forEach((_, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'testimonial-dot' + (i === 0 ? ' active' : '');
+      btn.setAttribute('role', 'tab');
+      btn.setAttribute('aria-label', 'Testimonial ' + (i + 1));
+      btn.addEventListener('click', () => {
+        const card = cards[i];
+        grid.scrollTo({ left: card.offsetLeft - 20, behavior: 'smooth' });
+      });
+      dotsEl.appendChild(btn);
+    });
+  }
+
+  function updateDots() {
+    const cards = grid.querySelectorAll('.testimonial-card');
+    const scrollLeft = grid.scrollLeft;
+    let closest = 0, minDist = Infinity;
+    cards.forEach((card, i) => {
+      const dist = Math.abs(card.offsetLeft - scrollLeft - 20);
+      if (dist < minDist) { minDist = dist; closest = i; }
+    });
+    dotsEl.querySelectorAll('.testimonial-dot').forEach((d, i) => {
+      d.classList.toggle('active', i === closest);
+    });
+  }
+
+  // Build after testimonials are rendered (they render synchronously)
+  buildDots();
+  grid.addEventListener('scroll', updateDots, { passive: true });
+
+  // Rebuild dots if number of testimonials changes (admin can modify)
+  new MutationObserver(buildDots).observe(grid, { childList: true });
+})();
+
+// ─── Offline / Parse error detection ─────────────────────────
+(function initOfflineBanner() {
+  const banner = document.getElementById('offline-banner');
+  if (!banner) return;
+
+  // Show banner when network goes offline
+  window.addEventListener('offline', () => banner.classList.add('show'));
+  window.addEventListener('online',  () => banner.classList.remove('show'));
+
+  // Patch ParseService to surface fallback errors
+  if (typeof ParseService !== 'undefined') {
+    const orig = ParseService.createEnquiry.bind(ParseService);
+    ParseService.createEnquiry = async function(data) {
+      const result = await orig(data);
+      if (result && result.fallback) {
+        banner.classList.add('show');
+        setTimeout(() => banner.classList.remove('show'), 6000);
+      }
+      return result;
+    };
+  }
+
+  if (!navigator.onLine) banner.classList.add('show');
+})();
+</script>
+
 <script src="js/reactive-animations.js"></script>
 <script src="js/ios-native.js"></script>
+
+<!-- WhatsApp floating button -->
+<a href="https://wa.me/919876543210" target="_blank" rel="noopener" class="wa-float" aria-label="Chat on WhatsApp" id="wa-float">
+  <span class="wa-float-tooltip">Chat with us</span>
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
 </body>
 </html>

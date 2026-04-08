@@ -528,3 +528,49 @@
     backdrop-filter: none !important;
   }
 }
+
+/* ── Focus-visible for glass buttons (keyboard navigation) ── */
+/* Glass backdrop-filter removes default browser outline legibility,
+   so we override with a high-contrast wheat ring + inner shadow. */
+.btn-primary:focus-visible,
+.btn-wheat:focus-visible,
+.btn-secondary:focus-visible,
+.product-cta:focus-visible,
+.btn-farmer-apply:focus-visible,
+.btn-farmer-submit:focus-visible,
+.sg-submit-btn:focus-visible,
+.lease-submit:focus-visible,
+.newsletter-btn:focus-visible,
+.how-tab:focus-visible,
+.sg-close:focus-visible,
+.farmer-modal-close:focus-visible,
+.otp-send-btn:focus-visible,
+.otp-confirm-btn:focus-visible {
+  outline: 2px solid rgba(212, 168, 75, 0.9) !important;
+  outline-offset: 3px !important;
+  box-shadow:
+    0 0 0 5px rgba(212, 168, 75, 0.18),
+    0 4px 20px rgba(26, 58, 42, 0.3) !important;
+}
+
+/* Nav links get a visible underline focus indicator */
+.nav-link:focus-visible {
+  outline: 2px solid rgba(212, 168, 75, 0.8) !important;
+  outline-offset: 4px !important;
+  border-radius: 3px;
+}
+
+/* ── Minimum 44px tap targets for small interactive elements ── */
+.otp-send-btn,
+.otp-confirm-btn,
+.how-tab,
+.theme-btn {
+  min-height: 44px;
+}
+
+.sg-close,
+.farmer-modal-close,
+.nav-hamburger {
+  min-width: 44px;
+  min-height: 44px;
+}

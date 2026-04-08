@@ -958,8 +958,18 @@ a { text-decoration: none; color: inherit; }
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--wheat);
-  margin-bottom: 36px;
+  margin-bottom: 16px;
 }
+.demo-banner {
+  display: flex; align-items: flex-start; gap: 8px;
+  background: rgba(212,168,75,0.12);
+  border: 1px solid rgba(212,168,75,0.35);
+  border-radius: 10px; padding: 10px 14px;
+  margin-bottom: 24px; text-align: left;
+  color: var(--wheat); font-size: 0.8rem; line-height: 1.5;
+}
+.demo-banner svg { flex-shrink: 0; margin-top: 2px; }
+.demo-banner strong { color: var(--wheat-glow); }
 .login-field {
   text-align: left;
   margin-bottom: 18px;
@@ -1776,6 +1786,10 @@ a { text-decoration: none; color: inherit; }
       GrowTogether
     </div>
     <div class="login-subtitle">Admin Dashboard</div>
+    <div class="demo-banner" role="note" aria-label="Demo mode active">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      <span><strong>Demo Mode</strong> — OTP codes appear as browser alerts. Not for production use.</span>
+    </div>
     <form id="login-form" onsubmit="handleLogin(event)">
       <div class="login-field">
         <label for="login-username">Username</label>
