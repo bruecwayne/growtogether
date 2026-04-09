@@ -103,6 +103,30 @@
 [data-theme="dark"] .how-it-works .section-title,
 [data-theme="dark"] .dashboard-section .section-title { color: #7a9e7e; }
 
+/* ── Dark-mode: restore cream-coloured text that becomes invisible ──
+   All these rules use color:var(--cream) which dark mode remaps to
+   #1a1c1e (near-black). Fix them to stay readable on dark backgrounds. */
+[data-theme="dark"] .how-it-works,
+[data-theme="dark"] .dashboard-section { color: #f5f0e8; }
+
+[data-theme="dark"] .how-step h3,
+[data-theme="dark"] .how-tab:hover:not(.active),
+[data-theme="dark"] .farmer-modal-head h2,
+[data-theme="dark"] .farmer-success h3,
+[data-theme="dark"] .f-ctrl,
+[data-theme="dark"] .cta-section h2,
+[data-theme="dark"] .newsletter-input,
+[data-theme="dark"] .crop-progress-info h5,
+[data-theme="dark"] .timeline-info h5,
+[data-theme="dark"] .spend-total,
+[data-theme="dark"] .update-content h5,
+[data-theme="dark"] .sg-crop-spec span,
+[data-theme="dark"] .sg-success-close,
+[data-theme="dark"] .inline-border-15pxsolidrgba { color: #f5f0e8 !important; }
+
+[data-theme="dark"] .product-cta { color: #f5f0e8 !important; }
+[data-theme="dark"] .newsletter-input::placeholder { color: rgba(245,240,232,0.4); }
+
 /* ========== THEME TOGGLE ========== */
 .theme-toggle {
   display: flex;
