@@ -3762,6 +3762,21 @@ function openStartGrowing(cropName) {
   const products = JSON.parse(localStorage.getItem('gt_products') || '[]');
   const lands = JSON.parse(localStorage.getItem('gt_lands') || '[]');
 
+  // Populate product select
+  const productSelect = document.getElementById('sg-product-select');
+  productSelect.innerHTML = '<option value="" disabled>Choose a crop to grow</option>';
+  const visibleProducts = products.filter(p => p.visible !== false);
+  const fallbackProducts = ['Hybrid Tomatoes','Turmeric','Red Chillies','Leafy Greens','Paddy (Rice)','Vegetables','Sunflower','Maize (Corn)'];
+  const productNames = visibleProducts.length ? visibleProducts.map(p => p.name) : fallbackProducts;
+  productNames.forEach(name => {
+    const opt = document.createElement('option');
+    opt.value = name;
+    opt.textContent = name;
+    if (name === cropName) opt.selected = true;
+    productSelect.appendChild(opt);
+  });
+  if (!cropName) productSelect.value = '';
+
   // Populate land select
   const landSelect = document.getElementById('sg-land-select');
   landSelect.innerHTML = '<option value="" disabled selected>Select location</option>';
@@ -3840,6 +3855,58 @@ function closeStartGrowing() {
 
 function handleSgOverlayClick(e) {
   if (e.target === document.getElementById('sg-overlay')) closeStartGrowing();
+}
+
+// Update crop panel when user picks a product from the dropdown
+function handleSgProductChange(cropName) {
+  if (!cropName) return;
+  const products = JSON.parse(localStorage.getItem('gt_products') || '[]');
+  const product = products.find(p => p.name === cropName);
+  const defaultImg = 'https://images.pexels.com/photos/440731/pexels-photo-440731.jpeg?auto=compress&cs=tinysrgb&w=600&h=300&fit=crop';
+
+  // Update hidden field
+  document.getElementById('sg-crop-hidden').value = cropName;
+
+  // Update image
+  const imgEl = document.getElementById('sg-crop-img');
+  const imgUrl = (product && product.imageUrl) ? product.imageUrl : defaultImg;
+  imgEl.style.background = 'linear-gradient(to top, rgba(10,20,15,0.7) 0%, transparent 55%), url(\'' + imgUrl + '\')';
+  imgEl.style.backgroundSize = 'cover';
+  imgEl.style.backgroundPosition = 'center';
+
+  // Update name
+  document.getElementById('sg-crop-name').textContent = cropName;
+
+  // Update specs
+  document.getElementById('sg-crop-time').textContent = (product && product.growTime) ? product.growTime : '--';
+  document.getElementById('sg-crop-yield').textContent = (product && product.yield) ? product.yield : '--';
+
+  let rawPrice = 0;
+  if (product && product.perAcre) {
+    rawPrice = parseInt(product.perAcre.replace(/[^\d]/g, '')) || 0;
+  }
+  sgCurrentPrice = rawPrice;
+  document.getElementById('sg-crop-price').textContent = (product && product.perAcre) ? product.perAcre : '--';
+
+  // Update description
+  const desc = SG_CROP_DESCS[cropName] || 'Tell us what you\'d like to grow and we\'ll match you with the right farmer and land.';
+  document.getElementById('sg-crop-desc').textContent = desc;
+
+  // Update varieties
+  const varietiesSection = document.getElementById('sg-varieties-section');
+  const varietyTags = document.getElementById('sg-variety-tags');
+  if (product && product.variety) {
+    const varieties = product.variety.split('•').map(v => v.trim()).filter(Boolean);
+    varietyTags.innerHTML = varieties.map(v => `<span class="sg-variety-tag">${v}</span>`).join('');
+    varietiesSection.style.display = '';
+  } else {
+    varietiesSection.style.display = 'none';
+  }
+
+  // Refresh price estimate
+  const acres = parseInt(document.getElementById('sg-acres').value) || 0;
+  document.getElementById('sg-estimated-price').textContent =
+    (acres > 0 && sgCurrentPrice > 0) ? '₹' + (acres * sgCurrentPrice).toLocaleString('en-IN') : '--';
 }
 
 // Live price estimate
@@ -4025,6 +4092,12 @@ const tiltRefreshObs = new IntersectionObserver(entries => {
 
         <form class="sg-form" id="sg-form" onsubmit="submitStartGrowing(event)">
           <input type="hidden" id="sg-crop-hidden" name="crop">
+          <div class="sg-field full-width">
+            <label>Select Product <span class="req">*</span></label>
+            <select id="sg-product-select" name="productSelect" title="Select Product" required onchange="handleSgProductChange(this.value)">
+              <option value="" disabled selected>Choose a crop to grow</option>
+            </select>
+          </div>
           <div class="sg-form-row">
             <div class="sg-field">
               <label>Full Name <span class="req">*</span></label>
