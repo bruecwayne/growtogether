@@ -243,6 +243,7 @@
 /* ── Primary button (forest green glass) ─────────────────── */
 .btn-primary {
   background: rgba(26, 58, 42, 0.88) !important;
+  color: #f5f0e8 !important;
   -webkit-backdrop-filter: blur(12px) saturate(160%);
   backdrop-filter: blur(12px) saturate(160%);
   border: 1px solid rgba(255, 255, 255, 0.14) !important;
