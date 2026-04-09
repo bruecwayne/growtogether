@@ -59,9 +59,8 @@
 .nav-link:hover,
 [data-theme="dark"] .nav-link:hover { color: #d4a84b !important; }
 
-/* ── Hero stat pills ─────────────────────────────────────── */
-/* They sit on the dark forest hero */
-.hero-stats {
+/* ── Hero stat pills — dark mode only (light mode uses white card defaults) ── */
+[data-theme="dark"] .hero-stats {
   background: var(--lg-on-dark-bg) !important;
   -webkit-backdrop-filter: var(--lg-on-dark-blur);
   backdrop-filter: var(--lg-on-dark-blur);
@@ -72,8 +71,8 @@
 }
 .stat-item { background: transparent !important; border: none !important; }
 
-/* ── Hero floating cards ─────────────────────────────────── */
-.hero-card-main {
+/* ── Hero floating cards — dark mode only (light mode uses white card defaults) ── */
+[data-theme="dark"] .hero-card-main {
   background: rgba(255, 255, 255, 0.10) !important;
   -webkit-backdrop-filter: blur(32px) saturate(180%);
   backdrop-filter: blur(32px) saturate(180%);
@@ -84,11 +83,11 @@
     inset 0 -1px 0 rgba(0, 0, 0, 0.10) !important;
   color: var(--cream) !important;
 }
-.hero-card-main .card-title,
-.hero-card-main .card-meta,
-.hero-card-main .card-label { color: rgba(245, 240, 232, 0.90) !important; }
+[data-theme="dark"] .hero-card-main .card-title,
+[data-theme="dark"] .hero-card-main .card-meta,
+[data-theme="dark"] .hero-card-main .card-label { color: rgba(245, 240, 232, 0.90) !important; }
 
-.hero-card-float {
+[data-theme="dark"] .hero-card-float {
   background: rgba(255, 255, 255, 0.10) !important;
   -webkit-backdrop-filter: blur(24px) saturate(180%);
   backdrop-filter: blur(24px) saturate(180%);
@@ -99,7 +98,7 @@
     inset 0 -1px 0 rgba(0, 0, 0, 0.08) !important;
   color: var(--cream) !important;
 }
-.hero-card-float * { color: rgba(245, 240, 232, 0.88) !important; }
+[data-theme="dark"] .hero-card-float * { color: rgba(245, 240, 232, 0.88) !important; }
 
 /* ── Step cards (on dark forest background) ──────────────── */
 .step-card, .how-step {
