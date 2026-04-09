@@ -158,7 +158,7 @@
 }
 .theme-btn svg { width: 14px; height: 14px; }
 
-html { scroll-behavior: smooth; scroll-padding-top: 88px; }
+html { scroll-behavior: smooth; scroll-padding-top: 88px; overflow-x: hidden; }
 
 body {
   font-family: 'Source Sans 3', -apple-system, sans-serif;
@@ -4388,7 +4388,6 @@ const tiltRefreshObs = new IntersectionObserver(entries => {
 .nav-close-btn svg { width: 18px; height: 18px; pointer-events: none; }
 @media (max-width: 768px) {
   .nav-close-btn { display: flex; }
-  .nav-links { position: relative; }
 }
 
 /* ── Testimonial carousel dots (mobile) ── */
@@ -4409,7 +4408,7 @@ const tiltRefreshObs = new IntersectionObserver(entries => {
   }
   .testimonials-grid::-webkit-scrollbar { display: none; }
   .testimonials-grid .testimonial-card {
-    min-width: calc(100vw - 56px); flex-shrink: 0; scroll-snap-align: center;
+    width: calc(100vw - 56px); min-width: calc(100vw - 56px); max-width: calc(100vw - 56px); flex-shrink: 0; scroll-snap-align: center;
   }
   .testimonial-dots { display: flex; }
 }
