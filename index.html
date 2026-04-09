@@ -133,7 +133,7 @@
 }
 .theme-btn svg { width: 14px; height: 14px; }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding-top: 88px; }
 
 body {
   font-family: 'Source Sans 3', -apple-system, sans-serif;
@@ -3711,17 +3711,10 @@ async function submitLeaseForm(form) {
   }
 })();
 
-// Smooth scroll for nav links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function (e) {
-    const href = this.getAttribute('href');
-    if (href === '#') return;
-    e.preventDefault();
-    const target = document.querySelector(href);
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  });
+// Prevent bare href="#" anchors from jumping to page top
+// Real anchor links (#products, #how, etc.) use CSS scroll-behavior + scroll-padding-top
+document.querySelectorAll('a[href="#"]').forEach(anchor => {
+  anchor.addEventListener('click', e => e.preventDefault());
 });
 
 // ===== START GROWING MODAL =====
