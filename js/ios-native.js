@@ -27,10 +27,13 @@
   ------------------------------------------------------- */
   var scrollTimer;
   function scrollInputIntoView(e) {
+    // Only scroll for actual keyboard-triggering inputs, not buttons or links
+    var el = e.target;
+    if (!el || !el.matches || !el.matches('input, textarea, select')) return;
     clearTimeout(scrollTimer);
     scrollTimer = setTimeout(function () {
-      if (e.target && typeof e.target.scrollIntoView === 'function') {
-        e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (el && typeof el.scrollIntoView === 'function') {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     }, 350); // wait for keyboard animation
   }
