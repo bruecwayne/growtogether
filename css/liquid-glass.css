@@ -502,11 +502,22 @@
 }
 [data-theme="dark"] .sg-field input,
 [data-theme="dark"] .sg-field select,
-[data-theme="dark"] .sg-field textarea {
+[data-theme="dark"] .sg-field textarea,
+[data-theme="dark"] .lease-field input,
+[data-theme="dark"] .lease-field select,
+[data-theme="dark"] .lease-field textarea,
+[data-theme="dark"] .f-ctrl {
   background: rgba(40, 55, 44, 0.60) !important;
   border-color: rgba(255, 255, 255, 0.12) !important;
-  color: var(--cream) !important;
+  color: #f5f0e8 !important;
 }
+[data-theme="dark"] .sg-field input::placeholder,
+[data-theme="dark"] .sg-field textarea::placeholder,
+[data-theme="dark"] .lease-field input::placeholder,
+[data-theme="dark"] .lease-field textarea::placeholder,
+[data-theme="dark"] .f-ctrl::placeholder { color: rgba(245, 240, 232, 0.4) !important; }
+[data-theme="dark"] .sg-field select option,
+[data-theme="dark"] .lease-field select option { background: #1e2e22; color: #f5f0e8; }
 [data-theme="dark"] .stat-card,
 [data-theme="dark"] .content-header {
   background: rgba(30, 36, 32, 0.72) !important;
