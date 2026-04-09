@@ -4574,10 +4574,11 @@ const tiltRefreshObs = new IntersectionObserver(entries => {
 <script src="js/reactive-animations.js"></script>
 <script src="js/ios-native.js"></script>
 <style>
-/* Fix Chrome compositing overflow: reactive-anim-inner (will-change: transform)
-   breaks out of overflow:hidden parents in Chrome. contain:paint clips even
-   GPU-composited children at the element boundary. */
-.reactive-anim-wrapper { contain: paint; }
+/* Fix Chrome compositing overflow: reactive-anim-inner uses will-change:transform
+   which promotes it to a GPU layer, bypassing overflow:hidden in Chrome.
+   Forcing the wrapper to also composite (will-change:transform) makes Chrome
+   respect the parent's overflow clipping for its GPU children. */
+.reactive-anim-wrapper { will-change: transform; }
 </style>
 
 <!-- WhatsApp floating button -->
