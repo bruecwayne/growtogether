@@ -3835,6 +3835,11 @@ function openStartGrowing(cropName) {
     varietiesSection.style.display = 'none';
   }
 
+  // Show product dropdown only when no crop is pre-selected (Start Growing Today)
+  const productField = document.getElementById('sg-product-select').closest('.sg-field');
+  productField.style.display = cropName ? 'none' : '';
+  document.getElementById('sg-product-select').required = !cropName;
+
   // Reset form & success
   document.getElementById('sg-form').reset();
   document.getElementById('sg-success').classList.remove('active');
