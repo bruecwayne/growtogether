@@ -324,18 +324,8 @@ a { text-decoration: none; color: inherit; }
 .nav-hamburger-line::before { top: -7px; }
 .nav-hamburger-line::after { bottom: -7px; }
 /* Active state — X shape */
-.nav-hamburger.active .nav-hamburger-line {
-  background: transparent;
-}
-.nav-hamburger.active .nav-hamburger-line::before {
-  top: 0;
-  transform: rotate(45deg);
-  background: var(--text-dark);
-}
-.nav-hamburger.active .nav-hamburger-line::after {
-  bottom: 0;
-  transform: rotate(-45deg);
-  background: var(--text-dark);
+.nav-hamburger.active {
+  display: none;
 }
 [data-theme="dark"] .nav-hamburger-line,
 [data-theme="dark"] .nav-hamburger-line::before,
@@ -4402,12 +4392,17 @@ const tiltRefreshObs = new IntersectionObserver(entries => {
 /* ── Mobile nav explicit close button ── */
 .nav-close-btn {
   display: none; position: absolute; top: 18px; right: 18px;
-  width: 44px; height: 44px; background: var(--cream-dark);
-  border: none; border-radius: 50%; cursor: pointer;
+  width: 44px; height: 44px; background: rgba(26,58,42,0.12);
+  border: 1.5px solid rgba(26,58,42,0.18); border-radius: 50%; cursor: pointer;
   align-items: center; justify-content: center;
-  color: var(--text-body); transition: all 0.2s; flex-shrink: 0;
+  color: var(--forest); transition: all 0.2s; flex-shrink: 0;
 }
-.nav-close-btn:hover { background: var(--forest); color: var(--cream); }
+[data-theme="dark"] .nav-close-btn {
+  background: rgba(245,240,232,0.12);
+  border-color: rgba(245,240,232,0.18);
+  color: rgba(245,240,232,0.88);
+}
+.nav-close-btn:hover { background: var(--forest); color: var(--cream); border-color: var(--forest); }
 .nav-close-btn svg { width: 18px; height: 18px; pointer-events: none; }
 @media (max-width: 768px) {
   .nav-close-btn { display: flex; }
