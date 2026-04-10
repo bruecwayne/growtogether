@@ -59,6 +59,16 @@
 .nav-link:hover,
 [data-theme="dark"] .nav-link:hover { color: #d4a84b !important; }
 
+/* Hamburger icon — always light on dark glass nav (in both light & dark modes) */
+.nav-hamburger-line,
+.nav-hamburger-line::before,
+.nav-hamburger-line::after {
+  background: rgba(245, 240, 232, 0.88) !important;
+}
+.nav-hamburger.active .nav-hamburger-line {
+  background: transparent !important;
+}
+
 /* ── Hero stat pills — dark mode only (light mode uses white card defaults) ── */
 [data-theme="dark"] .hero-stats {
   background: var(--lg-on-dark-bg) !important;

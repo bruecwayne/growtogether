@@ -1962,6 +1962,27 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
     align-self: flex-start;
   }
 
+  /* ── Mobile drawer link colours (light mode) ── */
+  /* The drawer has a light cream background, so links must be dark. */
+  .nav-links a {
+    color: var(--text-dark);
+  }
+  .nav-links a:hover {
+    color: var(--forest);
+  }
+  /* In dark mode the drawer is dark, so links stay light */
+  [data-theme="dark"] .nav-links a {
+    color: rgba(245, 240, 232, 0.88);
+  }
+  [data-theme="dark"] .nav-links a:hover {
+    color: #d4a84b;
+  }
+  /* Keep the "Get Started" primary button legible in both modes */
+  .nav-links .btn-primary,
+  [data-theme="dark"] .nav-links .btn-primary {
+    color: #f5f0e8 !important;
+  }
+
   /* ── Hero Mobile ── */
   .hero { min-height: auto; }
   .hero-content { padding: calc(110px + env(safe-area-inset-top, 0px)) 0 64px; }
