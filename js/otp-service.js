@@ -20,8 +20,11 @@ const OTP_CONFIG = {
   expiryMs:   10 * 60 * 1000, // 10 minutes
   maxAttempts: 3,
 
-  // ── Set to false and fill credentials below for production ──
-  demoMode: true,
+  // Set to true ONLY during local development. In production this MUST be false.
+  // OTP codes are sent via SMS/email provider configured below.
+  // The submit button is disabled until OTP is verified client-side.
+  // For full security, also verify the OTP server-side in a Parse Cloud Function.
+  demoMode: false,
 
   sms: {
     // Choose: 'fast2sms' | 'msg91' | 'twilio'
@@ -392,3 +395,27 @@ document.addEventListener('input', function(e) {
     }
   }
 });
+
+/*
+ * ── SERVER-SIDE OTP VERIFICATION (recommended for production) ──────────────
+ *
+ * To prevent client-side bypass, create a Parse Cloud Function:
+ *
+ *   Parse.Cloud.define('verifyOtp', async (request) => {
+ *     const { identifier, code, type } = request.params;
+ *     // Look up a stored OTP in a server-side OtpVerification class
+ *     // that was written when SMS/email was dispatched by your backend.
+ *     const query = new Parse.Query('OtpVerification');
+ *     query.equalTo('identifier', identifier);
+ *     query.equalTo('code', code);
+ *     query.greaterThan('expiresAt', new Date());
+ *     const record = await query.first({ useMasterKey: true });
+ *     if (!record) throw new Parse.Error(141, 'Invalid or expired OTP');
+ *     await record.destroy({ useMasterKey: true });
+ *     return { verified: true };
+ *   });
+ *
+ * Then in otpService.verifyOtp(), call:
+ *   await Parse.Cloud.run('verifyOtp', { identifier, code, type });
+ * before setting verified = true in _state.
+ */

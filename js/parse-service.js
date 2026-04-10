@@ -46,8 +46,13 @@ const ParseService = {
   async getContent(key) {
     try {
       const value = await this.getSetting('content_' + key);
-      if (value) return JSON.parse(value);
-      return null;
+      if (!value) return null;
+      try {
+        return JSON.parse(value);
+      } catch (parseErr) {
+        console.warn('getContent: malformed JSON for key', key, parseErr);
+        return null;
+      }
     } catch (error) {
       console.error('Error getting content:', error);
       return null;
@@ -223,7 +228,23 @@ const ParseService = {
       console.error('Error getting stats:', error);
       return { total: 0, pending: 0, growCount: 0, leaseCount: 0 };
     }
-  }
+  },
+
+  async subscribeNewsletter(email) {
+    try {
+      const Newsletter = Parse.Object.extend('Newsletter');
+      const sub = new Newsletter();
+      sub.set('email', email);
+      sub.set('subscribedAt', new Date());
+      await sub.save();
+      return { success: true };
+    } catch (error) {
+      // Fallback: store locally
+      const subs = JSON.parse(localStorage.getItem('gt_newsletter') || '[]');
+      if (!subs.includes(email)) { subs.push(email); localStorage.setItem('gt_newsletter', JSON.stringify(subs)); }
+      return { success: true, fallback: true };
+    }
+  },
 };
 
 // ─── HELPERS ───────────────────────────────────────────────
