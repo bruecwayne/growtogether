@@ -1,0 +1,686 @@
+/* ═══════════════════════════════════════════════════════════════
+   GrowTogether — Interactive enhancements
+   Layered on top of the base styles. Namespace: `gt-ia-*`.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Scroll progress (wheat gradient bar) ───────────────────── */
+.gt-ia-scroll-progress {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  z-index: 10000;
+  pointer-events: none;
+  background: transparent;
+}
+.gt-ia-scroll-progress .fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--wheat), var(--wheat-glow), var(--terracotta-light));
+  box-shadow: 0 0 12px rgba(212,168,75,0.6);
+  transition: width 0.08s linear;
+  border-radius: 0 4px 4px 0;
+}
+
+/* ── Cursor trail (leaf particles) ──────────────────────────── */
+.gt-ia-trail {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9996;
+  width: 14px; height: 14px;
+  will-change: transform, opacity;
+  transform: translate(-50%, -50%);
+}
+.gt-ia-trail svg { width: 100%; height: 100%; display: block; }
+
+/* ── Magnetic wrapper ───────────────────────────────────────── */
+.gt-ia-magnet {
+  transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.3, 1.2);
+  will-change: transform;
+}
+
+/* ═══ HERO: Interactive Grow Scene ═══ */
+.gt-ia-hero-scene {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+/* Diagonal field stripes, drift slowly */
+.gt-ia-hero-scene::before {
+  content: '';
+  position: absolute;
+  left: -20%; right: -20%;
+  bottom: -30%;
+  height: 60%;
+  background:
+    repeating-linear-gradient(
+      100deg,
+      rgba(61,107,79,0.035) 0 20px,
+      rgba(61,107,79,0) 20px 48px
+    );
+  transform: skewY(-4deg);
+  animation: gt-ia-field-drift 30s linear infinite;
+}
+@keyframes gt-ia-field-drift {
+  from { background-position: 0 0; }
+  to   { background-position: 200px 0; }
+}
+/* Floating sun-glow orb */
+.gt-ia-hero-scene .sun {
+  position: absolute;
+  top: 8%; right: 8%;
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255,225,140,0.5), rgba(240,214,138,0.15) 50%, transparent 75%);
+  filter: blur(4px);
+  animation: gt-ia-sun-pulse 8s ease-in-out infinite;
+}
+@keyframes gt-ia-sun-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50%      { transform: scale(1.15); opacity: 1; }
+}
+/* Drifting seeds */
+.gt-ia-seed {
+  position: absolute;
+  width: 6px; height: 9px;
+  background: var(--wheat);
+  border-radius: 50% 50% 50% 50% / 70% 70% 30% 30%;
+  opacity: 0.5;
+  pointer-events: none;
+  animation: gt-ia-seed-fall linear infinite;
+}
+@keyframes gt-ia-seed-fall {
+  from { transform: translateY(-20px) rotate(0deg); opacity: 0; }
+  10%  { opacity: 0.7; }
+  90%  { opacity: 0.4; }
+  to   { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+
+/* Hero interactive crop picker strip */
+.gt-ia-crop-picker {
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+  margin-top: 24px;
+  background: rgba(255,255,255,0.5);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(26,58,42,0.1);
+  border-radius: 100px;
+  width: fit-content;
+  box-shadow: 0 8px 24px rgba(26,58,42,0.06);
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.gt-ia-crop-picker::-webkit-scrollbar { display: none; }
+[data-theme="dark"] .gt-ia-crop-picker {
+  background: rgba(36,38,40,0.6);
+  border-color: rgba(255,255,255,0.1);
+}
+.gt-ia-crop-btn {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: none;
+  background: transparent;
+  border-radius: 100px;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+}
+.gt-ia-crop-btn .emo {
+  font-size: 1rem;
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+.gt-ia-crop-btn:hover { color: var(--forest); }
+.gt-ia-crop-btn:hover .emo { transform: scale(1.25) rotate(-8deg); }
+.gt-ia-crop-btn.active {
+  background: var(--forest);
+  color: var(--cream);
+  box-shadow: 0 4px 14px rgba(26,58,42,0.22);
+}
+.gt-ia-crop-btn.active .emo { transform: scale(1.1); }
+
+/* Hero growing pot SVG */
+.gt-ia-pot {
+  position: absolute;
+  bottom: -10px;
+  right: -10px;
+  width: 280px;
+  height: 280px;
+  pointer-events: none;
+  z-index: 3;
+  filter: drop-shadow(0 20px 40px rgba(26,58,42,0.25));
+}
+@media (max-width: 1024px) {
+  .gt-ia-pot { display: none; }
+}
+.gt-ia-pot svg { width: 100%; height: 100%; overflow: visible; }
+.gt-ia-pot .stem {
+  stroke-dasharray: 300;
+  stroke-dashoffset: 300;
+  transition: stroke-dashoffset 1.6s cubic-bezier(0.6, 0, 0.2, 1);
+}
+.gt-ia-pot.grown .stem {
+  stroke-dashoffset: 0;
+}
+.gt-ia-pot .leaf,
+.gt-ia-pot .fruit {
+  transform-origin: center;
+  transform: scale(0) rotate(-30deg);
+  opacity: 0;
+  transition: transform 0.9s cubic-bezier(0.34, 1.8, 0.64, 1), opacity 0.5s ease;
+}
+.gt-ia-pot.grown .leaf {
+  transform: scale(1) rotate(0);
+  opacity: 1;
+}
+.gt-ia-pot.grown .leaf-1 { transition-delay: 0.8s; }
+.gt-ia-pot.grown .leaf-2 { transition-delay: 1.0s; }
+.gt-ia-pot.grown .leaf-3 { transition-delay: 1.2s; }
+.gt-ia-pot.grown .leaf-4 { transition-delay: 1.4s; }
+.gt-ia-pot.grown .fruit {
+  transform: scale(1);
+  opacity: 1;
+}
+.gt-ia-pot.grown .fruit-1 { transition-delay: 1.7s; }
+.gt-ia-pot.grown .fruit-2 { transition-delay: 1.85s; }
+.gt-ia-pot.grown .fruit-3 { transition-delay: 2.0s; }
+.gt-ia-pot .ground-dot {
+  animation: gt-ia-ground-dot 4s ease-in-out infinite;
+}
+@keyframes gt-ia-ground-dot {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-3px); }
+}
+
+/* Subtle sway on grown plant */
+.gt-ia-pot.grown .plant-group {
+  animation: gt-ia-plant-sway 5s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+@keyframes gt-ia-plant-sway {
+  0%, 100% { transform: rotate(-1.5deg); }
+  50%      { transform: rotate(1.5deg); }
+}
+
+/* ═══ HOW IT WORKS: connector draw ═══ */
+.gt-ia-connector-svg {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 80px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 0;
+  display: none;
+}
+@media (min-width: 1024px) {
+  .gt-ia-connector-svg.show { display: block; }
+}
+.gt-ia-connector-svg path {
+  stroke: var(--wheat);
+  stroke-width: 2;
+  fill: none;
+  stroke-dasharray: 6 8;
+  opacity: 0.4;
+  stroke-dashoffset: 0;
+  animation: gt-ia-connector-march 14s linear infinite;
+}
+@keyframes gt-ia-connector-march {
+  to { stroke-dashoffset: -280; }
+}
+.how-steps { position: relative; }
+.how-step { position: relative; z-index: 1; }
+
+/* Springy step icons */
+.how-step-icon { transform-origin: center; transition: transform 0.5s cubic-bezier(0.34, 1.8, 0.64, 1); }
+.how-step:hover .how-step-icon {
+  transform: scale(1.15) rotate(-6deg);
+}
+
+/* ═══ PRODUCTS: specular sheen on hover ═══ */
+.product-card {
+  position: relative;
+  overflow: hidden;
+}
+.product-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    600px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(255,255,255,0.18),
+    transparent 40%
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+  z-index: 2;
+  mix-blend-mode: overlay;
+}
+.product-card:hover::before { opacity: 1; }
+
+/* Quick-peek overlay on product hover */
+.gt-ia-peek {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 35%, rgba(15,36,25,0.88) 70%, rgba(15,36,25,0.96));
+  display: flex;
+  align-items: flex-end;
+  padding: 20px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  pointer-events: none;
+  z-index: 3;
+  color: var(--cream);
+}
+.product-card:hover .gt-ia-peek,
+.product-card:focus-within .gt-ia-peek {
+  opacity: 1;
+  transform: translateY(0);
+}
+.gt-ia-peek-inner {
+  width: 100%;
+}
+.gt-ia-peek-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1rem;
+  margin-bottom: 6px;
+  color: var(--wheat-light);
+}
+.gt-ia-peek-stages {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+.gt-ia-peek-stage {
+  flex: 1;
+  height: 3px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.2);
+  position: relative;
+  overflow: hidden;
+}
+.gt-ia-peek-stage .fill {
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, var(--sage-light), var(--wheat));
+  transform: translateX(-100%);
+  transition: transform 1.2s cubic-bezier(0.6, 0, 0.2, 1);
+}
+.product-card:hover .gt-ia-peek-stage:nth-child(1) .fill { transform: translateX(0); transition-delay: 0s; }
+.product-card:hover .gt-ia-peek-stage:nth-child(2) .fill { transform: translateX(0); transition-delay: 0.2s; }
+.product-card:hover .gt-ia-peek-stage:nth-child(3) .fill { transform: translateX(0); transition-delay: 0.4s; }
+.product-card:hover .gt-ia-peek-stage:nth-child(4) .fill { transform: translateX(0); transition-delay: 0.6s; }
+.gt-ia-peek-legend {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(245,240,232,0.55);
+  font-weight: 600;
+}
+
+/* ═══ FARMERS: hover avatar bounce, spinning ring on active ═══ */
+.farmer-card {
+  position: relative;
+  overflow: hidden;
+}
+.farmer-avatar {
+  transition: transform 0.5s cubic-bezier(0.34, 1.8, 0.64, 1);
+}
+.farmer-card:hover .farmer-avatar {
+  transform: scale(1.1) rotate(-4deg);
+}
+.farmer-card::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border: 2px solid transparent;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--wheat), var(--terracotta-light), var(--sage-light), var(--wheat)) border-box;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) padding-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+.farmer-card:hover::after { opacity: 1; }
+
+/* Star rating subtle wiggle */
+.farmer-card:hover .farmer-meta-item:nth-child(2) span {
+  display: inline-block;
+  animation: gt-ia-star-wiggle 0.5s ease-in-out;
+}
+@keyframes gt-ia-star-wiggle {
+  0%, 100% { transform: rotate(0); }
+  30%      { transform: rotate(-8deg); }
+  60%      { transform: rotate(8deg); }
+}
+
+/* ═══ OUR LAND: interactive plot map ═══ */
+.gt-ia-land-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: rgba(212,168,75,0.12);
+  color: var(--wheat);
+  border: 1px solid rgba(212,168,75,0.3);
+  border-radius: 100px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-top: 16px;
+}
+[data-theme="dark"] .gt-ia-land-hint { color: var(--wheat-light); }
+.gt-ia-land-hint::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--wheat);
+  animation: gt-ia-dot-pulse 1.6s ease-in-out infinite;
+}
+@keyframes gt-ia-dot-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%      { transform: scale(1.6); opacity: 0.5; }
+}
+
+.land-card {
+  position: relative;
+}
+.land-card .gt-ia-plot-marker {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 3;
+  font-family: 'DM Serif Display', serif;
+  font-size: 0.85rem;
+  padding: 4px 10px;
+  background: rgba(15,36,25,0.7);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: var(--wheat-light);
+  border-radius: 100px;
+  letter-spacing: 0.1em;
+  pointer-events: none;
+}
+.land-card .land-visual {
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.land-card:hover .land-visual {
+  transform: scale(1.04);
+}
+.land-card .land-visual::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(600px circle at var(--mx, 50%) var(--my, 50%), rgba(212,168,75,0.25), transparent 50%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+.land-card:hover .land-visual::after { opacity: 1; }
+
+/* Plot "focus" — when clicked expands briefly */
+.land-card.gt-ia-focused {
+  transform: scale(1.02);
+  box-shadow: 0 30px 80px rgba(26,58,42,0.28), 0 0 0 3px var(--wheat) !important;
+  z-index: 5;
+}
+.land-card.gt-ia-focused .land-visual {
+  transform: scale(1.08);
+}
+
+/* Satellite-style grid overlay on hover */
+.land-card .gt-ia-grid-overlay {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(212,168,75,0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212,168,75,0.12) 1px, transparent 1px);
+  background-size: 24px 24px;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 2;
+  mix-blend-mode: screen;
+}
+.land-card:hover .gt-ia-grid-overlay { opacity: 0.6; }
+
+/* Coordinates badge that appears on hover */
+.land-card .gt-ia-coords {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  z-index: 3;
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 0.72rem;
+  color: var(--wheat-light);
+  background: rgba(15,36,25,0.6);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  padding: 3px 8px;
+  border-radius: 6px;
+  letter-spacing: 0.02em;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  pointer-events: none;
+}
+.land-card:hover .gt-ia-coords {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ═══ DASHBOARD: live pulse on bars ═══ */
+.dashboard-mock {
+  position: relative;
+}
+.dashboard-mock .bar {
+  position: relative;
+  overflow: visible;
+}
+.dashboard-mock .bar::after {
+  content: '';
+  position: absolute;
+  top: -1px;
+  right: -4px;
+  width: 8px; height: 7px;
+  border-radius: 50%;
+  background: var(--wheat);
+  box-shadow: 0 0 10px var(--wheat);
+  animation: gt-ia-bar-pulse 1.8s ease-in-out infinite;
+}
+@keyframes gt-ia-bar-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.4; transform: scale(1.4); }
+}
+
+.dash-card {
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+}
+.dash-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(212,168,75,0.3) !important;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.3);
+}
+
+/* Little live dot in dash card headers */
+.dash-card-header .dash-card-title::before {
+  content: '';
+  display: inline-block;
+  width: 6px; height: 6px;
+  margin-right: 6px;
+  border-radius: 50%;
+  background: #7ad191;
+  box-shadow: 0 0 6px rgba(122, 209, 145, 0.8);
+  animation: gt-ia-live-dot 1.8s ease-in-out infinite;
+  vertical-align: middle;
+}
+@keyframes gt-ia-live-dot {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.3; }
+}
+
+/* ═══ CTA SECTION: parallax word rotation ═══ */
+.gt-ia-word-rotate {
+  display: inline-grid;
+  vertical-align: baseline;
+}
+.gt-ia-word-rotate > span {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transform: translateY(0.4em);
+  transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  color: var(--wheat-light);
+}
+.gt-ia-word-rotate > span.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ═══ CONFETTI particles (seeds / leaves) ═══ */
+.gt-ia-confetti-particle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 10001;
+  will-change: transform, opacity;
+}
+
+/* ═══ TWEAKS PANEL ═══ */
+.gt-ia-tweaks {
+  position: fixed;
+  right: 20px;
+  bottom: 96px;
+  z-index: 9997;
+  width: 240px;
+  background: rgba(15,36,25,0.96);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  color: var(--cream);
+  border: 1px solid rgba(212,168,75,0.25);
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+  display: none;
+  font-family: 'Source Sans 3', sans-serif;
+  transform: translateY(12px) scale(0.96);
+  opacity: 0;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+}
+.gt-ia-tweaks.open {
+  display: block;
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+.gt-ia-tweaks h4 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1rem;
+  color: var(--wheat-light);
+  margin: 0 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.gt-ia-tweaks h4::before {
+  content: '◆';
+  color: var(--wheat);
+  font-size: 0.7rem;
+}
+.gt-ia-tweak-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+  font-size: 0.82rem;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.gt-ia-tweak-row:last-child { border-bottom: none; }
+.gt-ia-tweak-row label {
+  color: rgba(245,240,232,0.75);
+  cursor: pointer;
+  user-select: none;
+}
+.gt-ia-switch {
+  position: relative;
+  width: 34px; height: 20px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 100px;
+  transition: background 0.25s ease;
+  flex-shrink: 0;
+}
+.gt-ia-switch::after {
+  content: '';
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 16px; height: 16px;
+  background: var(--cream);
+  border-radius: 50%;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.gt-ia-switch.on {
+  background: var(--wheat);
+}
+.gt-ia-switch.on::after {
+  transform: translateX(14px);
+  background: var(--forest-deep);
+}
+.gt-ia-tweaks-footer {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  font-size: 0.72rem;
+  color: rgba(245,240,232,0.4);
+  text-align: center;
+}
+
+/* Adjust WhatsApp float position if both visible */
+@media (max-width: 768px) {
+  .gt-ia-tweaks { right: 14px; bottom: 84px; width: 220px; }
+}
+
+/* ═══ REDUCED MOTION ═══ */
+@media (prefers-reduced-motion: reduce) {
+  .gt-ia-hero-scene::before,
+  .gt-ia-hero-scene .sun,
+  .gt-ia-seed,
+  .gt-ia-pot .plant-group,
+  .gt-ia-connector-svg path,
+  .gt-ia-pot .ground-dot,
+  .dashboard-mock .bar::after,
+  .dash-card-header .dash-card-title::before {
+    animation: none !important;
+  }
+  .gt-ia-trail { display: none; }
+}
+
+/* ═══ Disabled-by-tweak states ═══ */
+body[data-gt-ia-cursor="off"] .gt-ia-trail { display: none !important; }
+body[data-gt-ia-parallax="off"] .gt-ia-hero-scene .sun,
+body[data-gt-ia-parallax="off"] .hero-card-main,
+body[data-gt-ia-parallax="off"] .hero-card-float { transform: none !important; }
+body[data-gt-ia-motion="off"] * {
+  animation-duration: 0.001s !important;
+  transition-duration: 0.15s !important;
+}
+body[data-gt-ia-motion="off"] .gt-ia-pot .stem { transition-duration: 0.4s !important; }

@@ -3931,13 +3931,18 @@ function handleSgProductChange(cropName) {
 }
 
 // Live price estimate
-document.getElementById('sg-acres').addEventListener('input', function() {
-  const acres = parseInt(this.value) || 0;
-  const priceEl = document.getElementById('sg-estimated-price');
-  priceEl.textContent = (acres > 0 && sgCurrentPrice > 0)
-    ? '₹' + (acres * sgCurrentPrice).toLocaleString('en-IN')
-    : '--';
-});
+(function(){
+  const acresEl = document.getElementById('sg-acres');
+  if (!acresEl) return;
+  acresEl.addEventListener('input', function() {
+    const acres = parseInt(this.value) || 0;
+    const priceEl = document.getElementById('sg-estimated-price');
+    if (!priceEl) return;
+    priceEl.textContent = (acres > 0 && sgCurrentPrice > 0)
+      ? '₹' + (acres * sgCurrentPrice).toLocaleString('en-IN')
+      : '--';
+  });
+})();
 
 // Form submit
 async function submitStartGrowing(e) {
@@ -4585,7 +4590,10 @@ const tiltRefreshObs = new IntersectionObserver(entries => {
 </script>
 
 <script src="js/reactive-animations.js"></script>
-<script src="js/ios-native.js"></script>
+
+<!-- ═══ Extra interactivity layer ═══ -->
+<link rel="stylesheet" href="css/interactive.css">
+<script src="js/interactive.js?v=2" defer></script>
 <style>
 /* Fix Chrome compositing overflow: reactive-anim-inner uses will-change:transform
    which promotes it to a GPU layer, bypassing overflow:hidden in Chrome.
