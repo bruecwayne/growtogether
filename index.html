@@ -2926,7 +2926,7 @@ textarea.f-ctrl { resize: vertical; min-height: 80px; }
         <h2 class="section-title" id="farmers-section-title">Meet the <em>farmers</em></h2>
         <p class="section-desc" id="farmers-section-desc">Skilled growers with years of organic farming experience, hand-picked for your crops.</p>
       </div>
-      <a href="#" class="btn btn-wheat" id="farmers-become-btn">Become a Farmer &rarr;</a>
+      <a href="#" class="btn btn-wheat" id="farmers-become-btn" onclick="if(!this.dataset.customUrl){event.preventDefault();openFarmerModal();}">Become a Farmer &rarr;</a>
     </div>
     <div class="farmers-grid" id="farmers-grid"></div>
   </div>
@@ -3649,7 +3649,7 @@ async function submitLeaseForm(form) {
   if (labelEl) labelEl.textContent = data.sectionLabel || DEFAULT_FARMERS.sectionLabel;
   if (titleEl) titleEl.innerHTML = (data.sectionTitle || DEFAULT_FARMERS.sectionTitle).replace(/farmers/i, '<em>farmers</em>');
   if (descEl)  descEl.textContent  = data.sectionDesc  || DEFAULT_FARMERS.sectionDesc;
-  if (becomeBtn && data.becomeUrl) becomeBtn.href = data.becomeUrl;
+  if (becomeBtn && data.becomeUrl) { becomeBtn.href = data.becomeUrl; becomeBtn.dataset.customUrl = '1'; }
 
   // Render cards
   const grid = document.getElementById('farmers-grid');
